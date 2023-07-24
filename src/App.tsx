@@ -1,9 +1,13 @@
+import { Button } from "antd";
+import React from "react";
 import "./App.css";
 
-function App() {
-  return <>
-  
-  </>;
+function App(): React.ReactElement {
+  return (
+    <>
+      <Button />
+    </>
+  );
 }
 
 export default App;

@@ -2,13 +2,41 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    "eslint:recommended",
+    "react-app",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended",
-  ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:you-dont-need-momentjs/recommended",
+    "plugin:cypress/recommended",
+  ].concat(isProduction ? ["prettier"] : []),
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+  },
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2018,
+    sourceType: "module",
+    project: "./tsconfig.json",
+  },
+  plugins: ["react", "@typescript-eslint", "jsx-a11y", "prettier", "cypress"],
+  settings: {
+    "import/resolver": {
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
+    react: {
+      pragma: "React",
+      version: "detect",
+    },
+  },
   rules: {
     "no-unused-vars": "off",
     "func-names": "off",
