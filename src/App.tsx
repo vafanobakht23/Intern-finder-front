@@ -1,11 +1,10 @@
-import { Button } from "antd";
+import Register from "./pages/Register";
 import React from "react";
-import "./App.css";
 
 function App(): React.ReactElement {
   return (
     <>
-      <Button />
+      <Register />
     </>
   );
 }
