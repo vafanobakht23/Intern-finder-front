@@ -36,7 +36,7 @@ const Register = () => {
             <p className="text-green-800 text-xl mb-1">Sign up</p>
             <div className="my-2 w-full">
               <Input
-                placeholder="Please enter the firstname"
+                placeholder="Firstname"
                 name="firstname"
                 id="firstnmae"
                 className="border-green-500 rounded-md"
@@ -44,7 +44,7 @@ const Register = () => {
             </div>
             <div className="my-2">
               <Input
-                placeholder="Please enter the lastname"
+                placeholder="Lastname"
                 name="lastname"
                 id="lastname"
                 className="border-green-500 rounded-md"
@@ -52,7 +52,7 @@ const Register = () => {
             </div>
             <div className="my-2">
               <Input
-                placeholder="Please enter the email"
+                placeholder="Email"
                 name="lastname"
                 id="lastname"
                 type="email"
@@ -61,7 +61,7 @@ const Register = () => {
             </div>
             <div className="my-2">
               <Input
-                placeholder="Please enter the password"
+                placeholder="Password"
                 name="password"
                 id="password"
                 type="password"
