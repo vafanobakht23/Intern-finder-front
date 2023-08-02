@@ -1,11 +1,11 @@
 import { Button, Checkbox, Input, Select } from "antd";
-import Link from "antd/es/typography/Link";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    firstname: Yup.string().required("Firstname is required"),
+    lastname: Yup.string().required("Lastname is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -18,20 +18,26 @@ const Register = () => {
 
   return (
     <div className="">
-      <div className="flex flex-col items-center justify-center h-screen border-green-700">
+      <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Formik
-          initialValues={{ name: "", email: "", password: "" }}
+          initialValues={{
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            agree: false,
+          }}
           validationSchema={validationSchema}
           onSubmit={(): void => console.log("vafa")}
         >
-          <Form className="w-1/3 mx-auto p-8 shadow-lg rounded-md border-l-green-700">
+          <Form className="w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700">
             <p className="text-green-800 text-xl mb-1">Sign up</p>
             <div className="my-2 w-full">
               <Input
                 placeholder="Please enter the firstname"
                 name="firstname"
                 id="firstnmae"
-                className="border-green-500"
+                className="border-green-500 rounded-md"
               ></Input>
             </div>
             <div className="my-2">
@@ -39,7 +45,7 @@ const Register = () => {
                 placeholder="Please enter the lastname"
                 name="lastname"
                 id="lastname"
-                className="border-green-500"
+                className="border-green-500 rounded-md"
               ></Input>
             </div>
             <div className="my-2">
@@ -48,7 +54,7 @@ const Register = () => {
                 name="lastname"
                 id="lastname"
                 type="email"
-                className="border-green-500"
+                className="border-green-500 rounded-md"
               ></Input>
             </div>
             <div className="my-2">
@@ -57,11 +63,11 @@ const Register = () => {
                 name="password"
                 id="password"
                 type="password"
-                className="border-green-500"
+                className="border-green-500 rounded-md"
               ></Input>
             </div>
             <div className="my-2 w-full flex">
-              <Select className="w-max flex border-green-500">
+              <Select className="w-max flex border-green-500 rounded-md">
                 <option value="">Select a role</option>
                 {options.map((option) => (
                   <option
@@ -83,7 +89,9 @@ const Register = () => {
             </div>
             <div className="flex gap-x-1">
               <p className="mt-1">Already member?</p>
-              <a className="text-green-600 mt-1 underline">Sign in</a>
+              <a className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600">
+                Sign in
+              </a>
             </div>
           </Form>
         </Formik>
