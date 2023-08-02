@@ -1,5 +1,6 @@
 import { Button, Checkbox, Input, Select } from "antd";
 import { Form, Formik } from "formik";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const Register = () => {
@@ -15,6 +16,7 @@ const Register = () => {
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
   ];
+  const navigate = useNavigate();
 
   return (
     <div className="">
@@ -89,9 +91,12 @@ const Register = () => {
             </div>
             <div className="flex gap-x-1">
               <p className="mt-1">Already member?</p>
-              <a className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600">
+              <Link
+                to={"/"}
+                className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600"
+              >
                 Sign in
-              </a>
+              </Link>
             </div>
           </Form>
         </Formik>

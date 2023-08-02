@@ -1,5 +1,6 @@
 import { Button, Checkbox, Input, Select } from "antd";
 import { Form, Formik } from "formik";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 const Login = () => {
@@ -47,9 +48,12 @@ const Login = () => {
             </div>
             <div className="flex gap-x-1 mt-2">
               <p className="mt-1">Don't have an account?</p>
-              <a className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600">
+              <Link
+                to="/register"
+                className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600"
+              >
                 Sign up
-              </a>
+              </Link>
             </div>
           </Form>
         </Formik>
