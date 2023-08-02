@@ -4,8 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "build:tailwind": "postcss src/App.css -o src/App.generated.css",
+    "watch:tailwind": "postcss -w src/App.css -o src/App.generated.css",
+    "start": "vite && watch:tailwind",
+    "dev": "vite && watch:tailwind",
+    "build": "tsc && vite build && build tailwind",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -13,6 +16,7 @@
     "antd": "^5.7.3",
     "dayjs": "^1.11.9",
     "formik": "^2.4.2",
+    "postcss-cli": "^10.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "yup": "^1.2.0"

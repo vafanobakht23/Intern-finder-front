@@ -15,8 +15,8 @@ const Register = () => {
   ];
 
   return (
-    <div>
-      <div className="flex flex-col">
+    <div className="w-full h-full bg-red-800">
+      <div className="flex flex-co bg-red-900">
         <p>Sign up</p>
         <div className="flex flex-col items-center justify-center h-screen gap-y-3 my-2">
           <Formik
@@ -24,11 +24,10 @@ const Register = () => {
             validationSchema={validationSchema}
             onSubmit={(): void => console.log("vafa")}
           >
-            <Form className="my-2">
+            <Form>
               <div>
                 <Field
                   type="text"
-                  className="w-full my-3"
                   id="firstname"
                   name="firstname"
                   placeholder="Please enter the firstname"
@@ -37,7 +36,6 @@ const Register = () => {
               <div>
                 <Field
                   type="text"
-                  className="w-full"
                   id="lastname"
                   name="lastname"
                   placeholder="Please enter the lastname"
@@ -46,7 +44,6 @@ const Register = () => {
               <div>
                 <Field
                   type="text"
-                  className="w-full"
                   id="email"
                   name="email"
                   placeholder="Please enter the email"
@@ -55,7 +52,6 @@ const Register = () => {
               <div>
                 <Field
                   type="password"
-                  className="w-full"
                   id="password"
                   name="password"
                   placeholder="Please enter the password"
