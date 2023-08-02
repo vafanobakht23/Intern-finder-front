@@ -1,3 +1,5 @@
+import { Button, Checkbox, Input, Select } from "antd";
+import Link from "antd/es/typography/Link";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
@@ -15,69 +17,76 @@ const Register = () => {
   ];
 
   return (
-    <div className="w-full h-full">
-      <div className="flex flex-col items-center justify-center h-screen">
-        <p>Sign up</p>
-        <div className="flex flex-col my-2">
-          <Formik
-            initialValues={{ name: "", email: "", password: "" }}
-            validationSchema={validationSchema}
-            onSubmit={(): void => console.log("vafa")}
-          >
-            <Form>
-              <div className="my-2">
-                <Field
-                  type="text"
-                  id="firstname"
-                  name="firstname"
-                  placeholder="Please enter the firstname"
-                />
-              </div>
-              <div className="my-2">
-                <Field
-                  type="text"
-                  id="lastname"
-                  name="lastname"
-                  placeholder="Please enter the lastname"
-                />
-              </div>
-              <div className="my-2">
-                <Field
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Please enter the email"
-                />
-              </div>
-              <div className="my-2">
-                <Field
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Please enter the password"
-                />
-              </div>
-              <div className="my-2">
-                <Field as="select" id="selectOption" name="selectOption">
-                  <option value="">Select a role</option>
-                  {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Field>
-              </div>
-              <div>
-                <div className="my-1">
-                  <label htmlFor="isChecked">
-                    <Field type="checkbox" id="isChecked" name="isChecked" />I
-                    agree to the terms of service
-                  </label>
-                </div>
-              </div>
-            </Form>
-          </Formik>
-        </div>
+    <div className="">
+      <div className="flex flex-col items-center justify-center h-screen border-green-700">
+        <Formik
+          initialValues={{ name: "", email: "", password: "" }}
+          validationSchema={validationSchema}
+          onSubmit={(): void => console.log("vafa")}
+        >
+          <Form className="w-1/3 mx-auto p-8 shadow-lg rounded-md border-l-green-700">
+            <p className="text-green-800 text-xl mb-1">Sign up</p>
+            <div className="my-2 w-full">
+              <Input
+                placeholder="Please enter the firstname"
+                name="firstname"
+                id="firstnmae"
+                className="border-green-500"
+              ></Input>
+            </div>
+            <div className="my-2">
+              <Input
+                placeholder="Please enter the lastname"
+                name="lastname"
+                id="lastname"
+                className="border-green-500"
+              ></Input>
+            </div>
+            <div className="my-2">
+              <Input
+                placeholder="Please enter the email"
+                name="lastname"
+                id="lastname"
+                type="email"
+                className="border-green-500"
+              ></Input>
+            </div>
+            <div className="my-2">
+              <Input
+                placeholder="Please enter the password"
+                name="password"
+                id="password"
+                type="password"
+                className="border-green-500"
+              ></Input>
+            </div>
+            <div className="my-2 w-full flex">
+              <Select className="w-max flex border-green-500">
+                <option value="">Select a role</option>
+                {options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                    className="w-full"
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="my-1 flex gap-x-2">
+              <Checkbox />
+              <span>I agree with terms to service</span>
+            </div>
+            <div className="mt-3">
+              <Button className="bg-green-400 w-full">Create account</Button>
+            </div>
+            <div className="flex gap-x-1">
+              <p className="mt-1">Already member?</p>
+              <a className="text-green-600 mt-1 underline">Sign in</a>
+            </div>
+          </Form>
+        </Formik>
       </div>
     </div>
   );
