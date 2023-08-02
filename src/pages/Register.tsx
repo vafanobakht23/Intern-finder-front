@@ -15,17 +15,17 @@ const Register = () => {
   ];
 
   return (
-    <div className="w-full h-full bg-red-800">
-      <div className="flex flex-co bg-red-900">
+    <div className="w-full h-full">
+      <div className="flex flex-col items-center justify-center h-screen">
         <p>Sign up</p>
-        <div className="flex flex-col items-center justify-center h-screen gap-y-3 my-2">
+        <div className="flex flex-col my-2">
           <Formik
             initialValues={{ name: "", email: "", password: "" }}
             validationSchema={validationSchema}
             onSubmit={(): void => console.log("vafa")}
           >
             <Form>
-              <div>
+              <div className="my-2">
                 <Field
                   type="text"
                   id="firstname"
@@ -33,7 +33,7 @@ const Register = () => {
                   placeholder="Please enter the firstname"
                 />
               </div>
-              <div>
+              <div className="my-2">
                 <Field
                   type="text"
                   id="lastname"
@@ -41,7 +41,7 @@ const Register = () => {
                   placeholder="Please enter the lastname"
                 />
               </div>
-              <div>
+              <div className="my-2">
                 <Field
                   type="text"
                   id="email"
@@ -49,7 +49,7 @@ const Register = () => {
                   placeholder="Please enter the email"
                 />
               </div>
-              <div>
+              <div className="my-2">
                 <Field
                   type="password"
                   id="password"
@@ -57,7 +57,7 @@ const Register = () => {
                   placeholder="Please enter the password"
                 />
               </div>
-              <div>
+              <div className="my-2">
                 <Field as="select" id="selectOption" name="selectOption">
                   <option value="">Select a role</option>
                   {options.map((option) => (
@@ -68,8 +68,7 @@ const Register = () => {
                 </Field>
               </div>
               <div>
-                {" "}
-                <div>
+                <div className="my-1">
                   <label htmlFor="isChecked">
                     <Field type="checkbox" id="isChecked" name="isChecked" />I
                     agree to the terms of service
