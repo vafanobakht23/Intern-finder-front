@@ -13,11 +13,11 @@ const Register = () => {
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
-        <p className="text-green-800 text-xl mb-1">Sign up</p>
         <Form
           onFinish={onFinish}
           className="w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
+          <p className="text-green-800 text-xl mb-1">Sign up</p>
           <Form.Item className="my-2 w-full" name="firstname">
             <Input
               placeholder="Firstname"
