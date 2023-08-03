@@ -69,8 +69,10 @@ const Register = () => {
               ></Input>
             </div>
             <div className="my-2 w-full flex">
-              <Select className="w-max flex border-green-500 rounded-md">
-                <option value="">Select a role</option>
+              <Select
+                className="w-full flex border-green-500 rounded-md"
+                defaultValue={options[0]}
+              >
                 {options.map((option) => (
                   <option
                     key={option.value}
