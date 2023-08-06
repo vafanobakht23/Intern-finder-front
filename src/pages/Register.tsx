@@ -12,14 +12,14 @@ const Register = () => {
   const onFinish = (formData: any) => {
     load({ formData });
     // Send the form data to the server
-    console.log(data.statusText);
+    console.log(data);
   };
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
           onFinish={onFinish}
-          className="w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
+          className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
           <p className="text-green-800 text-xl mb-1">Sign up</p>
           <Form.Item className="my-2 w-full" name="firstname">
@@ -66,10 +66,11 @@ const Register = () => {
           </Form.Item>
           <Form.Item
             className="my-1 flex gap-x-2"
-            valuePropName="checked"
             rules={[{ required: true, message: "Please checked the terms" }]}
           >
-            <Checkbox>I agree with terms to service</Checkbox>
+            <Checkbox className="whitespace-wrap">
+              I agree with terms to service
+            </Checkbox>
           </Form.Item>
           <Form.Item className="mt-3">
             <Button htmlType="submit" className="bg-green-400 w-full">
