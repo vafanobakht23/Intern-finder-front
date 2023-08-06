@@ -6,9 +6,30 @@ const Register = () => {
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
   ];
-  const onFinish = (formData: any) => {
+  const onFinish = async (formData: any) => {
     // Send the form data to the server
-    console.log(JSON.stringify(formData));
+    const response = await fetch("http://127.0.0.1:8000/register/", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(formData), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        // @ts-ignore
+        console.log(response.data); // Response from the Django API
+        // Handle the response as needed
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle errors if any
+      });
   };
   return (
     <div className="">
@@ -51,7 +72,8 @@ const Register = () => {
           <Form.Item className="my-2 w-full flex" name="role">
             <Select
               className="border-green-500 rounded-md"
-              defaultValue={options[0]}
+              // defaultValue={options[0]}
+              placeholder="Select a role"
             >
               {options.map((option) => (
                 <Select.Option
@@ -66,8 +88,8 @@ const Register = () => {
           </Form.Item>
           <Form.Item
             className="my-1 flex gap-x-2"
-            name="isSubscribed"
             valuePropName="checked"
+            rules={[{ required: true, message: "Please checked the terms" }]}
           >
             <Checkbox>I agree with terms to service</Checkbox>
           </Form.Item>
