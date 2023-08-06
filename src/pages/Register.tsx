@@ -1,5 +1,6 @@
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Checkbox, Form, Input, Select, notification } from "antd";
 import { useApi } from "../api/useApi";
+import Notification from "../components/Notification";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -11,6 +12,7 @@ const Register = () => {
 
   const onFinish = (formData: any) => {
     load({ formData });
+    Notification.openErrorNotification("vafa");
     // Send the form data to the server
     console.log(data);
   };
