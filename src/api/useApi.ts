@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-
-export type TApiResponse = {
-  status: Number;
-  statusText: String;
-  data: any;
-  error: any;
-  loading: Boolean;
-};
+import { TApiResponse } from "types/TApiResponse";
 
 export const useApi = (url: string): TApiResponse => {
   const [status, setStatus] = useState<Number>(0);
