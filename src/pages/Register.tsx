@@ -69,18 +69,13 @@ const Register = () => {
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2 w-full flex" name="role">
+          <Form.Item className="my-2" name="role">
             <Select
               className="border-green-500 rounded-md"
-              // defaultValue={options[0]}
               placeholder="Select a role"
             >
               {options.map((option) => (
-                <Select.Option
-                  key={option.value}
-                  value={option.value}
-                  className="w-full"
-                >
+                <Select.Option key={option.value} value={option.value}>
                   {option.label}
                 </Select.Option>
               ))}
