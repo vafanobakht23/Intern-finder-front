@@ -1,4 +1,5 @@
 import { Button, Checkbox, Form, Input, Select } from "antd";
+import { useApi } from "../api/useApi";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -6,30 +7,12 @@ const Register = () => {
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
   ];
-  const onFinish = async (formData: any) => {
+  const { load, data } = useApi("http://127.0.0.1:8000/register/", "POST");
+
+  const onFinish = (formData: any) => {
+    load({ formData });
     // Send the form data to the server
-    const response = await fetch("http://127.0.0.1:8000/register/", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(formData), // body data type must match "Content-Type" header
-    })
-      .then((response) => {
-        // @ts-ignore
-        console.log(response.data); // Response from the Django API
-        // Handle the response as needed
-      })
-      .catch((error) => {
-        console.error(error);
-        // Handle errors if any
-      });
+    console.log(data.statusText);
   };
   return (
     <div className="">
