@@ -5,7 +5,11 @@ import { Pages } from "../settings/Pages";
 
 const { Header } = Layout;
 
-const Navbar = () => {
+type Props = {
+  selectedKey: string;
+};
+
+const Navbar: React.FC<Props> = ({ selectedKey }: Props) => {
   const isLeftMenuOpen = window.matchMedia("(max-width: 700px)").matches;
   return (
     <div className="">
@@ -14,7 +18,7 @@ const Navbar = () => {
           <Menu
             className="text-green-900"
             mode="horizontal"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={[selectedKey ? selectedKey : "1"]}
           >
             <Menu.Item key="1" icon={<HomeOutlined />}>
               <Link to="/register">Dashboard</Link>

@@ -9,7 +9,7 @@ const Login = () => {
   };
   return (
     <div className="">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
           onFinish={onFinish}
