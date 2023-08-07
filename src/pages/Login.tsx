@@ -1,4 +1,5 @@
 import { Button, Input, Form } from "antd";
+import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
   };
   return (
     <div className="">
+      <Navbar />
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
           onFinish={onFinish}
