@@ -1,10 +1,7 @@
-import {
-  HomeOutlined,
-  LogoutOutlined,
-  ProfileOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, ProfileOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+import { Pages } from "../settings/Pages";
 
 const { Header } = Layout;
 
@@ -23,7 +20,7 @@ const Navbar = () => {
               <Link to="/register">Dashboard</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<ProfileOutlined />}>
-              <Link to="/register">Profile</Link>
+              <Link to={Pages.PROFILE}>Profile</Link>
             </Menu.Item>
           </Menu>
         </Header>
