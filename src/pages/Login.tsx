@@ -11,7 +11,7 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
           onFinish={onFinish}
-          className="w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
+          className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
           <p className="text-green-800 text-xl mb-1">Sign in</p>
           <Form.Item className="my-2" name="email">
