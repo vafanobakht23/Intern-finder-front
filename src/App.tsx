@@ -1,13 +1,8 @@
-import { Button } from "antd";
 import React from "react";
-import "./App.css";
+import "./App.generated.css";
 
 function App(): React.ReactElement {
-  return (
-    <>
-      <Button />
-    </>
-  );
+  return <div className="App"></div>;
 }
 
 export default App;
