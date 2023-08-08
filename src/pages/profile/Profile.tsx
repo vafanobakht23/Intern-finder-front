@@ -19,7 +19,7 @@ const Profile = () => {
   console.log(model);
 
   return (
-    <div>
+    <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
       <Navbar selectedKey="2" />
       <div className="flex justify-around">
         <Image src="../assets/react.svg" />
