@@ -1,5 +1,5 @@
 import { Image, Input, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { user } from "types/user";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";

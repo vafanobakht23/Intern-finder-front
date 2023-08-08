@@ -1,5 +1,4 @@
 import { Button, Input, Form } from "antd";
-import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 const Login = () => {
