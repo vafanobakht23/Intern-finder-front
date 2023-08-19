@@ -9,6 +9,7 @@ import { Store } from "types/Store";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
+  console.log(user);
 
   const [model, setModel] = useState<User>({
     id: "2",

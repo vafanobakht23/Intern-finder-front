@@ -1,5 +1,4 @@
 import { Button, Input, Form } from "antd";
-import { useApi } from "../api/useApi";
 import { Link, useNavigate } from "react-router-dom";
 import Notification from "../components/Notification";
 import { setUser } from "../redux/actions/index";
@@ -21,6 +20,7 @@ const Login = () => {
     if (res.token) {
       if (res.token.length > 0) {
         navigate(Pages.PROFILE);
+        dispatch(setUser(res.user as User));
       }
     } else {
       Notification.openErrorNotification("Wrong username or password");
@@ -28,11 +28,6 @@ const Login = () => {
     }
     form.resetFields();
   };
-  useEffect(() => {
-    if (response.data) {
-      dispatch(setUser(response.data as unknown as User));
-    }
-  }, [response]);
 
   return (
     <div className="">
