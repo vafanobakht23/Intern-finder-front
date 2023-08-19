@@ -9,18 +9,12 @@ const Register = () => {
     { value: "Company", label: "Company" },
   ];
   const { load, data } = useApi("http://127.0.0.1:8000/register/", "POST");
-  const { load: sendEmail } = useApi(
-    "http://127.0.0.1:8000/send-mail/",
-    "POST",
-  );
 
   const onFinish = (formData: any) => {
     load(formData);
-    sendEmail(formData.email);
-    Notification.openErrorNotification("vafa");
-    // Send the form data to the server
-    console.log(data);
+    Notification.openSuccessNotification("vafa");
   };
+
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
@@ -43,7 +37,7 @@ const Register = () => {
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2" name="email">
+          <Form.Item className="my-2" name="username">
             <Input
               placeholder="Email"
               id="lastname"

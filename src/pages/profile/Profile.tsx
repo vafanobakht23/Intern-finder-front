@@ -3,6 +3,7 @@ import { useState } from "react";
 import { user } from "types/user";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
+import { useApi } from "../../api/useApi";
 
 const Profile = () => {
   const [model, setModel] = useState<user>({
@@ -16,7 +17,7 @@ const Profile = () => {
     role: "",
   });
   const [isModalView, setModalView] = useState(false);
-  console.log(model);
+  const { load, data } = useApi("http://127.0.0.1:8000/login/login/", "GET");
 
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>

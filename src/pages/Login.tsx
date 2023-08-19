@@ -1,11 +1,16 @@
 import { Button, Input, Form } from "antd";
-import { Link } from "react-router-dom";
+import { useApi } from "../api/useApi";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const onFinish = (formData: any) => {
-    // Send the form data to the server
-    console.log(JSON.stringify(formData));
+  const { load, data } = useApi("http://127.0.0.1:8000/login/login/", "POST");
+  const navigate = useNavigate();
+  const onFinish = async (formData: any) => {
+    await load(formData);
+    data ? navigate("/profile") : navigate("/");
   };
+  // console.log(data);
+
   return (
     <div className="">
       {/* <Navbar /> */}
@@ -15,7 +20,7 @@ const Login = () => {
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
           <p className="text-green-800 text-xl mb-1">Sign in</p>
-          <Form.Item className="my-2" name="email">
+          <Form.Item className="my-2" name="username">
             <Input
               placeholder="Email"
               id="email"
