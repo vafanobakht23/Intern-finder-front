@@ -19,12 +19,20 @@ export const useApi = (url: string, method: string): TApiResponse => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
+        }).then((response) => {
+          const json = response.json();
+          setStatus(response.status);
+          setStatusText(response.statusText);
+          setData(json);
         });
-      } else apiResponse = await fetch(url);
-      const json = await apiResponse.json();
-      setStatus(apiResponse.status);
-      setStatusText(apiResponse.statusText);
-      setData(json);
+      } else {
+        apiResponse = await fetch(url).then((response) => {
+          const json = response.json();
+          setStatus(response.status);
+          setStatusText(response.statusText);
+          setData(json);
+        });
+      }
     } catch (error) {
       setError(error);
     }
