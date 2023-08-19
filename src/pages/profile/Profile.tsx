@@ -1,12 +1,12 @@
 import { Image, Input, Modal } from "antd";
 import { useState } from "react";
-import { user } from "types/user";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
 import { useApi } from "../../api/useApi";
+import { User } from "types/user";
 
 const Profile = () => {
-  const [model, setModel] = useState<user>({
+  const [model, setModel] = useState<User>({
     id: "2",
     firstname: "",
     lastname: "",
