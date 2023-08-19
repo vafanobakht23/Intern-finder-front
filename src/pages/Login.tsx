@@ -1,16 +1,24 @@
 import { Button, Input, Form } from "antd";
 import { useApi } from "../api/useApi";
 import { Link, useNavigate } from "react-router-dom";
+import { setUser } from "../redux/actions/index";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const Login = () => {
   const { load, data } = useApi("http://127.0.0.1:8000/login/login/", "POST");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const onFinish = async (formData: any) => {
     await load(formData);
     data ? navigate("/profile") : navigate("/");
   };
-  // console.log(data);
-
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data));
+    }
+  }, [data]);
   return (
     <div className="">
       {/* <Navbar /> */}

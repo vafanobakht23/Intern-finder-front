@@ -1,4 +1,4 @@
-import { Action, SET_USER } from "redux/types";
+import { Action, SET_USER } from "../types/index";
 import { User } from "types/user";
 
 export const setUser = (user: User): Action => ({

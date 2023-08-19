@@ -1,4 +1,4 @@
-import { SET_USER, State, Action } from "redux/types";
+import { SET_USER, State, Action } from "../types";
 
 const initialState: State = {
   user: undefined,
