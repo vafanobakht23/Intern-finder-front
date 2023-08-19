@@ -12,11 +12,15 @@ const Register = () => {
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
   ];
-  const { load, data } = useApi("http://127.0.0.1:8000/register/", "POST");
+  const { load, data, status } = useApi(
+    "http://127.0.0.1:8000/register/",
+    "POST",
+  );
 
   const onFinish = (formData: any) => {
     load(formData);
-    Notification.openSuccessNotification("vafa");
+    if (status === 0)
+      Notification.openSuccessNotification("User registered successfully");
     navigate(Pages.LOGIN);
     form.resetFields();
   };
