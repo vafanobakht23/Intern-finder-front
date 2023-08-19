@@ -1,11 +1,13 @@
-import { Button, Checkbox, Form, Input, Select, notification } from "antd";
+import { Button, Checkbox, Form, Input, Select } from "antd";
 import { useApi } from "../api/useApi";
 import Notification from "../components/Notification";
 import { Link, useNavigate } from "react-router-dom";
 import { Pages } from "../settings/Pages";
+import setRules from "../utils/setRules";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const options = [
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
@@ -16,23 +18,14 @@ const Register = () => {
     load(formData);
     Notification.openSuccessNotification("vafa");
     navigate(Pages.LOGIN);
-  };
-
-  const setRules = (
-    message: string,
-  ): { required: boolean; message: string }[] => {
-    return [
-      {
-        required: true,
-        message,
-      },
-    ];
+    form.resetFields();
   };
 
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
+          form={form}
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >

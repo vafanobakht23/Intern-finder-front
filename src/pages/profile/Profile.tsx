@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
 import { useApi } from "../../api/useApi";
-import { User } from "types/user";
+import { User } from "../../types/User";
 
 const Profile = () => {
   const [model, setModel] = useState<User>({
