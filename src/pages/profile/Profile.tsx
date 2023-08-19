@@ -4,15 +4,19 @@ import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
 import { useApi } from "../../api/useApi";
 import { User } from "../../types/User";
+import { useSelector } from "react-redux";
+import { Store } from "types/Store";
 
 const Profile = () => {
+  const user = useSelector((state: Store) => state.user);
+
   const [model, setModel] = useState<User>({
     id: "2",
     firstname: "",
     lastname: "",
     biography: "",
     created_at: "",
-    email: "",
+    username: "",
     photo: "",
     role: "",
   });
