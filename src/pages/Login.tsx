@@ -20,7 +20,8 @@ const Login = () => {
     if (res.token) {
       if (res.token.length > 0) {
         navigate(Pages.PROFILE);
-        dispatch(setUser(res.user as User));
+        dispatch(setUser(res.user));
+        console.log(res);
       }
     } else {
       Notification.openErrorNotification("Wrong username or password");

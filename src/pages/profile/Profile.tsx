@@ -1,29 +1,47 @@
 import { Image, Input, Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
 import { useApi } from "../../api/useApi";
 import { User } from "../../types/User";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
+import { useCrudApi } from "../../api/useLazyApi";
+import { setUser } from "../../redux/actions";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  console.log(user);
-
+  const dispatch = useDispatch();
+  const [person, setPerson] = useState<User>(user);
   const [model, setModel] = useState<User>({
-    id: "2",
-    firstname: "",
-    lastname: "",
-    biography: "",
-    created_at: "",
-    username: "",
-    photo: "",
-    role: "",
+    id: user.id,
+    firstname: person.firstname,
+    lastname: person.lastname,
+    biography: person.biography,
+    created_at: person.created_at,
+    username: person.username,
+    photo: person.photo,
+    role: person.role,
   });
-  const [isModalView, setModalView] = useState(false);
-  const { load, data } = useApi("http://127.0.0.1:8000/login/login/", "GET");
+  console.log(person);
 
+  const [isModalView, setModalView] = useState(false);
+  const { update: updateUser } = useCrudApi(
+    "http://127.0.0.1:8000/update-biography/update-biography",
+  );
+  const { fetchOne: loadUser } = useCrudApi(
+    "http://127.0.0.1:8000/user-detail/user-detail",
+  );
+  const onOk = async () => {
+    setModalView(false);
+    const res = await updateUser(model.id, {
+      id: model.id,
+      biography: model.biography,
+    });
+    setPerson(res);
+
+    // setModel({});
+  };
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
       <Navbar selectedKey="2" />
@@ -42,7 +60,7 @@ const Profile = () => {
           title="Add biography"
           open={isModalView}
           onCancel={(): void => setModalView(false)}
-          onOk={(): void => setModalView(false)}
+          onOk={onOk}
         >
           <div>
             <Input

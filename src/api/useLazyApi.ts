@@ -6,7 +6,7 @@ interface ApiResponse<T> {
   loading: boolean;
 }
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 interface FetchOptions {
   method?: HttpMethod;
@@ -16,9 +16,9 @@ interface FetchOptions {
 
 export function useCrudApi<T>(baseUrl: string): {
   fetchAll: () => Promise<void>;
-  fetchOne: (id: number) => Promise<void>;
+  fetchOne: (id: number) => Promise<any>;
   create: (data: any) => Promise<any>;
-  update: (id: number, data: any) => Promise<void>;
+  update: (id: number, data: any) => Promise<any>;
   remove: (id: number) => Promise<void>;
   response: ApiResponse<T[]>;
 } {
@@ -90,8 +90,8 @@ export function useCrudApi<T>(baseUrl: string): {
 
   const update = useCallback(
     async (id: number, data: any) => {
-      await makeRequest(`${baseUrl}/${id}`, {
-        method: "PUT",
+      await makeRequest(`${baseUrl}/${id}/`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
