@@ -30,7 +30,18 @@ const Login = () => {
     form.resetFields();
   };
   useEffect(() => {
-    dispatch(setUser({}));
+    dispatch(
+      setUser({
+        id: 0,
+        firstname: "",
+        lastname: "",
+        username: "",
+        role: "",
+        biography: "",
+        photo: "",
+        created_at: "",
+      }),
+    );
   }, []);
   return (
     <div className="">
