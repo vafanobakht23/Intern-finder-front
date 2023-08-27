@@ -29,7 +29,9 @@ const Login = () => {
     }
     form.resetFields();
   };
-
+  useEffect(() => {
+    dispatch(setUser({}));
+  }, []);
   return (
     <div className="">
       {/* <Navbar /> */}
