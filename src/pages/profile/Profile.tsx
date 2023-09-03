@@ -94,7 +94,7 @@ const Profile = () => {
         model={model}
         setModel={setModel}
         user={user}
-        title="Add biography"
+        title="Edit information"
       />
       {/* <Popup
         isModalView={isExOpen}

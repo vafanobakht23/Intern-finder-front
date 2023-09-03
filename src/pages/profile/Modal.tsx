@@ -29,24 +29,35 @@ const Popup: React.FC<Props> = ({
       onOk={onOk}
     >
       <div className="flex flex-col my-3">
+        <h1 className="font-bold">Biography:</h1>
         <TextArea
-          className="my-2"
+          className="mb-4"
           defaultValue={user.biography}
           onChange={(e): void => {
             // should be changed
             if (model) setModel({ ...model, biography: e.target.value });
           }}
         />
+        <h1 className="font-bold">Role:</h1>
         <Input
-          className="my-2"
+          className="mb-4"
+          defaultValue={user.title}
+          onChange={(e): void => {
+            // should be changed
+            if (model) setModel({ ...model, title: e.target.value });
+          }}
+        />
+        <h1 className="font-bold">Address:</h1>
+        <Input
+          className="mb-4"
           defaultValue={user.address}
           onChange={(e): void => {
             // should be changed
             if (model) setModel({ ...model, address: e.target.value });
           }}
         />
+        <h1 className="font-bold">University:</h1>
         <Input
-          className="my-2"
           defaultValue={user.university}
           onChange={(e): void => {
             // should be changed
