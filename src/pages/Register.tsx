@@ -41,7 +41,7 @@ const Register = () => {
           >
             <Input
               placeholder="Firstname"
-              id="firstnmae"
+              id="firstname"
               className="border-green-500 rounded-md"
             />
           </Form.Item>
@@ -77,6 +77,28 @@ const Register = () => {
               placeholder="Password"
               id="password"
               type="password"
+              className="border-green-500 rounded-md"
+            />
+          </Form.Item>
+          <Form.Item
+            className="my-2 w-full"
+            name="university"
+            rules={setRules("Please enter university")}
+          >
+            <Input
+              placeholder="University"
+              id="university"
+              className="border-green-500 rounded-md"
+            />
+          </Form.Item>
+          <Form.Item
+            className="my-2 w-full"
+            name="address"
+            rules={setRules("Please enter address")}
+          >
+            <Input
+              placeholder="Address"
+              id="address"
               className="border-green-500 rounded-md"
             />
           </Form.Item>

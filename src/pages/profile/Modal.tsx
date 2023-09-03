@@ -1,4 +1,5 @@
 import { Input, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { User } from "types/User";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
   onOk: () => void;
   model: User;
   setModel: (model: User) => void;
+  user: User;
   title: string;
 };
 
@@ -16,6 +18,7 @@ const Popup: React.FC<Props> = ({
   onOk,
   model,
   setModel,
+  user,
   title,
 }: Props) => {
   return isModalView ? (
@@ -25,11 +28,29 @@ const Popup: React.FC<Props> = ({
       onCancel={(): void => setModalView(false)}
       onOk={onOk}
     >
-      <div>
-        <Input
+      <div className="flex flex-col my-3">
+        <TextArea
+          className="my-2"
+          defaultValue={user.biography}
           onChange={(e): void => {
             // should be changed
             if (model) setModel({ ...model, biography: e.target.value });
+          }}
+        />
+        <Input
+          className="my-2"
+          defaultValue={user.address}
+          onChange={(e): void => {
+            // should be changed
+            if (model) setModel({ ...model, address: e.target.value });
+          }}
+        />
+        <Input
+          className="my-2"
+          defaultValue={user.university}
+          onChange={(e): void => {
+            // should be changed
+            if (model) setModel({ ...model, university: e.target.value });
           }}
         />
       </div>
