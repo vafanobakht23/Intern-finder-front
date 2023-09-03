@@ -1,5 +1,5 @@
-import { Image, Input, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { Image } from "antd";
+import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined } from "@ant-design/icons";
 import { User } from "../../types/User";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
+import { setUser } from "../../redux/actions";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
@@ -24,51 +25,40 @@ const Profile = () => {
   });
 
   const [isModalView, setModalView] = useState(false);
-  const [isExOpen, setExOpen] = useState(false);
-  const [isSkOpen, setSkOpen] = useState(false);
+  // const [isExOpen, setExOpen] = useState(false);
+  // const [isSkOpen, setSkOpen] = useState(false);
 
-  const { update: updateUser } = useCrudApi(
+  const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography",
-  );
-  const { fetchOne: loadUser } = useCrudApi(
-    "http://127.0.0.1:8000/user-detail/user-detail",
   );
   const onOk = async () => {
     setModalView(false);
-    setExOpen(false);
-    setSkOpen(false);
-    const res = await updateUser(model.id, {
-      id: model.id,
+    // setExOpen(false);
+    // setSkOpen(false);
+    const res = await update(user.id, {
+      id: user.id,
       biography: model.biography,
     });
-    // const resuserLoad = await loadUser(model.id);
-    console.log(res);
-    setPerson(res);
+    if (res) {
+      setPerson(res as User);
+      dispatch(setUser(res));
+    }
   };
+
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
       <Navbar selectedKey="2" />
       <div className="flex justify-around">
         <Image src="../assets/react.svg" />
         <div className="flex flex-col">
+          <p>{`${user.firstname} ${user.lastname}`}</p>
+          {/* <span>{user}</span> */}
+        </div>
+        <div className="flex flex-col">
           <div className="flex flex-row gap-x-6">
-            <span>{user.biography ? user.biography : person.biography}</span>
+            <span>{person?.biography ? person.biography : user.biography}</span>
             <PlusOutlined
               onClick={(): void => setModalView(true)}
-              className="mt-1 cursor-pointer"
-            />
-          </div>
-          <div className="flex flex-row gap-x-6">
-            <span>{user.biography ? user.biography : person.biography}</span>
-            <PlusOutlined
-              onClick={(): void => setExOpen(true)}
-              className="mt-1 cursor-pointer"
-            />
-          </div>
-          <div className="flex flex-row gap-x-6">
-            <span>{user.biography ? user.biography : person.biography}</span>
-            <PlusOutlined
-              onClick={(): void => setSkOpen(true)}
               className="mt-1 cursor-pointer"
             />
           </div>
@@ -82,7 +72,7 @@ const Profile = () => {
         setModel={setModel}
         title="Add biography"
       />
-      <Popup
+      {/* <Popup
         isModalView={isExOpen}
         setModalView={setExOpen}
         onOk={onOk}
@@ -97,7 +87,7 @@ const Profile = () => {
         model={model}
         setModel={setModel}
         title="Add skills"
-      />
+      /> */}
     </div>
   );
 };

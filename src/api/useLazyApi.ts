@@ -49,6 +49,7 @@ export function useCrudApi<T>(baseUrl: string): {
           loading: false,
         };
         setResponse(resp);
+
         return responseData;
       } catch (error) {
         const resp = {
@@ -90,7 +91,7 @@ export function useCrudApi<T>(baseUrl: string): {
 
   const update = useCallback(
     async (id: number, data: any) => {
-      await makeRequest(`${baseUrl}/${id}/`, {
+      return await makeRequest(`${baseUrl}/${id}/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
