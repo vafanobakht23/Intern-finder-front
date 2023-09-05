@@ -1,7 +1,7 @@
 import { Button, Input, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Notification from "../components/Notification";
-import { setUser } from "../redux/actions/index";
+import { setToken, setUser } from "../redux/actions/index";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { Pages } from "../settings/Pages";
@@ -15,10 +15,11 @@ const Login = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (formData: any) => {
-    const res = await create(formData);
+    const res = await create(formData, false);
     // @ts-ignore
     if (res.token) {
       if (res.token.length > 0) {
+        dispatch(setToken(res.token));
         navigate(Pages.PROFILE);
         dispatch(setUser(res.user));
       }

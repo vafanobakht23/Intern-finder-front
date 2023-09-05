@@ -1,4 +1,4 @@
-import { Action, SET_USER } from "../types/index";
+import { Action, SET_TOKEN, SET_USER } from "../types/index";
 import { User } from "../../types/User";
 
 export const setUser = (user: User): Action => ({
@@ -6,5 +6,9 @@ export const setUser = (user: User): Action => ({
   user,
 });
 
+export const setToken = (token: string): Action => ({
+  type: SET_TOKEN,
+  token,
+});
 const res = null;
 export default res;

@@ -1,4 +1,6 @@
 import { useState, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { Store } from "types/Store";
 
 interface ApiResponse<T> {
   data: T | null;
@@ -17,11 +19,12 @@ interface FetchOptions {
 export function useCrudApi<T>(baseUrl: string): {
   fetchAll: () => Promise<void>;
   fetchOne: (id: number) => Promise<any>;
-  create: (data: any) => Promise<any>;
+  create: (data: any, hasToken: boolean) => Promise<any>;
   update: (id: number, data: any) => Promise<any>;
   remove: (id: number) => Promise<void>;
   response: ApiResponse<T[]>;
 } {
+  const token = useSelector((state: Store) => state.token);
   const [response, setResponse] = useState<ApiResponse<T[]>>({
     data: null,
     error: null,
@@ -77,12 +80,17 @@ export function useCrudApi<T>(baseUrl: string): {
   );
 
   const create = useCallback(
-    async (data: any) => {
+    async (data: any, hasToken: boolean) => {
       return await makeRequest(baseUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: hasToken
+          ? {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            }
+          : {
+              "Content-Type": "application/json",
+            },
         body: JSON.stringify(data),
       });
     },
@@ -95,6 +103,7 @@ export function useCrudApi<T>(baseUrl: string): {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
         },
         body: JSON.stringify(data),
       });
