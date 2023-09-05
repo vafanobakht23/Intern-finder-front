@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { Pages } from "../settings/Pages";
 import { useCrudApi } from "../api/useLazyApi";
-import { User } from "types/User";
 
 const Login = () => {
   const { response, create } = useCrudApi("http://127.0.0.1:8000/login/login/");
@@ -29,23 +28,7 @@ const Login = () => {
     }
     form.resetFields();
   };
-  useEffect(() => {
-    dispatch(
-      setUser({
-        id: 0,
-        firstname: "",
-        lastname: "",
-        username: "",
-        title: "",
-        university: "",
-        address: "",
-        role: "",
-        biography: "",
-        photo: "",
-        created_at: "",
-      }),
-    );
-  }, []);
+
   return (
     <div className="">
       {/* <Navbar /> */}
