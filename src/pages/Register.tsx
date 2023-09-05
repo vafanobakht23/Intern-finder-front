@@ -14,7 +14,7 @@ const Register = () => {
   ];
   const { load, data, status } = useApi(
     "http://127.0.0.1:8000/register/",
-    "POST",
+    "POST"
   );
 
   const onFinish = (formData: any) => {

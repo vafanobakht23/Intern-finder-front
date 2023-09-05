@@ -12,7 +12,6 @@ import { setUser } from "../../redux/actions";
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
   const dispatch = useDispatch();
-  const [person, setPerson] = useState<User>(user);
   const [model, setModel] = useState<User>({
     id: user.id,
     firstname: user.firstname,
@@ -32,7 +31,7 @@ const Profile = () => {
   // const [isSkOpen, setSkOpen] = useState(false);
 
   const { update, response } = useCrudApi(
-    "http://127.0.0.1:8000/update-biography/update-biography",
+    "http://127.0.0.1:8000/update-biography/update-biography"
   );
   const onOk = async () => {
     setModalView(false);
@@ -46,7 +45,6 @@ const Profile = () => {
       address: model.address,
     });
     if (res) {
-      setPerson(res as User);
       dispatch(setUser(res));
     }
   };
@@ -97,22 +95,6 @@ const Profile = () => {
         user={user}
         title="Edit information"
       />
-      {/* <Popup
-        isModalView={isExOpen}
-        setModalView={setExOpen}
-        onOk={onOk}
-        model={model}
-        setModel={setModel}
-        title="Add experience"
-      />
-      <Popup
-        isModalView={isSkOpen}
-        setModalView={setSkOpen}
-        onOk={onOk}
-        model={model}
-        setModel={setModel}
-        title="Add skills"
-      /> */}
     </div>
   );
 };
