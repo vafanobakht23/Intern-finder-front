@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Notification from "../components/Notification";
 import { setToken, setUser } from "../redux/actions/index";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { Pages } from "../settings/Pages";
 import { useCrudApi } from "../api/useLazyApi";
 
