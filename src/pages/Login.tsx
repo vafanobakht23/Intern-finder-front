@@ -13,7 +13,7 @@ const Login = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (formData: any) => {
-    const res = await create(formData, false);
+    const res = await create(JSON.stringify(formData), false);
     // @ts-ignore
     if (res.token) {
       if (res.token.length > 0) {

@@ -1,12 +1,13 @@
-import { Image } from "antd";
+import { Button, Image, Upload } from "antd";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
+import Notification from "../../components/Notification";
 import { setUser } from "../../redux/actions";
 
 const Profile = () => {
@@ -48,6 +49,17 @@ const Profile = () => {
       dispatch(setUser(res));
     }
   };
+  const { create } = useCrudApi("http://127.0.0.1:8000/upload/upload/");
+
+  const handleFileUpload = async (file: any) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", file.name);
+    const response = await await create(formData, true);
+    const res = await update(user.id, {
+      id: user.id,
+    });
+  };
 
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
@@ -56,7 +68,17 @@ const Profile = () => {
       </div>
       <div className="w-1/2 h-96 border-red-400 m-auto shadow-lg">
         <div className="flex flex-col ml-16">
-          <Image src="../assets/react.svg" />
+          <div className="rounded-3xl">
+            <img src={"http://127.0.0.1:8000" + user.photo} />
+          </div>
+          <Upload
+            name="file"
+            customRequest={({ file }) => handleFileUpload(file)}
+            showUploadList={false}
+          >
+            <Button icon={<UploadOutlined />}>Upload File</Button>
+          </Upload>
+
           <div className="flex flex-row justify-around mt-4">
             <div className="flex flex-col">
               <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>

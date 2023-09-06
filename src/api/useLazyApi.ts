@@ -65,7 +65,7 @@ export function useCrudApi<T>(baseUrl: string): {
         return error;
       }
     },
-    [response],
+    [response]
   );
 
   const fetchAll = useCallback(async () => {
@@ -76,7 +76,7 @@ export function useCrudApi<T>(baseUrl: string): {
     async (id: number) => {
       await makeRequest(`${baseUrl}/${id}`);
     },
-    [baseUrl, makeRequest],
+    [baseUrl, makeRequest]
   );
 
   const create = useCallback(
@@ -85,16 +85,20 @@ export function useCrudApi<T>(baseUrl: string): {
         method: "POST",
         headers: hasToken
           ? {
-              "Content-Type": "application/json",
+              ...(data instanceof FormData
+                ? {}
+                : { "Content-Type": "application/json" }),
               Authorization: `Token ${token}`,
             }
           : {
-              "Content-Type": "application/json",
+              ...(data instanceof FormData
+                ? {}
+                : { "Content-Type": "application/json" }),
             },
-        body: JSON.stringify(data),
+        body: data,
       });
     },
-    [baseUrl, makeRequest],
+    [baseUrl, makeRequest]
   );
 
   const update = useCallback(
@@ -108,7 +112,7 @@ export function useCrudApi<T>(baseUrl: string): {
         body: JSON.stringify(data),
       });
     },
-    [baseUrl, makeRequest],
+    [baseUrl, makeRequest]
   );
 
   const remove = useCallback(
@@ -117,7 +121,7 @@ export function useCrudApi<T>(baseUrl: string): {
         method: "DELETE",
       });
     },
-    [baseUrl, makeRequest],
+    [baseUrl, makeRequest]
   );
 
   return { fetchAll, fetchOne, create, update, remove, response };
