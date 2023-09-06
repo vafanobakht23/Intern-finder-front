@@ -59,6 +59,7 @@ const Profile = () => {
     const res = await update(user.id, {
       id: user.id,
     });
+    dispatch(setUser(res));
   };
 
   return (
@@ -66,31 +67,37 @@ const Profile = () => {
       <div className="mb-10">
         <Navbar selectedKey="2" />
       </div>
-      <div className="w-1/2 h-96 border-red-400 m-auto shadow-lg">
+      <div className="w-1/2 h-1/3 border-red-400 m-auto shadow-lg">
         <div className="flex flex-col ml-16">
-          <div className="rounded-3xl">
-            <img src={"http://127.0.0.1:8000" + user.photo} />
+          <div className="rounded-3xl my-3">
+            <img
+              className="rounded-full h-44 w-44"
+              src={"http://127.0.0.1:8000" + user.photo}
+            />
           </div>
-          <Upload
-            name="file"
-            customRequest={({ file }) => handleFileUpload(file)}
-            showUploadList={false}
-          >
-            <Button icon={<UploadOutlined />}>Upload File</Button>
-          </Upload>
+          <div className="flex flex-col">
+            <Upload
+              className="ml-4"
+              name="file"
+              customRequest={({ file }) => handleFileUpload(file)}
+              showUploadList={false}
+            >
+              <Button icon={<UploadOutlined />}>Upload picture</Button>
+            </Upload>
 
-          <div className="flex flex-row justify-around mt-4">
-            <div className="flex flex-col">
-              <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
-              <span className="text-sm">{user.title}</span>
-              <span className="text-xs">{user.address}</span>
-            </div>
-            <div className="flex flex-row">
-              <p className="text-2xl">{user.university}</p>
-              <PlusOutlined
-                onClick={(): void => setModalView(true)}
-                className="mt-2 ml-4 cursor-pointer"
-              />
+            <div className="flex flex-row justify-around mt-4">
+              <div className="flex flex-col">
+                <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
+                <span className="text-sm">{user.title}</span>
+                <span className="text-xs">{user.address}</span>
+              </div>
+              <div className="flex flex-row">
+                <p className="text-2xl">{user.university}</p>
+                <PlusOutlined
+                  onClick={(): void => setModalView(true)}
+                  className="mt-2 ml-4 cursor-pointer"
+                />
+              </div>
             </div>
           </div>
           <div>
