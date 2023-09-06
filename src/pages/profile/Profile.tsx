@@ -1,4 +1,4 @@
-import { Button, Image, Upload } from "antd";
+import { Button, Image, Input, Modal, Upload } from "antd";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
@@ -8,10 +8,13 @@ import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
 import Notification from "../../components/Notification";
-import { setUser } from "../../redux/actions";
+import { setExperience, setUser } from "../../redux/actions";
+import { Experience } from "types/Experience";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
+  const experience = useSelector((state: Store) => state.experience);
+
   const dispatch = useDispatch();
   const [model, setModel] = useState<User>({
     id: user.id,
@@ -28,7 +31,14 @@ const Profile = () => {
   });
 
   const [isModalView, setModalView] = useState(false);
-  // const [isExOpen, setExOpen] = useState(false);
+  const [isExOpen, setExOpen] = useState(false);
+  const [exp, setExp] = useState<Experience>({
+    id: 0,
+    title: "",
+    company: "",
+    years: "0",
+    user_id: user.id,
+  });
   // const [isSkOpen, setSkOpen] = useState(false);
 
   const { update, response } = useCrudApi(
@@ -61,6 +71,23 @@ const Profile = () => {
     });
     dispatch(setUser(res));
   };
+  const { create: createExp } = useCrudApi(
+    "http://127.0.0.1:8000/experiences/experiences/"
+  );
+
+  const experienceHandler = async () => {
+    const formData = new FormData();
+    formData.append("user_id", JSON.stringify(user.id));
+    formData.append("title", exp?.title);
+    formData.append("company", exp?.company);
+    formData.append("years", exp?.years);
+    setExOpen(false);
+    const response = await createExp(formData, true);
+    dispatch(setExperience(response));
+    console.log(response);
+  };
+
+  console.log(experience);
 
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
@@ -106,15 +133,33 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col">
-        <div className="flex flex-row gap-x-6">
-          <span>{person?.biography ? person.biography : user.biography}</span>
-          <PlusOutlined
-            onClick={(): void => setModalView(true)}
-            className="mt-1 cursor-pointer"
+      <div className="flex flex-row h-96 w-1/2 m-auto shadow-lg">
+        {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>}
+        <PlusOutlined
+          onClick={(): void => setExOpen(true)}
+          className="mt-2 ml-4 cursor-pointer"
+        />
+      </div>
+
+      {isExOpen ? (
+        <Modal title="Vafa" onOk={experienceHandler} open={isExOpen}>
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, title: e.target.value });
+            }}
           />
-        </div>
-      </div> */}
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, company: e.target.value });
+            }}
+          />
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, years: e.target.value });
+            }}
+          />
+        </Modal>
+      ) : null}
       <Popup
         isModalView={isModalView}
         setModalView={setModalView}
