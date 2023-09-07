@@ -1,4 +1,4 @@
-import { Button, Image, Input, Modal, Upload } from "antd";
+import { Button, Input, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
@@ -106,6 +106,7 @@ const Profile = () => {
       formData.append("title", skill?.title);
       setSkillModalOpen(false);
       const response = await createSkill(formData, true);
+      Notification.openSuccessNotification("Experience added successfully");
     } else {
       formData.append("user_id", JSON.stringify(user.id));
       formData.append("title", exp?.title);
@@ -113,6 +114,7 @@ const Profile = () => {
       formData.append("years", exp?.years);
       setExOpen(false);
       const response = await createExp(formData, true);
+      Notification.openSuccessNotification("Skill added successfully");
     }
   };
 
