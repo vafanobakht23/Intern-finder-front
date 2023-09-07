@@ -1,5 +1,5 @@
 import { Button, Image, Input, Modal, Upload } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { User } from "../../types/User";
@@ -44,6 +44,9 @@ const Profile = () => {
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
+  const { create: loadExperiences } = useCrudApi(
+    "http://127.0.0.1:8000/experience-list/experience-list/"
+  );
   const onOk = async () => {
     setModalView(false);
     // setExOpen(false);
@@ -60,12 +63,21 @@ const Profile = () => {
     }
   };
   const { create } = useCrudApi("http://127.0.0.1:8000/upload/upload/");
-
+  const getData = async () => {
+    const formData = new FormData();
+    formData.append("user_id", JSON.stringify(user.id));
+    const resp = await loadExperiences(formData, true);
+    setExp(resp);
+    dispatch(setExperience(resp));
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", file.name);
-    const response = await await create(formData, true);
+    const response = await create(formData, true);
     const res = await update(user.id, {
       id: user.id,
     });
@@ -83,11 +95,8 @@ const Profile = () => {
     formData.append("years", exp?.years);
     setExOpen(false);
     const response = await createExp(formData, true);
-    dispatch(setExperience(response));
-    console.log(response);
+    dispatch(setExperience([...experience, response]));
   };
-
-  console.log(experience);
 
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
@@ -119,12 +128,18 @@ const Profile = () => {
                 <span className="text-xs">{user.address}</span>
               </div>
               <div className="flex flex-row">
-                <p className="text-2xl">{user.university}</p>
                 <PlusOutlined
                   onClick={(): void => setModalView(true)}
                   className="mt-2 ml-4 cursor-pointer"
                 />
               </div>
+              {/* <div className="flex flex-col">
+                {experience.map((ex, index) => (
+                  <div className="" key={index}>
+                    {ex.title}
+                  </div>
+                ))}
+              </div> */}
             </div>
           </div>
           <div>
@@ -134,7 +149,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="flex flex-row h-96 w-1/2 m-auto shadow-lg">
-        {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>}
+        {/* {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>} */}
         <PlusOutlined
           onClick={(): void => setExOpen(true)}
           className="mt-2 ml-4 cursor-pointer"

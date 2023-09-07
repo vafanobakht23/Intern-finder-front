@@ -4,14 +4,14 @@ import { User } from "../../types/User";
 export interface State {
   user?: User;
   token?: string;
-  experience?: Experience;
+  experience?: Experience[];
 }
 
 export interface Action {
   user?: User;
   type: string;
   token?: string;
-  experience?: Experience;
+  experience?: Experience[];
 }
 
 export const SET_USER = "SET_USER";

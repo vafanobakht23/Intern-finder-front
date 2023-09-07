@@ -11,7 +11,7 @@ export const setToken = (token: string): Action => ({
   type: SET_TOKEN,
   token,
 });
-export const setExperience = (experience: Experience): Action => ({
+export const setExperience = (experience: Experience[]): Action => ({
   type: SET_EXPERIENCE,
   experience,
 });

@@ -74,7 +74,7 @@ export function useCrudApi<T>(baseUrl: string): {
 
   const fetchOne = useCallback(
     async (id: number) => {
-      await makeRequest(`${baseUrl}/${id}`);
+      return await makeRequest(`${baseUrl}/${id}`);
     },
     [baseUrl, makeRequest]
   );
