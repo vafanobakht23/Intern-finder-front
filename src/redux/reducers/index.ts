@@ -1,9 +1,17 @@
-import { SET_USER, State, Action, SET_TOKEN, SET_EXPERIENCE } from "../types";
+import {
+  SET_USER,
+  State,
+  Action,
+  SET_TOKEN,
+  SET_EXPERIENCE,
+  SET_SKILL,
+} from "../types";
 
 const initialState: State = {
   user: undefined,
   token: undefined,
   experience: undefined,
+  skill: undefined,
 };
 const reducer = (state = initialState, action: Action): State => {
   switch (action.type) {
@@ -18,6 +26,11 @@ const reducer = (state = initialState, action: Action): State => {
         token: action.token,
       };
     case SET_EXPERIENCE:
+      return {
+        ...state,
+        experience: action.experience,
+      };
+    case SET_SKILL:
       return {
         ...state,
         experience: action.experience,

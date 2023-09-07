@@ -8,12 +8,14 @@ import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
 import Notification from "../../components/Notification";
-import { setExperience, setUser } from "../../redux/actions";
+import { setExperience, setSkill, setUser } from "../../redux/actions";
 import { Experience } from "types/Experience";
+import { Skill } from "types/Skill";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  const experience = useSelector((state: Store) => state.experience);
+  const experiences = useSelector((state: Store) => state.experience);
+  const skills = useSelector((state: Store) => state.skill);
 
   const dispatch = useDispatch();
   const [model, setModel] = useState<User>({
@@ -39,18 +41,19 @@ const Profile = () => {
     years: "0",
     user_id: user.id,
   });
-  // const [isSkOpen, setSkOpen] = useState(false);
+  const [skill, setSkil] = useState<Skill>({
+    id: 0,
+    title: "",
+    user_id: user.id,
+  });
+  const [isSkillModalOpen, setSkillModalOpen] = useState(false);
 
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
-  const { create: loadExperiences } = useCrudApi(
-    "http://127.0.0.1:8000/experience-list/experience-list/"
-  );
+
   const onOk = async () => {
     setModalView(false);
-    // setExOpen(false);
-    // setSkOpen(false);
     const res = await update(user.id, {
       id: user.id,
       biography: model.biography,
@@ -58,21 +61,30 @@ const Profile = () => {
       university: model.university,
       address: model.address,
     });
-    if (res) {
-      dispatch(setUser(res));
-    }
+    if (res) dispatch(setUser(res));
   };
+
   const { create } = useCrudApi("http://127.0.0.1:8000/upload/upload/");
+  const { create: loadSkill } = useCrudApi(
+    "http://127.0.0.1:8000/skill-list/skill-list/"
+  );
+  const { create: loadExperiences } = useCrudApi(
+    "http://127.0.0.1:8000/experience-list/experience-list/"
+  );
   const getData = async () => {
     const formData = new FormData();
     formData.append("user_id", JSON.stringify(user.id));
-    const resp = await loadExperiences(formData, true);
-    setExp(resp);
-    dispatch(setExperience(resp));
+    const experienceResp = await loadExperiences(formData, true);
+    setExp(experienceResp);
+    dispatch(setExperience(experienceResp));
+    const skillResp = await loadSkill(formData, true);
+    setSkil(skillResp);
+    dispatch(setSkill(skillResp));
   };
   useEffect(() => {
     getData();
   }, []);
+
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -83,20 +95,30 @@ const Profile = () => {
     });
     dispatch(setUser(res));
   };
+  const { create: createSkill } = useCrudApi(
+    "http://127.0.0.1:8000/skill/skill/"
+  );
+
+  const changeHandler = async () => {
+    const formData = new FormData();
+    if (isSkillModalOpen) {
+      formData.append("user_id", JSON.stringify(user.id));
+      formData.append("title", skill?.title);
+      setSkillModalOpen(false);
+      const response = await createSkill(formData, true);
+    } else {
+      formData.append("user_id", JSON.stringify(user.id));
+      formData.append("title", exp?.title);
+      formData.append("company", exp?.company);
+      formData.append("years", exp?.years);
+      setExOpen(false);
+      const response = await createExp(formData, true);
+    }
+  };
+
   const { create: createExp } = useCrudApi(
     "http://127.0.0.1:8000/experiences/experiences/"
   );
-
-  const experienceHandler = async () => {
-    const formData = new FormData();
-    formData.append("user_id", JSON.stringify(user.id));
-    formData.append("title", exp?.title);
-    formData.append("company", exp?.company);
-    formData.append("years", exp?.years);
-    setExOpen(false);
-    const response = await createExp(formData, true);
-    dispatch(setExperience([...experience, response]));
-  };
 
   return (
     <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
@@ -133,6 +155,12 @@ const Profile = () => {
                   className="mt-2 ml-4 cursor-pointer"
                 />
               </div>
+              <div className="flex flex-row">
+                <PlusOutlined
+                  onClick={(): void => setSkillModalOpen(true)}
+                  className="mt-2 ml-4 cursor-pointer"
+                />
+              </div>
               {/* <div className="flex flex-col">
                 {experience.map((ex, index) => (
                   <div className="" key={index}>
@@ -155,9 +183,24 @@ const Profile = () => {
           className="mt-2 ml-4 cursor-pointer"
         />
       </div>
-
+      <div className="flex flex-row h-96 w-1/2 m-auto shadow-lg">
+        {/* {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>} */}
+        <PlusOutlined
+          onClick={(): void => setSkillModalOpen(true)}
+          className="mt-2 ml-4 cursor-pointer"
+        />
+      </div>
+      {isSkillModalOpen ? (
+        <Modal title="Vafa" onOk={changeHandler} open={isSkillModalOpen}>
+          <Input
+            onChange={(e): void => {
+              setSkil({ ...skill, title: e.target.value });
+            }}
+          />
+        </Modal>
+      ) : null}
       {isExOpen ? (
-        <Modal title="Vafa" onOk={experienceHandler} open={isExOpen}>
+        <Modal title="Vafa" onOk={changeHandler} open={isExOpen}>
           <Input
             onChange={(e): void => {
               setExp({ ...exp, title: e.target.value });
