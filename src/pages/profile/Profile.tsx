@@ -65,13 +65,16 @@ const Profile = () => {
   );
   const onOk = async () => {
     setModalView(false);
-    const res = await update(user.id, {
-      id: user.id,
-      biography: model.biography,
-      title: model.title,
-      university: model.university,
-      address: model.address,
-    });
+    const res = await update(
+      user.id,
+      JSON.stringify({
+        id: user.id,
+        biography: model.biography,
+        title: model.title,
+        university: model.university,
+        address: model.address,
+      })
+    );
     if (res) dispatch(setUser(res));
   };
 
