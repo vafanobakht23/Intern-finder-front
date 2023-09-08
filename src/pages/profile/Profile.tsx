@@ -37,6 +37,8 @@ const Profile = () => {
   const [isModalView, setModalView] = useState(false);
   const [isExOpen, setExOpen] = useState(false);
   const [experienceList, setExperienceList] = useState<Experience[]>([]);
+  const [skillList, setSkillList] = useState<Skill[]>([]);
+
   const [exp, setExp] = useState<Experience>({
     id: 0,
     title: "",
@@ -51,10 +53,12 @@ const Profile = () => {
   });
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
   const [isEditModeSkill, setEditModeSkill] = useState(false);
+  const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
 
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
+  console.log(selectedExperienceId);
 
   const onOk = async () => {
     setModalView(false);
@@ -80,10 +84,9 @@ const Profile = () => {
     formData.append("user_id", JSON.stringify(user.id));
     const experienceResp = await loadExperiences(formData, true);
     setExperienceList(experienceResp);
-    // setExp(experienceResp);
     dispatch(setExperience(experienceResp));
     const skillResp = await loadSkill(formData, true);
-    setSkil(skillResp);
+    setSkillList(skillResp);
     dispatch(setSkill(skillResp));
   };
   useEffect(() => {
@@ -100,6 +103,7 @@ const Profile = () => {
     });
     dispatch(setUser(res));
   };
+
   const { create: createSkill } = useCrudApi(
     "http://127.0.0.1:8000/skill/skill/"
   );
@@ -111,7 +115,7 @@ const Profile = () => {
       formData.append("title", skill?.title);
       setSkillModalOpen(false);
       const response = await createSkill(formData, true);
-      Notification.openSuccessNotification("Experience added successfully");
+      Notification.openSuccessNotification("Skill added successfully");
     } else {
       formData.append("user_id", JSON.stringify(user.id));
       formData.append("title", exp?.title);
@@ -119,7 +123,7 @@ const Profile = () => {
       formData.append("years", exp?.years);
       setExOpen(false);
       const response = await createExp(formData, true);
-      Notification.openSuccessNotification("Skill added successfully");
+      Notification.openSuccessNotification("Experience added successfully");
     }
     getData();
   };
@@ -138,7 +142,6 @@ const Profile = () => {
         <Navbar selectedKey="2" />
       </div>
       <div className="w-1/2 m-auto shadow-lg flex flex-col">
-        {/* // first div is for image */}
         <div className="flex flex-col">
           <img
             className="rounded-full h-44 w-44 mx-16"
@@ -181,8 +184,8 @@ const Profile = () => {
           />
         </div>
         {experienceList &&
-          experienceList?.map((ex, index) => (
-            <div key={index} className="flex m-4">
+          experienceList?.map((ex) => (
+            <div key={ex.id} className="flex m-4">
               <div className="flex flex-row">
                 <div className="h-16 w-16 bg-black" />
                 <div className="flex flex-col ml-2">
@@ -191,8 +194,37 @@ const Profile = () => {
                   <div className="flex flex-row justify-between">
                     <p className="text-xs mt-1">{`${ex.years} years`}</p>
                     <EditOutlined
-                      onClick={(): void => setExOpen(true)}
+                      onClick={(): void => {
+                        setExOpen(true);
+                        setSelectedExperienceId(ex.id);
+                      }}
                       className="ml-4 mt-1.5 cursor-pointer text-md"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
+      <div className="w-1/2 m-auto shadow-lg gap-y-2">
+        <div className="flex flex-row justify-between ml-1 mt-6">
+          <span className="text-xl font-bold my-2">Skills</span>
+          <PlusOutlined
+            onClick={(): void => setSkillModalOpen(true)}
+            className="mx-4 cursor-pointer text-lg"
+          />
+        </div>
+        {skillList &&
+          skillList?.map((sk, index) => (
+            <div key={index} className="flex m-4">
+              <div className="flex flex-row">
+                <span className="mt-1.5">{`${index + 1}.`}</span>
+                <div className="flex flex-col ml-2">
+                  <div className="flex flex-row justify-between">
+                    <p className="text-lg mt-1">{sk.title}</p>
+                    <EditOutlined
+                      onClick={(): void => setSkillModalOpen(true)}
+                      className="ml-4 mt-2.5 cursor-pointer text-md"
                     />
                   </div>
                 </div>
@@ -214,27 +246,11 @@ const Profile = () => {
         onOk={submit}
         exp={exp}
         setExp={setExp}
+        selectedExperienceId={selectedExperienceId}
+        experienceList={experienceList}
+        setSelectedExperienceId={setSelectedExperienceId}
         title="Add Experience"
       />
-      {/* {isExOpen ? (
-        <Modal title="Vafa" onOk={submit} open={isExOpen}>
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, title: e.target.value });
-            }}
-          />
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, company: e.target.value });
-            }}
-          />
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, years: e.target.value });
-            }}
-          />
-        </Modal>
-      ) : null} */}
       <Popup
         isModalView={isModalView}
         setModalView={setModalView}

@@ -1,5 +1,5 @@
 export type Experience = {
-  id: number | undefined;
+  id: number;
   title: string;
   company: string;
   years: string;

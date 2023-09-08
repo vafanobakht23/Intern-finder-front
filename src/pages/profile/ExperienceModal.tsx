@@ -10,6 +10,9 @@ type Props = {
   exp: Experience;
   setExp: (exp: Experience) => void;
   title: string;
+  selectedExperienceId: number;
+  experienceList: Experience[];
+  setSelectedExperienceId: (selectedExperienceId: number) => void;
 };
 
 const ExperienceModal: React.FC<Props> = ({
@@ -19,12 +22,18 @@ const ExperienceModal: React.FC<Props> = ({
   exp,
   setExp,
   title,
+  selectedExperienceId,
+  experienceList,
+  setSelectedExperienceId,
 }: Props) => {
   return isModalView ? (
     <Modal
       title={title}
       open={isModalView}
-      onCancel={(): void => setModalView(false)}
+      onCancel={(): void => {
+        setSelectedExperienceId(-1);
+        setModalView(false);
+      }}
       onOk={onOk}
       okText="Save"
     >
@@ -32,7 +41,9 @@ const ExperienceModal: React.FC<Props> = ({
         <h1 className="font-bold">Title:</h1>
         <Input
           className="mb-4"
-          //   defaultValue={exp.title}
+          defaultValue={
+            experienceList.find((e) => e.id === selectedExperienceId)?.title
+          }
           onChange={(e): void => {
             setExp({ ...exp, title: e.target.value });
           }}
@@ -40,14 +51,18 @@ const ExperienceModal: React.FC<Props> = ({
         <h1 className="font-bold">Company:</h1>
         <Input
           className="mb-4"
-          //   defaultValue={user.address}
+          defaultValue={
+            experienceList.find((e) => e.id === selectedExperienceId)?.company
+          }
           onChange={(e): void => {
             setExp({ ...exp, company: e.target.value });
           }}
         />
         <h1 className="font-bold">Years:</h1>
         <Input
-          //   defaultValue={user.university}
+          defaultValue={
+            experienceList.find((e) => e.id === selectedExperienceId)?.years
+          }
           onChange={(e): void => {
             setExp({ ...exp, years: e.target.value });
           }}
