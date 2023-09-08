@@ -1,5 +1,5 @@
 export type Skill = {
-  id: number | undefined;
+  id: number;
   title: string;
   user_id: number;
 };

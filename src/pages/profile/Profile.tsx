@@ -1,7 +1,12 @@
 import { Button, Input, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { PlusOutlined, UploadOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  UploadOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
@@ -52,14 +57,12 @@ const Profile = () => {
     user_id: user.id,
   });
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
-  const [isEditModeSkill, setEditModeSkill] = useState(false);
   const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
+  const [selectedSkillId, setSelectedSkillId] = useState(-1);
 
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
-  console.log(selectedExperienceId);
-
   const onOk = async () => {
     setModalView(false);
     const res = await update(user.id, {
@@ -103,30 +106,53 @@ const Profile = () => {
     });
     dispatch(setUser(res));
   };
+  console.log(selectedSkillId);
 
   const { create: createSkill } = useCrudApi(
     "http://127.0.0.1:8000/skill/skill/"
   );
-
+  const { update: updateExperience } = useCrudApi(
+    "http://127.0.0.1:8000/experiences/experiences"
+  );
+  const { remove: removeSkill } = useCrudApi(
+    "http://127.0.0.1:8000/skill/skill"
+  );
   const submit = async () => {
     const formData = new FormData();
-    if (isSkillModalOpen) {
-      formData.append("user_id", JSON.stringify(user.id));
-      formData.append("title", skill?.title);
-      setSkillModalOpen(false);
-      const response = await createSkill(formData, true);
-      Notification.openSuccessNotification("Skill added successfully");
-    } else {
+    if (selectedExperienceId === -1 && selectedSkillId === -1) {
+      if (isSkillModalOpen) {
+        formData.append("user_id", JSON.stringify(user.id));
+        formData.append("title", skill?.title);
+        setSkillModalOpen(false);
+        const response = await createSkill(formData, true);
+        Notification.openSuccessNotification("Skill added successfully");
+      } else {
+        formData.append("user_id", JSON.stringify(user.id));
+        formData.append("title", exp?.title);
+        formData.append("company", exp?.company);
+        formData.append("years", exp?.years);
+        setExOpen(false);
+        const response = await createExp(formData, true);
+        Notification.openSuccessNotification("Experience added successfully");
+      }
+    } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
       formData.append("user_id", JSON.stringify(user.id));
       formData.append("title", exp?.title);
       formData.append("company", exp?.company);
       formData.append("years", exp?.years);
+      const resp = await updateExperience(selectedExperienceId, formData);
+      Notification.openSuccessNotification("Experience updated successfully");
       setExOpen(false);
-      const response = await createExp(formData, true);
-      Notification.openSuccessNotification("Experience added successfully");
+    } else if (selectedSkillId !== -1) {
+      const resp = await removeSkill(selectedSkillId);
+      Notification.openSuccessNotification("Skill deleted successfully");
+      setSelectedSkillId(-1);
     }
     getData();
   };
+  useEffect(() => {
+    if (selectedSkillId !== -1) submit();
+  }, [selectedSkillId]);
 
   const { create: createExp } = useCrudApi(
     "http://127.0.0.1:8000/experiences/experiences/"
@@ -216,14 +242,16 @@ const Profile = () => {
         </div>
         {skillList &&
           skillList?.map((sk, index) => (
-            <div key={index} className="flex m-4">
+            <div key={sk.id} className="flex m-4">
               <div className="flex flex-row">
                 <span className="mt-1.5">{`${index + 1}.`}</span>
                 <div className="flex flex-col ml-2">
                   <div className="flex flex-row justify-between">
                     <p className="text-lg mt-1">{sk.title}</p>
-                    <EditOutlined
-                      onClick={(): void => setSkillModalOpen(true)}
+                    <DeleteOutlined
+                      onClick={(): void => {
+                        setSelectedSkillId(sk.id);
+                      }}
                       className="ml-4 mt-2.5 cursor-pointer text-md"
                     />
                   </div>

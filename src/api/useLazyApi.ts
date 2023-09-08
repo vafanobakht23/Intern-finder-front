@@ -106,10 +106,12 @@ export function useCrudApi<T>(baseUrl: string): {
       return await makeRequest(`${baseUrl}/${id}/`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          ...(data instanceof FormData
+            ? {}
+            : { "Content-Type": "application/json" }),
           Authorization: `Token ${token}`,
         },
-        body: JSON.stringify(data),
+        body: data,
       });
     },
     [baseUrl, makeRequest]
@@ -117,7 +119,7 @@ export function useCrudApi<T>(baseUrl: string): {
 
   const remove = useCallback(
     async (id: number) => {
-      await makeRequest(`${baseUrl}/${id}`, {
+      return await makeRequest(`${baseUrl}/${id}/`, {
         method: "DELETE",
       });
     },
