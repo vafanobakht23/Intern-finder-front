@@ -1,7 +1,7 @@
 import { Button, Input, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { PlusOutlined, UploadOutlined, EditOutlined } from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
@@ -14,7 +14,7 @@ import { Skill } from "types/Skill";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  const experiences = useSelector((state: Store) => state.experience);
+  const experience = useSelector((state: Store) => state.experience);
   const skills = useSelector((state: Store) => state.skill);
 
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ const Profile = () => {
 
   const [isModalView, setModalView] = useState(false);
   const [isExOpen, setExOpen] = useState(false);
+  const [experienceList, setExperienceList] = useState<Experience[]>([]);
   const [exp, setExp] = useState<Experience>({
     id: 0,
     title: "",
@@ -75,6 +76,8 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("user_id", JSON.stringify(user.id));
     const experienceResp = await loadExperiences(formData, true);
+    console.log(experienceResp);
+    setExperienceList(experienceResp);
     setExp(experienceResp);
     dispatch(setExperience(experienceResp));
     const skillResp = await loadSkill(formData, true);
@@ -123,103 +126,77 @@ const Profile = () => {
   );
 
   return (
-    <div className={`${isModalView ? "opacity-40" : "opacity-100"}`}>
+    <div
+      className={`overflow-y-auto h-screen ${
+        isModalView ? "opacity-40" : "opacity-100"
+      }`}
+    >
       <div className="mb-10">
         <Navbar selectedKey="2" />
       </div>
-      <div className="w-1/2 h-1/3 border-red-400 m-auto shadow-lg">
-        <div className="flex flex-col ml-16">
-          <div className="rounded-3xl my-3">
-            <img
-              className="rounded-full h-44 w-44"
-              src={"http://127.0.0.1:8000" + user.photo}
-            />
-          </div>
-          <div className="flex flex-col">
+      <div className="w-1/2 m-auto shadow-lg flex flex-col">
+        {/* // first div is for image */}
+        <div className="flex flex-col">
+          <img
+            className="rounded-full h-44 w-44 mx-16"
+            src={"http://127.0.0.1:8000" + user.photo}
+          />
+          <div className="flex flex-row justify-between mx-16">
             <Upload
-              className="ml-4"
+              className="ml-4 mt-2"
               name="file"
               customRequest={({ file }) => handleFileUpload(file)}
               showUploadList={false}
             >
               <Button icon={<UploadOutlined />}>Upload picture</Button>
             </Upload>
-
-            <div className="flex flex-row justify-around mt-4">
-              <div className="flex flex-col">
-                <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
-                <span className="text-sm">{user.title}</span>
-                <span className="text-xs">{user.address}</span>
-              </div>
-              <div className="flex flex-row">
-                <PlusOutlined
-                  onClick={(): void => setModalView(true)}
-                  className="mt-2 ml-4 cursor-pointer"
-                />
-              </div>
-              <div className="flex flex-row">
-                <PlusOutlined
-                  onClick={(): void => setSkillModalOpen(true)}
-                  className="mt-2 ml-4 cursor-pointer"
-                />
-              </div>
-              {/* <div className="flex flex-col">
-                {experience.map((ex, index) => (
-                  <div className="" key={index}>
-                    {ex.title}
-                  </div>
-                ))}
-              </div> */}
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold mt-16">About me</h4>
-            <p className="text-xs">{user.biography}</p>
+            <EditOutlined
+              onClick={(): void => setModalView(true)}
+              className="mt-2 ml-4 cursor-pointer text-xl"
+            />
           </div>
         </div>
+        <div className="flex flex-col mx-20">
+          <div className="flex flex-row justify-between mt-4">
+            <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
+            <p className="text-xl">{`${user.university} university`}</p>
+          </div>
+          <span className="text-sm mt-1">{user.title}</span>
+          <span className="text-xs mt-1">{user.address}</span>
+        </div>
+        <div className="mx-20 mt-6 mb-7">
+          <h3 className="font-bold">About me</h3>
+          <p className="ml-1.5">{user.biography}</p>
+        </div>
       </div>
-      <div className="flex flex-row h-96 w-1/2 m-auto shadow-lg">
-        {/* {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>} */}
-        <PlusOutlined
-          onClick={(): void => setExOpen(true)}
-          className="mt-2 ml-4 cursor-pointer"
-        />
+      <div className="w-1/2 m-auto shadow-lg gap-y-2">
+        <div className="flex flex-row justify-between ml-1 mt-6">
+          <span className="text-xl font-bold my-2">Experiences</span>
+          <PlusOutlined
+            onClick={(): void => setExOpen(true)}
+            className="mx-4 cursor-pointer text-lg"
+          />
+        </div>
+        {experienceList &&
+          experienceList?.map((ex, index) => (
+            <div key={index} className="flex m-4">
+              <div className="flex flex-row">
+                <div className="h-16 w-16 bg-black" />
+                <div className="flex flex-col ml-2">
+                  <p className="text-lg">{ex.title}</p>
+                  <p className="text-sm">{ex.company}</p>
+                  <div className="flex flex-row justify-between">
+                    <p className="text-xs mt-1">{`${ex.years} years`}</p>
+                    <EditOutlined
+                      onClick={(): void => setModalView(true)}
+                      className="ml-4 mt-1.5 cursor-pointer text-md"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
-      <div className="flex flex-row h-96 w-1/2 m-auto shadow-lg">
-        {/* {exp.id !== 0 && <p>{experience.title ? experience.title : " vafa"}</p>} */}
-        <PlusOutlined
-          onClick={(): void => setSkillModalOpen(true)}
-          className="mt-2 ml-4 cursor-pointer"
-        />
-      </div>
-      {isSkillModalOpen ? (
-        <Modal title="Vafa" onOk={changeHandler} open={isSkillModalOpen}>
-          <Input
-            onChange={(e): void => {
-              setSkil({ ...skill, title: e.target.value });
-            }}
-          />
-        </Modal>
-      ) : null}
-      {isExOpen ? (
-        <Modal title="Vafa" onOk={changeHandler} open={isExOpen}>
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, title: e.target.value });
-            }}
-          />
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, company: e.target.value });
-            }}
-          />
-          <Input
-            onChange={(e): void => {
-              setExp({ ...exp, years: e.target.value });
-            }}
-          />
-        </Modal>
-      ) : null}
       <Popup
         isModalView={isModalView}
         setModalView={setModalView}

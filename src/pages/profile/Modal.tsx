@@ -27,6 +27,7 @@ const Popup: React.FC<Props> = ({
       open={isModalView}
       onCancel={(): void => setModalView(false)}
       onOk={onOk}
+      okText="Save"
     >
       <div className="flex flex-col my-3">
         <h1 className="font-bold">Biography:</h1>
