@@ -11,11 +11,13 @@ import Notification from "../../components/Notification";
 import { setExperience, setSkill, setUser } from "../../redux/actions";
 import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
+import SkillModal from "./SkillModal";
+import ExperienceModal from "./ExperienceModal";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  const experience = useSelector((state: Store) => state.experience);
-  const skills = useSelector((state: Store) => state.skill);
+  // const experience = useSelector((state: Store) => state.experience);
+  // const skills = useSelector((state: Store) => state.skill);
 
   const dispatch = useDispatch();
   const [model, setModel] = useState<User>({
@@ -48,6 +50,7 @@ const Profile = () => {
     user_id: user.id,
   });
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
+  const [isEditModeSkill, setEditModeSkill] = useState(false);
 
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
@@ -76,9 +79,8 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("user_id", JSON.stringify(user.id));
     const experienceResp = await loadExperiences(formData, true);
-    console.log(experienceResp);
     setExperienceList(experienceResp);
-    setExp(experienceResp);
+    // setExp(experienceResp);
     dispatch(setExperience(experienceResp));
     const skillResp = await loadSkill(formData, true);
     setSkil(skillResp);
@@ -102,7 +104,7 @@ const Profile = () => {
     "http://127.0.0.1:8000/skill/skill/"
   );
 
-  const changeHandler = async () => {
+  const submit = async () => {
     const formData = new FormData();
     if (isSkillModalOpen) {
       formData.append("user_id", JSON.stringify(user.id));
@@ -119,6 +121,7 @@ const Profile = () => {
       const response = await createExp(formData, true);
       Notification.openSuccessNotification("Skill added successfully");
     }
+    getData();
   };
 
   const { create: createExp } = useCrudApi(
@@ -188,7 +191,7 @@ const Profile = () => {
                   <div className="flex flex-row justify-between">
                     <p className="text-xs mt-1">{`${ex.years} years`}</p>
                     <EditOutlined
-                      onClick={(): void => setModalView(true)}
+                      onClick={(): void => setExOpen(true)}
                       className="ml-4 mt-1.5 cursor-pointer text-md"
                     />
                   </div>
@@ -197,6 +200,41 @@ const Profile = () => {
             </div>
           ))}
       </div>
+      <SkillModal
+        isModalView={isSkillModalOpen}
+        setModalView={setSkillModalOpen}
+        onOk={submit}
+        skill={skill}
+        setSkill={setSkil}
+        title="Add skill"
+      />
+      <ExperienceModal
+        isModalView={isExOpen}
+        setModalView={setExOpen}
+        onOk={submit}
+        exp={exp}
+        setExp={setExp}
+        title="Add Experience"
+      />
+      {/* {isExOpen ? (
+        <Modal title="Vafa" onOk={submit} open={isExOpen}>
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, title: e.target.value });
+            }}
+          />
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, company: e.target.value });
+            }}
+          />
+          <Input
+            onChange={(e): void => {
+              setExp({ ...exp, years: e.target.value });
+            }}
+          />
+        </Modal>
+      ) : null} */}
       <Popup
         isModalView={isModalView}
         setModalView={setModalView}
