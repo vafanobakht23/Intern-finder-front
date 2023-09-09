@@ -209,41 +209,12 @@ const Profile = () => {
         <>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
-              <span className="text-xl font-bold my-2">Experiences</span>
+              <span className="text-xl font-bold my-2 mx-7">Experiences</span>
               <PlusOutlined
                 onClick={(): void => setExOpen(true)}
                 className="mx-4 cursor-pointer text-lg"
               />
             </div>
-            {/* {experienceList &&
-              experienceList?.map((ex) => (
-                <div key={ex.id} className="flex m-4 ">
-                  <div className="flex flex-row">
-                    <div className="h-16 w-16 bg-black" />
-                    <div className="flex flex-col ml-2">
-                      <p className="text-lg">{ex.title}</p>
-                      <p className="text-sm">{ex.company}</p>
-                      <div className="flex flex-row justify-between">
-                        <p className="text-xs mt-1">{`${ex.years} years`}</p>
-                        <EditOutlined
-                          onClick={(): void => {
-                            setExOpen(true);
-                            setSelectedExperienceId(ex.id);
-                            setExp({
-                              id: ex.id,
-                              title: ex.title,
-                              company: ex.company,
-                              years: ex.years,
-                              user_id: user.id,
-                            });
-                          }}
-                          className="ml-4 mt-1.5 cursor-pointer text-md"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))} */}
             <Row gutter={16}>
               {experienceList &&
                 experienceList.map((ex, index) => (
@@ -269,7 +240,7 @@ const Profile = () => {
                         </div>
                       }
                       bordered={false}
-                      className="shadow-md"
+                      className="shadow-md mx-7 my-2"
                       style={{ borderColor: "#d9d9d9" }}
                     >
                       <div className="flex flex-col">
@@ -285,31 +256,35 @@ const Profile = () => {
           </div>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
-              <span className="text-xl font-bold my-2">Skills</span>
+              <span className="text-xl font-bold my-2 mx-7">Skills</span>
               <PlusOutlined
                 onClick={(): void => setSkillModalOpen(true)}
                 className="mx-4 cursor-pointer text-lg"
               />
             </div>
-            {skillList &&
-              skillList?.map((sk, index) => (
-                <div key={sk.id} className="flex m-4">
-                  <div className="flex flex-row">
-                    <span className="mt-1.5">{`${index + 1}.`}</span>
-                    <div className="flex flex-col ml-2">
+            <div className="flex flex-wrap">
+              {skillList &&
+                skillList?.map((sk, index) => (
+                  <div
+                    key={sk.id}
+                    className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
+                  >
+                    <div className="flex flex-row justify-between">
+                      <p className="text-lg mt-1">{`${index + 1}. ${
+                        sk.title
+                      }`}</p>
                       <div className="flex flex-row justify-between">
-                        <p className="text-lg mt-1">{sk.title}</p>
                         <DeleteOutlined
                           onClick={(): void => {
                             setSelectedSkillId(sk.id);
                           }}
-                          className="ml-4 mt-2.5 cursor-pointer text-md"
+                          className="ml-4 mt-1 cursor-pointer text-lg"
                         />
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
         </>
       )}
