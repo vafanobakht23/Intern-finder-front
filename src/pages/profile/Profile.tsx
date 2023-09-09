@@ -1,4 +1,4 @@
-import { Button, Card, Col, Input, Modal, Row, Upload } from "antd";
+import { Button, Card, Col, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
