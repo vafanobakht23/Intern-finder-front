@@ -18,6 +18,7 @@ import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
 import ExperienceModal from "./ExperienceModal";
+import { INTERN } from "../../constant/Constant";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
@@ -65,16 +66,14 @@ const Profile = () => {
   );
   const onOk = async () => {
     setModalView(false);
-    const res = await update(
-      user.id,
-      JSON.stringify({
-        id: user.id,
-        biography: model.biography,
-        title: model.title,
-        university: model.university,
-        address: model.address,
-      })
-    );
+    const formData = new FormData();
+    formData.append("id", JSON.stringify(user.id));
+    formData.append("biography", model.biography);
+    formData.append("title", model.title);
+    formData.append("university", model.university);
+    formData.append("address", model.address);
+
+    const res = await update(user.id, formData);
     if (res) dispatch(setUser(res));
   };
 
@@ -109,7 +108,6 @@ const Profile = () => {
     });
     dispatch(setUser(res));
   };
-  console.log(selectedSkillId);
 
   const { create: createSkill } = useCrudApi(
     "http://127.0.0.1:8000/skill/skill/"
@@ -139,10 +137,13 @@ const Profile = () => {
         Notification.openSuccessNotification("Experience added successfully");
       }
     } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
+      console.log(exp);
       formData.append("user_id", JSON.stringify(user.id));
       formData.append("title", exp?.title);
       formData.append("company", exp?.company);
       formData.append("years", exp?.years);
+      console.log(typeof formData);
+
       const resp = await updateExperience(selectedExperienceId, formData);
       Notification.openSuccessNotification("Experience updated successfully");
       setExOpen(false);
@@ -204,84 +205,100 @@ const Profile = () => {
           <p className="ml-1.5">{user.biography}</p>
         </div>
       </div>
-      <div className="w-1/2 m-auto shadow-lg gap-y-2">
-        <div className="flex flex-row justify-between ml-1 mt-6">
-          <span className="text-xl font-bold my-2">Experiences</span>
-          <PlusOutlined
-            onClick={(): void => setExOpen(true)}
-            className="mx-4 cursor-pointer text-lg"
-          />
-        </div>
-        {experienceList &&
-          experienceList?.map((ex) => (
-            <div key={ex.id} className="flex m-4">
-              <div className="flex flex-row">
-                <div className="h-16 w-16 bg-black" />
-                <div className="flex flex-col ml-2">
-                  <p className="text-lg">{ex.title}</p>
-                  <p className="text-sm">{ex.company}</p>
-                  <div className="flex flex-row justify-between">
-                    <p className="text-xs mt-1">{`${ex.years} years`}</p>
-                    <EditOutlined
-                      onClick={(): void => {
-                        setExOpen(true);
-                        setSelectedExperienceId(ex.id);
-                      }}
-                      className="ml-4 mt-1.5 cursor-pointer text-md"
-                    />
+      {user.role === INTERN && (
+        <>
+          <div className="w-1/2 m-auto shadow-lg gap-y-2">
+            <div className="flex flex-row justify-between ml-1 mt-6">
+              <span className="text-xl font-bold my-2">Experiences</span>
+              <PlusOutlined
+                onClick={(): void => setExOpen(true)}
+                className="mx-4 cursor-pointer text-lg"
+              />
+            </div>
+            {experienceList &&
+              experienceList?.map((ex) => (
+                <div key={ex.id} className="flex m-4">
+                  <div className="flex flex-row">
+                    <div className="h-16 w-16 bg-black" />
+                    <div className="flex flex-col ml-2">
+                      <p className="text-lg">{ex.title}</p>
+                      <p className="text-sm">{ex.company}</p>
+                      <div className="flex flex-row justify-between">
+                        <p className="text-xs mt-1">{`${ex.years} years`}</p>
+                        <EditOutlined
+                          onClick={(): void => {
+                            setExOpen(true);
+                            setSelectedExperienceId(ex.id);
+                            setExp({
+                              id: ex.id,
+                              title: ex.title,
+                              company: ex.company,
+                              years: ex.years,
+                              user_id: user.id,
+                            });
+                          }}
+                          className="ml-4 mt-1.5 cursor-pointer text-md"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
+          </div>
+          <div className="w-1/2 m-auto shadow-lg gap-y-2">
+            <div className="flex flex-row justify-between ml-1 mt-6">
+              <span className="text-xl font-bold my-2">Skills</span>
+              <PlusOutlined
+                onClick={(): void => setSkillModalOpen(true)}
+                className="mx-4 cursor-pointer text-lg"
+              />
             </div>
-          ))}
-      </div>
-      <div className="w-1/2 m-auto shadow-lg gap-y-2">
-        <div className="flex flex-row justify-between ml-1 mt-6">
-          <span className="text-xl font-bold my-2">Skills</span>
-          <PlusOutlined
-            onClick={(): void => setSkillModalOpen(true)}
-            className="mx-4 cursor-pointer text-lg"
-          />
-        </div>
-        {skillList &&
-          skillList?.map((sk, index) => (
-            <div key={sk.id} className="flex m-4">
-              <div className="flex flex-row">
-                <span className="mt-1.5">{`${index + 1}.`}</span>
-                <div className="flex flex-col ml-2">
-                  <div className="flex flex-row justify-between">
-                    <p className="text-lg mt-1">{sk.title}</p>
-                    <DeleteOutlined
-                      onClick={(): void => {
-                        setSelectedSkillId(sk.id);
-                      }}
-                      className="ml-4 mt-2.5 cursor-pointer text-md"
-                    />
+            {skillList &&
+              skillList?.map((sk, index) => (
+                <div key={sk.id} className="flex m-4">
+                  <div className="flex flex-row">
+                    <span className="mt-1.5">{`${index + 1}.`}</span>
+                    <div className="flex flex-col ml-2">
+                      <div className="flex flex-row justify-between">
+                        <p className="text-lg mt-1">{sk.title}</p>
+                        <DeleteOutlined
+                          onClick={(): void => {
+                            setSelectedSkillId(sk.id);
+                          }}
+                          className="ml-4 mt-2.5 cursor-pointer text-md"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-      </div>
-      <SkillModal
-        isModalView={isSkillModalOpen}
-        setModalView={setSkillModalOpen}
-        onOk={submit}
-        skill={skill}
-        setSkill={setSkil}
-        title="Add skill"
-      />
-      <ExperienceModal
-        isModalView={isExOpen}
-        setModalView={setExOpen}
-        onOk={submit}
-        exp={exp}
-        setExp={setExp}
-        selectedExperienceId={selectedExperienceId}
-        experienceList={experienceList}
-        setSelectedExperienceId={setSelectedExperienceId}
-        title="Add Experience"
-      />
+              ))}
+          </div>
+        </>
+      )}
+      {user.role === INTERN && (
+        <>
+          <SkillModal
+            isModalView={isSkillModalOpen}
+            setModalView={setSkillModalOpen}
+            onOk={submit}
+            skill={skill}
+            setSkill={setSkil}
+            title="Add skill"
+          />
+          <ExperienceModal
+            isModalView={isExOpen}
+            setModalView={setExOpen}
+            onOk={submit}
+            exp={exp}
+            setExp={setExp}
+            selectedExperienceId={selectedExperienceId}
+            experienceList={experienceList}
+            setSelectedExperienceId={setSelectedExperienceId}
+            title="Add Experience"
+          />
+        </>
+      )}
+
       <Popup
         isModalView={isModalView}
         setModalView={setModalView}

@@ -111,7 +111,7 @@ export function useCrudApi<T>(baseUrl: string): {
             : { "Content-Type": "application/json" }),
           Authorization: `Token ${token}`,
         },
-        body: data,
+        body: data instanceof FormData ? data : JSON.stringify(data),
       });
     },
     [baseUrl, makeRequest]
