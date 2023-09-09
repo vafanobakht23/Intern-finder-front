@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Upload } from "antd";
+import { Button, Card, Col, Input, Modal, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -215,9 +215,9 @@ const Profile = () => {
                 className="mx-4 cursor-pointer text-lg"
               />
             </div>
-            {experienceList &&
+            {/* {experienceList &&
               experienceList?.map((ex) => (
-                <div key={ex.id} className="flex m-4">
+                <div key={ex.id} className="flex m-4 ">
                   <div className="flex flex-row">
                     <div className="h-16 w-16 bg-black" />
                     <div className="flex flex-col ml-2">
@@ -243,7 +243,45 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))} */}
+            <Row gutter={16}>
+              {experienceList &&
+                experienceList.map((ex, index) => (
+                  <Col span={12} key={index}>
+                    <Card
+                      title={
+                        <div className="flex flex-row justify-between">
+                          <span>{ex.title}</span>
+                          <EditOutlined
+                            className="text-lg"
+                            onClick={(): void => {
+                              setExOpen(true);
+                              setSelectedExperienceId(ex.id);
+                              setExp({
+                                id: ex.id,
+                                title: ex.title,
+                                company: ex.company,
+                                years: ex.years,
+                                user_id: user.id,
+                              });
+                            }}
+                          />
+                        </div>
+                      }
+                      bordered={false}
+                      className="shadow-md"
+                      style={{ borderColor: "#d9d9d9" }}
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-base">{ex.company}</span>
+                        <div className="flex flex-row justify-between">
+                          <span className="mt-1 text-xs">{`${ex.years} years`}</span>
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+            </Row>
           </div>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
