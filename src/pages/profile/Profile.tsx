@@ -71,6 +71,7 @@ const Profile = () => {
     description: "",
     user_id: user.id,
   });
+  const [postList, setPostList] = useState<Post[]>([]);
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
@@ -94,6 +95,9 @@ const Profile = () => {
   const { create: loadExperiences } = useCrudApi(
     "http://127.0.0.1:8000/experience-list/experience-list/"
   );
+  const { create: loadPost } = useCrudApi(
+    "http://127.0.0.1:8000/api/post/post-list/"
+  );
   const getData = async () => {
     const formData = new FormData();
     formData.append("user_id", JSON.stringify(user.id));
@@ -103,10 +107,13 @@ const Profile = () => {
     const skillResp = await loadSkill(formData, true);
     setSkillList(skillResp);
     dispatch(setSkill(skillResp));
+    const postResp = await loadPost(formData, true);
+    setPostList(postResp);
   };
   useEffect(() => {
     getData();
   }, []);
+  console.log(postList);
 
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
@@ -228,15 +235,18 @@ const Profile = () => {
           <p className="ml-1.5">{user.biography}</p>
         </div>
       </div>
-      <div className="flex flex-row m-auto justify-center mt-5">
-        <p>You can share the post</p>
-        <Button
-          onClick={(): void => setPostModalOpen(true)}
-          className="text-purple-300"
-        >
-          Share post
-        </Button>
-      </div>
+      {user.role === COMPANY && (
+        <div className="flex flex-row m-auto justify-center mt-5">
+          <p>You can share the post</p>
+          <Button
+            onClick={(): void => setPostModalOpen(true)}
+            className="text-purple-300"
+          >
+            Share post
+          </Button>
+        </div>
+      )}
+
       {user.role === COMPANY && (
         <PostModal
           isModalView={isPostModalOpen}
