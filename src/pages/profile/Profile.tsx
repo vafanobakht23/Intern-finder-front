@@ -21,6 +21,7 @@ import ExperienceModal from "./ExperienceModal";
 import { COMPANY, INTERN } from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
+import.meta.env.BASE_URL;
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
@@ -73,7 +74,7 @@ const Profile = () => {
   });
   const [postList, setPostList] = useState<Post[]>([]);
   const { update, response } = useCrudApi(
-    "http://127.0.0.1:8000/update-biography/update-biography"
+    `${import.meta.env.VITE_REACT_APP_API}update-biography/update-biography`
   );
   const onOk = async () => {
     setModalView(false);
@@ -88,15 +89,17 @@ const Profile = () => {
     if (res) dispatch(setUser(res));
   };
 
-  const { create } = useCrudApi("http://127.0.0.1:8000/upload/upload/");
+  const { create } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}upload/upload/`
+  );
   const { create: loadSkill } = useCrudApi(
-    "http://127.0.0.1:8000/skill-list/skill-list/"
+    `${import.meta.env.VITE_REACT_APP_API}skill-list/skill-list/`
   );
   const { create: loadExperiences } = useCrudApi(
-    "http://127.0.0.1:8000/experience-list/experience-list/"
+    `${import.meta.env.VITE_REACT_APP_API}experience-list/experience-list/`
   );
   const { create: loadPost } = useCrudApi(
-    "http://127.0.0.1:8000/api/post/post-list/"
+    `${import.meta.env.VITE_REACT_APP_API}api/post/post-list/`
   );
   const getData = async () => {
     const formData = new FormData();
@@ -113,7 +116,6 @@ const Profile = () => {
   useEffect(() => {
     getData();
   }, []);
-  console.log(postList);
 
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
@@ -127,13 +129,13 @@ const Profile = () => {
   };
 
   const { create: createSkill } = useCrudApi(
-    "http://127.0.0.1:8000/skill/skill/"
+    `${import.meta.env.VITE_REACT_APP_API}skill/skill/`
   );
   const { update: updateExperience } = useCrudApi(
-    "http://127.0.0.1:8000/experiences/experiences"
+    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences`
   );
   const { remove: removeSkill } = useCrudApi(
-    "http://127.0.0.1:8000/skill/skill"
+    `${import.meta.env.VITE_REACT_APP_API}skill/skill`
   );
   const submit = async () => {
     const formData = new FormData();
@@ -154,13 +156,10 @@ const Profile = () => {
         Notification.openSuccessNotification("Experience added successfully");
       }
     } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
-      console.log(exp);
       formData.append("user_id", JSON.stringify(user.id));
       formData.append("title", exp?.title);
       formData.append("company", exp?.company);
       formData.append("years", exp?.years);
-      console.log(typeof formData);
-
       const resp = await updateExperience(selectedExperienceId, formData);
       Notification.openSuccessNotification("Experience updated successfully");
       setExOpen(false);
@@ -176,10 +175,10 @@ const Profile = () => {
   }, [selectedSkillId]);
 
   const { create: createExp } = useCrudApi(
-    "http://127.0.0.1:8000/experiences/experiences/"
+    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences/`
   );
   const { create: createPost } = useCrudApi(
-    "http://127.0.0.1:8000/api/post/create-post/"
+    `${import.meta.env.VITE_REACT_APP_API}api/post/create-post/`
   );
   const submitPost = async () => {
     const formData = new FormData();

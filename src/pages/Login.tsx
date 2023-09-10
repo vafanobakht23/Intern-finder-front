@@ -5,9 +5,12 @@ import { setToken, setUser } from "../redux/actions/index";
 import { useDispatch } from "react-redux";
 import { Pages } from "../settings/Pages";
 import { useCrudApi } from "../api/useLazyApi";
+import.meta.env.BASE_URL;
 
 const Login = () => {
-  const { response, create } = useCrudApi("http://127.0.0.1:8000/login/login/");
+  const { response, create } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}login/login/`
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
