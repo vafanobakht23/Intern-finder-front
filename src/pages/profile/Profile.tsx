@@ -18,7 +18,9 @@ import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
 import ExperienceModal from "./ExperienceModal";
-import { INTERN } from "../../constant/Constant";
+import { COMPANY, INTERN } from "../../constant/Constant";
+import { Post } from "types/Post";
+import PostModal from "./PostModal";
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
@@ -60,7 +62,15 @@ const Profile = () => {
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
   const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
   const [selectedSkillId, setSelectedSkillId] = useState(-1);
-
+  const [isPostModalOpen, setPostModalOpen] = useState(false);
+  const [post, setPost] = useState<Post>({
+    id: 0,
+    title: "",
+    category: "",
+    created_at: "",
+    description: "",
+    user_id: user.id,
+  });
   const { update, response } = useCrudApi(
     "http://127.0.0.1:8000/update-biography/update-biography"
   );
@@ -161,6 +171,19 @@ const Profile = () => {
   const { create: createExp } = useCrudApi(
     "http://127.0.0.1:8000/experiences/experiences/"
   );
+  const { create: createPost } = useCrudApi(
+    "http://127.0.0.1:8000/api/post/create-post/"
+  );
+  const submitPost = async () => {
+    const formData = new FormData();
+    formData.append("title", post.title);
+    formData.append("category", post.category);
+    formData.append("description", post.description);
+    formData.append("user_id", JSON.stringify(user.id));
+    const resp = await createPost(formData, true);
+    setPost(resp);
+    setPostModalOpen(false);
+  };
 
   return (
     <div
@@ -205,6 +228,25 @@ const Profile = () => {
           <p className="ml-1.5">{user.biography}</p>
         </div>
       </div>
+      <div className="flex flex-row m-auto justify-center mt-5">
+        <p>You can share the post</p>
+        <Button
+          onClick={(): void => setPostModalOpen(true)}
+          className="text-purple-300"
+        >
+          Share post
+        </Button>
+      </div>
+      {user.role === COMPANY && (
+        <PostModal
+          isModalView={isPostModalOpen}
+          post={post}
+          setPost={setPost}
+          title="Add post"
+          setModalView={setPostModalOpen}
+          onOk={submitPost}
+        />
+      )}
       {user.role === INTERN && (
         <>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
