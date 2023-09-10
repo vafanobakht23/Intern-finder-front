@@ -86,6 +86,7 @@ const Profile = () => {
     formData.append("address", model.address);
 
     const res = await update(user.id, formData);
+    Notification.openSuccessNotification("Information updated successfully");
     if (res) dispatch(setUser(res));
   };
 
