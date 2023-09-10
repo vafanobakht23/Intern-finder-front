@@ -75,6 +75,7 @@ const Profile = () => {
     user_id: user.id,
   });
   const [postList, setPostList] = useState<Post[]>([]);
+  const [selectedPostId, setSelectedPostId] = useState(-1);
   const { update, response } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}update-biography/update-biography`
   );
@@ -104,6 +105,8 @@ const Profile = () => {
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}api/post/post-list/`
   );
+  console.log(selectedPostId);
+
   const getData = async () => {
     const formData = new FormData();
     formData.append("user_id", JSON.stringify(user.id));
@@ -143,9 +146,19 @@ const Profile = () => {
   const { remove: removeSkill } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}skill/skill`
   );
+  const { remove: remvoePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}api/post/post-delete`
+  );
+  const { update: updatePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}api/post/post-update`
+  );
   const submit = async () => {
     const formData = new FormData();
-    if (selectedExperienceId === -1 && selectedSkillId === -1) {
+    if (
+      selectedExperienceId === -1 &&
+      selectedSkillId === -1 &&
+      selectedPostId === -1
+    ) {
       if (isSkillModalOpen) {
         formData.append("user_id", JSON.stringify(user.id));
         formData.append("title", skill?.title);
@@ -173,12 +186,19 @@ const Profile = () => {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
       setSelectedSkillId(-1);
+    } else if (selectedPostId !== -1) {
+      console.log("g");
+
+      const resp = await remvoePost(selectedPostId);
+      Notification.openSuccessNotification("Post deleted successfully");
+      setSelectedPostId(-1);
     }
     getData();
   };
   useEffect(() => {
     if (selectedSkillId !== -1) submit();
-  }, [selectedSkillId]);
+    if (selectedPostId !== -1) submit();
+  }, [selectedSkillId, selectedPostId]);
 
   const { create: createExp } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}experiences/experiences/`
@@ -240,7 +260,14 @@ const Profile = () => {
           <p className="ml-1.5">{user.biography}</p>
         </div>
       </div>
-      {user.role === COMPANY && <PostCard postList={postList} />}
+      {user.role === COMPANY && (
+        <PostCard
+          postList={postList}
+          setSelectedPostId={setSelectedPostId}
+          selectedPostId={selectedPostId}
+          setModalView={setPostModalOpen}
+        />
+      )}
 
       {user.role === COMPANY && (
         <PostModal
@@ -250,6 +277,8 @@ const Profile = () => {
           title="Add post"
           setModalView={setPostModalOpen}
           onOk={submitPost}
+          selectedPostId={selectedPostId}
+          postList={postList}
         />
       )}
       {user.role === INTERN && (

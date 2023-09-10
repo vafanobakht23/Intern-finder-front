@@ -6,9 +6,17 @@ import useDateFormatter from "./hooks/useDateFormatter";
 
 type Props = {
   postList: Post[];
+  selectedPostId: number;
+  setSelectedPostId: (selectedPostId: number) => void;
+  setModalView: (modalView: boolean) => void;
 };
 
-const PostCard: React.FC<Props> = ({ postList }: Props) => {
+const PostCard: React.FC<Props> = ({
+  postList,
+  selectedPostId,
+  setSelectedPostId,
+  setModalView,
+}: Props) => {
   const { formatter } = useDateFormatter();
 
   return (
@@ -18,6 +26,7 @@ const PostCard: React.FC<Props> = ({ postList }: Props) => {
           <Card
             className="w-1/2" // Adjust the width as needed
             hoverable
+            onClick={() => setSelectedPostId(p.id)}
           >
             <div className="text-center">
               <h2 className="text-xl font-semibold">{p.title}</h2>
@@ -31,7 +40,7 @@ const PostCard: React.FC<Props> = ({ postList }: Props) => {
               <Button
                 type="primary"
                 icon={<EditOutlined />}
-                // onClick={() => handleEdit()}
+                onClick={() => setModalView(true)}
               >
                 Edit
               </Button>

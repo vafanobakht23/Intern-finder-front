@@ -9,6 +9,8 @@ type Props = {
   post: Post;
   setPost: (model: Post) => void;
   title: string;
+  selectedPostId: number;
+  postList: Post[];
 };
 
 const PostModal: React.FC<Props> = ({
@@ -18,6 +20,8 @@ const PostModal: React.FC<Props> = ({
   post,
   setPost,
   title,
+  selectedPostId,
+  postList,
 }: Props) => {
   return isModalView ? (
     <Modal
@@ -31,7 +35,9 @@ const PostModal: React.FC<Props> = ({
         <h1 className="font-bold">Title:</h1>
         <Input
           className="mb-4"
-          //   defaultValue={user.title}
+          defaultValue={
+            postList.find((post) => post.id === selectedPostId)?.title
+          }
           onChange={(e): void => {
             setPost({ ...post, title: e.target.value });
           }}
@@ -39,7 +45,9 @@ const PostModal: React.FC<Props> = ({
         <h1 className="font-bold">Category:</h1>
         <Input
           className="mb-4"
-          //   defaultValue={user.title}
+          defaultValue={
+            postList.find((post) => post.id === selectedPostId)?.category
+          }
           onChange={(e): void => {
             setPost({ ...post, category: e.target.value });
           }}
@@ -48,7 +56,9 @@ const PostModal: React.FC<Props> = ({
         <TextArea
           rows={8}
           className="mb-4"
-          //   defaultValue={user.title}
+          defaultValue={
+            postList.find((post) => post.id === selectedPostId)?.description
+          }
           onChange={(e): void => {
             setPost({ ...post, description: e.target.value });
           }}
