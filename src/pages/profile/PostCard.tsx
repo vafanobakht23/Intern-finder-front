@@ -9,6 +9,8 @@ type Props = {
   selectedPostId: number;
   setSelectedPostId: (selectedPostId: number) => void;
   setModalView: (modalView: boolean) => void;
+  setDeleteButton: (isDeleteButton: boolean) => void;
+  setPost: (post: Post) => void;
 };
 
 const PostCard: React.FC<Props> = ({
@@ -16,6 +18,8 @@ const PostCard: React.FC<Props> = ({
   selectedPostId,
   setSelectedPostId,
   setModalView,
+  setDeleteButton,
+  setPost,
 }: Props) => {
   const { formatter } = useDateFormatter();
 
@@ -40,14 +44,24 @@ const PostCard: React.FC<Props> = ({
               <Button
                 type="primary"
                 icon={<EditOutlined />}
-                onClick={() => setModalView(true)}
+                onClick={() => {
+                  setPost({
+                    id: p.id,
+                    category: p.category,
+                    created_at: p.created_at,
+                    description: p.description,
+                    title: p.title,
+                    user_id: p.user_id,
+                  });
+                  setModalView(true);
+                }}
               >
                 Edit
               </Button>
               <Button
                 type="default"
                 icon={<DeleteOutlined />}
-                // onClick={() => handleDelete()}
+                onClick={() => setDeleteButton(true)}
               >
                 Delete
               </Button>
@@ -55,16 +69,16 @@ const PostCard: React.FC<Props> = ({
           </Card>
         ))}
       </div>
-      {/* <div className="flex flex-row justify-around">
-      <p>You can share the post</p>
-      <Button
-        onClick={(): void => setPostModalOpen(true)}
-        className="text-purple-300"
-      >
-        {" "}
-        Share post
-      </Button>
-    </div> */}
+      <div className="flex flex-row justify-around">
+        <p>You can share the post</p>
+        <Button
+          onClick={(): void => setModalView(true)}
+          className="text-purple-300"
+        >
+          {" "}
+          Share post
+        </Button>
+      </div>
     </>
   );
 };

@@ -66,6 +66,7 @@ const Profile = () => {
   const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
   const [selectedSkillId, setSelectedSkillId] = useState(-1);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
+  const [isDeleteButton, setDeleteButton] = useState(false);
   const [post, setPost] = useState<Post>({
     id: 0,
     title: "",
@@ -186,18 +187,21 @@ const Profile = () => {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
       setSelectedSkillId(-1);
-    } else if (selectedPostId !== -1) {
-      console.log("g");
-
+    } else if (selectedPostId !== -1 && isDeleteButton) {
       const resp = await remvoePost(selectedPostId);
       Notification.openSuccessNotification("Post deleted successfully");
       setSelectedPostId(-1);
     }
     getData();
   };
+  console.log(post);
+
   useEffect(() => {
     if (selectedSkillId !== -1) submit();
-    if (selectedPostId !== -1) submit();
+    if (selectedPostId !== -1 && isDeleteButton) {
+      submit();
+      setDeleteButton(false);
+    }
   }, [selectedSkillId, selectedPostId]);
 
   const { create: createExp } = useCrudApi(
@@ -212,8 +216,15 @@ const Profile = () => {
     formData.append("category", post.category);
     formData.append("description", post.description);
     formData.append("user_id", JSON.stringify(user.id));
-    const resp = await createPost(formData, true);
-    setPost(resp);
+    if (selectedPostId === -1) {
+      const resp = await createPost(formData, true);
+      setPost(resp);
+    } else {
+      const resp = await updatePost(selectedPostId, formData);
+      setPost(resp);
+      setSelectedPostId(-1);
+    }
+    getData();
     setPostModalOpen(false);
   };
 
@@ -266,6 +277,8 @@ const Profile = () => {
           setSelectedPostId={setSelectedPostId}
           selectedPostId={selectedPostId}
           setModalView={setPostModalOpen}
+          setDeleteButton={setDeleteButton}
+          setPost={setPost}
         />
       )}
 
