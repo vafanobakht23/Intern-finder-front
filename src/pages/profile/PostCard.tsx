@@ -1,12 +1,10 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Input, Modal, Space } from "antd";
-import TextArea from "antd/es/input/TextArea";
+import { Button, Card, Space } from "antd";
 import { Post } from "types/Post";
 import useDateFormatter from "./hooks/useDateFormatter";
 
 type Props = {
   postList: Post[];
-  selectedPostId: number;
   setSelectedPostId: (selectedPostId: number) => void;
   setModalView: (modalView: boolean) => void;
   setDeleteButton: (isDeleteButton: boolean) => void;
@@ -15,7 +13,6 @@ type Props = {
 
 const PostCard: React.FC<Props> = ({
   postList,
-  selectedPostId,
   setSelectedPostId,
   setModalView,
   setDeleteButton,

@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Space, Upload } from "antd";
+import { Button, Card, Col, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -21,7 +21,6 @@ import ExperienceModal from "./ExperienceModal";
 import { COMPANY, INTERN } from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
-import useDateFormatter from "./hooks/useDateFormatter";
 import PostCard from "./PostCard";
 import.meta.env.BASE_URL;
 
@@ -275,7 +274,6 @@ const Profile = () => {
         <PostCard
           postList={postList}
           setSelectedPostId={setSelectedPostId}
-          selectedPostId={selectedPostId}
           setModalView={setPostModalOpen}
           setDeleteButton={setDeleteButton}
           setPost={setPost}
