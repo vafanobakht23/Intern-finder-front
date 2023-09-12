@@ -1,8 +1,11 @@
-export type user = {
-  id: string;
+export type User = {
+  id: number;
   firstname: string;
   lastname: string;
-  email: string;
+  username: string;
+  title: string;
+  university: string;
+  address: string;
   role: string;
   biography: string;
   photo: string;

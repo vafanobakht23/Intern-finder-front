@@ -1,49 +1,67 @@
-import { Button, Checkbox, Form, Input, Select, notification } from "antd";
+import { Button, Checkbox, Form, Input, Select } from "antd";
 import { useApi } from "../api/useApi";
 import Notification from "../components/Notification";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Pages } from "../settings/Pages";
+import setRules from "../utils/setRules";
+import.meta.env.BASE_URL;
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
   const options = [
     { value: "Intern", label: "Intern" },
     { value: "Company", label: "Company" },
   ];
-  const { load, data } = useApi("http://127.0.0.1:8000/register/", "POST");
-  const { load: sendEmail } = useApi(
-    "http://127.0.0.1:8000/send-mail/",
-    "POST",
+  const { load, data, status } = useApi(
+    `${import.meta.env.VITE_REACT_APP_API}register/`,
+    "POST"
   );
 
   const onFinish = (formData: any) => {
     load(formData);
-    sendEmail(formData.email);
-    Notification.openErrorNotification("vafa");
-    // Send the form data to the server
-    console.log(data);
+    if (status === 0)
+      Notification.openSuccessNotification("User registered successfully");
+    navigate(Pages.LOGIN);
+    form.resetFields();
   };
+
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
+          form={form}
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
           <p className="text-green-800 text-xl mb-1">Sign up</p>
-          <Form.Item className="my-2 w-full" name="firstname">
+          <Form.Item
+            className="my-2 w-full"
+            name="firstname"
+            rules={setRules("Please enter firstname")}
+          >
             <Input
               placeholder="Firstname"
-              id="firstnmae"
+              id="firstname"
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2" name="lastname">
+          <Form.Item
+            className="my-2"
+            name="lastname"
+            rules={setRules("Please enter lastname")}
+          >
             <Input
               placeholder="Lastname"
               id="lastname"
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2" name="email">
+          <Form.Item
+            className="my-2"
+            name="username"
+            rules={setRules("Please enter username")}
+          >
             <Input
               placeholder="Email"
               id="lastname"
@@ -51,7 +69,11 @@ const Register = () => {
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2" name="password">
+          <Form.Item
+            className="my-2"
+            name="password"
+            rules={setRules("Please enter password")}
+          >
             <Input
               placeholder="Password"
               id="password"
@@ -59,10 +81,37 @@ const Register = () => {
               className="border-green-500 rounded-md"
             />
           </Form.Item>
-          <Form.Item className="my-2" name="role">
+          <Form.Item
+            className="my-2 w-full"
+            name="university"
+            rules={setRules("Please enter university")}
+          >
+            <Input
+              placeholder="University"
+              id="university"
+              className="border-green-500 rounded-md"
+            />
+          </Form.Item>
+          <Form.Item
+            className="my-2 w-full"
+            name="address"
+            rules={setRules("Please enter address")}
+          >
+            <Input
+              placeholder="Address"
+              id="address"
+              className="border-green-500 rounded-md"
+            />
+          </Form.Item>
+          <Form.Item
+            className="my-2"
+            name="role"
+            rules={setRules("Please select a role")}
+          >
             <Select
               className="border-green-500 rounded-md"
               placeholder="Select a role"
+              allowClear
             >
               {options.map((option) => (
                 <Select.Option key={option.value} value={option.value}>
@@ -73,7 +122,7 @@ const Register = () => {
           </Form.Item>
           <Form.Item
             className="my-1 flex gap-x-2"
-            rules={[{ required: true, message: "Please checked the terms" }]}
+            rules={setRules("Please check the terms")}
           >
             <Checkbox className="whitespace-wrap">
               I agree with terms to service
