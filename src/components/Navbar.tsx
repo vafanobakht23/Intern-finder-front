@@ -7,6 +7,7 @@ import { Layout, Menu } from "antd";
 import { useCrudApi } from "../api/useLazyApi";
 import { Link } from "react-router-dom";
 import { Pages } from "../settings/Pages";
+import { LOGOUT_API } from "../api/url/urls";
 import.meta.env.BASE_URL;
 
 const { Header } = Layout;
@@ -18,7 +19,7 @@ type Props = {
 const Navbar: React.FC<Props> = ({ selectedKey }: Props) => {
   const isLeftMenuOpen = window.matchMedia("(max-width: 700px)").matches;
   const { fetchAll } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}logout/logout/`
+    `${import.meta.env.VITE_REACT_APP_API}${LOGOUT_API}`
   );
   return (
     <div className="">

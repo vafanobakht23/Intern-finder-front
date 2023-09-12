@@ -8,12 +8,13 @@ import { useSelector } from "react-redux";
 import { Store } from "../../types/Store";
 import { COMPANY } from "../../constant/Constant";
 import { useEffect, useState } from "react";
+import { POST_LIST_API } from "../../api/url/urls";
 
 const Dashboard: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
   const [postList, setPostList] = useState<Post[]>([]);
   const { create: loadPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-list/`
+    `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
   const getData = async () => {
     const formData = new FormData();

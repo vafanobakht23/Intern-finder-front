@@ -4,6 +4,7 @@ import Notification from "../components/Notification";
 import { Link, useNavigate } from "react-router-dom";
 import { Pages } from "../settings/Pages";
 import setRules from "../utils/setRules";
+import { REGISTER_API } from "../api/url/urls";
 import.meta.env.BASE_URL;
 
 const Register = () => {
@@ -14,7 +15,7 @@ const Register = () => {
     { value: "Company", label: "Company" },
   ];
   const { load, data, status } = useApi(
-    `${import.meta.env.VITE_REACT_APP_API}register/`,
+    `${import.meta.env.VITE_REACT_APP_API}${REGISTER_API}`,
     "POST"
   );
 

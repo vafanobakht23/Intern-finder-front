@@ -22,6 +22,20 @@ import { COMPANY, INTERN } from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
 import PostCard from "./PostCard";
+import {
+  CREATE_EXPERIENCE_API,
+  CREATE_POST_API,
+  CREATE_SKILL_API,
+  EXPERIENCE_LIST_API,
+  POST_DELETE_API,
+  POST_LIST_API,
+  POST_UPDATE_API,
+  REMOVE_SKILL_API,
+  SKILL_LIST_API,
+  UPDATE_EXPERIENCE_API,
+  UPDATE_SELF_INFORMATION_API,
+  UPLOAD_PICTURE_API,
+} from "../../api/url/urls";
 import.meta.env.BASE_URL;
 
 const Profile = () => {
@@ -77,7 +91,7 @@ const Profile = () => {
   const [postList, setPostList] = useState<Post[]>([]);
   const [selectedPostId, setSelectedPostId] = useState(-1);
   const { update, response } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}update-biography/update-biography`
+    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_SELF_INFORMATION_API}`
   );
   const onOk = async () => {
     setModalView(false);
@@ -94,18 +108,17 @@ const Profile = () => {
   };
 
   const { create } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}upload/upload/`
+    `${import.meta.env.VITE_REACT_APP_API}${UPLOAD_PICTURE_API}`
   );
   const { create: loadSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill-list/skill-list/`
+    `${import.meta.env.VITE_REACT_APP_API}${SKILL_LIST_API}`
   );
   const { create: loadExperiences } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experience-list/experience-list/`
+    `${import.meta.env.VITE_REACT_APP_API}${EXPERIENCE_LIST_API}`
   );
   const { create: loadPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-list/`
+    `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
-  console.log(selectedPostId);
 
   const getData = async () => {
     const formData = new FormData();
@@ -138,19 +151,19 @@ const Profile = () => {
   };
 
   const { create: createSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill/skill/`
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_SKILL_API}`
   );
   const { update: updateExperience } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences`
+    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_EXPERIENCE_API}`
   );
   const { remove: removeSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill/skill`
+    `${import.meta.env.VITE_REACT_APP_API}${REMOVE_SKILL_API}`
   );
   const { remove: remvoePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-delete`
+    `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
   );
   const { update: updatePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-update`
+    `${import.meta.env.VITE_REACT_APP_API}${POST_UPDATE_API}`
   );
   const submit = async () => {
     const formData = new FormData();
@@ -204,10 +217,10 @@ const Profile = () => {
   }, [selectedSkillId, selectedPostId]);
 
   const { create: createExp } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences/`
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXPERIENCE_API}`
   );
   const { create: createPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/create-post/`
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
   );
   const submitPost = async () => {
     const formData = new FormData();
