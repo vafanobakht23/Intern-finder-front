@@ -30,7 +30,7 @@ const Navbar: React.FC<Props> = ({ selectedKey }: Props) => {
             defaultSelectedKeys={[selectedKey ? selectedKey : "1"]}
           >
             <Menu.Item key="1" icon={<HomeOutlined />}>
-              <Link to={Pages.LOGIN}>Dashboard</Link>
+              <Link to={Pages.DASHBOARD}>Dashboard</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<ProfileOutlined />}>
               <Link to={Pages.PROFILE}>Profile</Link>
