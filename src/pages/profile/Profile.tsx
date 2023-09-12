@@ -206,7 +206,6 @@ const Profile = () => {
     }
     getData();
   };
-  console.log(post);
 
   useEffect(() => {
     if (selectedSkillId !== -1) submit();
