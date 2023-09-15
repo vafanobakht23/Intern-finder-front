@@ -5,6 +5,7 @@ import { Pages } from "./Pages";
 import Profile from "../pages/profile/Profile";
 import Dashboard from "../pages/dashboard/Dashboard";
 import { useSelector } from "react-redux";
+import Exam from "../pages/exam/Exam";
 
 export const router = createBrowserRouter([
   {
@@ -22,5 +23,9 @@ export const router = createBrowserRouter([
   {
     path: Pages.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    path: Pages.MAKE_EXAM,
+    element: <Exam />,
   },
 ]);
