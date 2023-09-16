@@ -5,6 +5,8 @@ import Navbar from "../../components/Navbar";
 import TextArea from "antd/es/input/TextArea";
 import { useNavigate } from "react-router-dom";
 import { Pages } from "../../settings/Pages";
+import { useCrudApi } from "../../api/useLazyApi";
+import { CREATE_EXAM_API } from "../../api/url/urls";
 
 const AddTextInput: React.FC = () => {
   const [inputList, setInputList] = useState<string[]>([]); // Initialize as an empty array
@@ -25,6 +27,16 @@ const AddTextInput: React.FC = () => {
   const handleRemoveInput = (index: number) => {
     const updatedList = inputList.filter((_, i) => i !== index);
     setInputList(updatedList);
+  };
+  const { create: createExam } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXAM_API}`
+  );
+  const handleSaveExam = async () => {
+    const formData = new FormData();
+    formData.append("post_id", "7");
+    formData.append("content", JSON.stringify(inputList));
+    const resp = await createExam(formData, true);
+    console.log((resp.content as string).split(","));
   };
 
   return (
@@ -66,7 +78,12 @@ const AddTextInput: React.FC = () => {
           >
             Cancel
           </Button>
-          <Button className="bg-green-400 hover:text-white">Save exam</Button>
+          <Button
+            className="bg-green-400 hover:text-white"
+            onClick={handleSaveExam}
+          >
+            Save exam
+          </Button>
         </div>
       </div>
     </div>

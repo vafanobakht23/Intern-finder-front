@@ -14,3 +14,4 @@ export const CREATE_EXPERIENCE_API = "experiences/experiences/";
 export const CREATE_POST_API = "api/post/create-post/";
 export const LOGIN_API = "login/login/";
 export const REGISTER_API = "register/";
+export const CREATE_EXAM_API = "api/exam/create-exam/";
