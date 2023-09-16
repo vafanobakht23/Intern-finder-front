@@ -26,6 +26,7 @@ import {
   CREATE_EXPERIENCE_API,
   CREATE_POST_API,
   CREATE_SKILL_API,
+  EXAM_LIST_API,
   EXPERIENCE_LIST_API,
   POST_DELETE_API,
   POST_LIST_API,
@@ -93,6 +94,9 @@ const Profile = () => {
   const { update, response } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${UPDATE_SELF_INFORMATION_API}`
   );
+  const { fetchAll: loadExams } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
+  );
   const onOk = async () => {
     setModalView(false);
     const formData = new FormData();
@@ -132,6 +136,7 @@ const Profile = () => {
       dispatch(setSkill(skillResp));
     } else {
       const postResp = await loadPost(formData, true);
+      const res = await loadExams();
       setPostList(postResp);
     }
   };

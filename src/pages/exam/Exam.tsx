@@ -36,7 +36,9 @@ const AddTextInput: React.FC = () => {
     formData.append("post_id", "7");
     formData.append("content", JSON.stringify(inputList));
     const resp = await createExam(formData, true);
-    console.log((resp.content as string).split(","));
+    console.log(JSON.parse(resp.content));
+
+    console.log((resp.content as string).split(",")[2].split('"')[1]);
   };
 
   return (
