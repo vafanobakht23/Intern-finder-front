@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Input, Button, Space } from "antd";
+import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
+import Notification from "../../components/Notification";
 import TextArea from "antd/es/input/TextArea";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../settings/Pages";
@@ -13,8 +14,6 @@ const AddTextInput: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
@@ -34,10 +33,16 @@ const AddTextInput: React.FC = () => {
     `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXAM_API}`
   );
   const handleSaveExam = async () => {
-    const formData = new FormData();
-    formData.append("post_id", String(id));
-    formData.append("content", JSON.stringify(inputList));
-    const resp = await createExam(formData, true);
+    if (inputList.length === 0) {
+      Notification.openErrorNotification("Please enter at least one question");
+    } else {
+      const formData = new FormData();
+      formData.append("post_id", String(id));
+      formData.append("content", JSON.stringify(inputList));
+      const resp = await createExam(formData, true);
+      Notification.openSuccessNotification("Exam created successfully");
+      navigate(Pages.PROFILE);
+    }
   };
 
   return (
