@@ -2,7 +2,7 @@ const LOGIN = "/";
 const REGISTER = "/register";
 const PROFILE = "/profile";
 const DASHBOARD = "/dashboard";
-const MAKE_EXAM = "/make-exam";
+const MAKE_EXAM = "/post/:id/make-exam";
 
 export const Pages = {
   LOGIN,

@@ -3,7 +3,7 @@ import { Input, Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
 import TextArea from "antd/es/input/TextArea";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../settings/Pages";
 import { useCrudApi } from "../../api/useLazyApi";
 import { CREATE_EXAM_API } from "../../api/url/urls";
@@ -12,6 +12,8 @@ const AddTextInput: React.FC = () => {
   const [inputList, setInputList] = useState<string[]>([]); // Initialize as an empty array
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
+  console.log(id);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
@@ -33,12 +35,9 @@ const AddTextInput: React.FC = () => {
   );
   const handleSaveExam = async () => {
     const formData = new FormData();
-    formData.append("post_id", "7");
+    formData.append("post_id", String(id));
     formData.append("content", JSON.stringify(inputList));
     const resp = await createExam(formData, true);
-    console.log(JSON.parse(resp.content));
-
-    console.log((resp.content as string).split(",")[2].split('"')[1]);
   };
 
   return (

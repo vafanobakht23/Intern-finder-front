@@ -1,7 +1,13 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Card, Space } from "antd";
+import { Pages } from "../../settings/Pages";
 import { Post } from "types/Post";
 import useDateFormatter from "./hooks/useDateFormatter";
+import { useNavigate } from "../../utils/useNavigation";
+import { useCrudApi } from "../../api/useLazyApi";
+import { EXAM_LIST_API } from "../../api/url/urls";
+import { useEffect, useState } from "react";
+import { Exam } from "types/Exam";
 
 type Props = {
   postList: Post[];
@@ -19,7 +25,18 @@ const PostCard: React.FC<Props> = ({
   setPost,
 }: Props) => {
   const { formatter } = useDateFormatter();
-
+  const navigate = useNavigate();
+  const [examsList, setExamList] = useState<Exam[]>([]);
+  const { fetchAll: loadExams } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
+  );
+  const getData = async () => {
+    const resp = await loadExams();
+    setExamList(resp);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <div className="flex flex-row m-auto justify-center mt-5 w-1/2 gap-x-4">
@@ -61,7 +78,22 @@ const PostCard: React.FC<Props> = ({
                 onClick={() => setDeleteButton(true)}
               >
                 Delete
-              </Button>
+              </Button>{" "}
+              {examsList.filter((exam) => exam.post === p.id).length === 0 ? (
+                <Button
+                  type="default"
+                  onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                >
+                  Create exam
+                </Button>
+              ) : (
+                <Button
+                  type="default"
+                  onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                >
+                  Show exam
+                </Button>
+              )}
             </Space>
           </Card>
         ))}

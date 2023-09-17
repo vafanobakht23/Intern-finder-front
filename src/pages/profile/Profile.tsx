@@ -200,10 +200,12 @@ const Profile = () => {
       const resp = await updateExperience(selectedExperienceId, formData);
       Notification.openSuccessNotification("Experience updated successfully");
       setExOpen(false);
+      setSelectedExperienceId(-1);
     } else if (selectedSkillId !== -1) {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
       setSelectedSkillId(-1);
+      setSelectedExperienceId(-1);
     } else if (selectedPostId !== -1 && isDeleteButton) {
       const resp = await remvoePost(selectedPostId);
       Notification.openSuccessNotification("Post deleted successfully");
