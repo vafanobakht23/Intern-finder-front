@@ -91,26 +91,12 @@ const Profile = () => {
   });
   const [postList, setPostList] = useState<Post[]>([]);
   const [selectedPostId, setSelectedPostId] = useState(-1);
-  const { update, response } = useCrudApi(
+  const { update: updateInformation } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${UPDATE_SELF_INFORMATION_API}`
   );
   const { fetchAll: loadExams } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
   );
-  const onOk = async () => {
-    setModalView(false);
-    const formData = new FormData();
-    formData.append("id", JSON.stringify(user.id));
-    formData.append("biography", model.biography);
-    formData.append("title", model.title);
-    formData.append("university", model.university);
-    formData.append("address", model.address);
-
-    const res = await update(user.id, formData);
-    Notification.openSuccessNotification("Information updated successfully");
-    if (res) dispatch(setUser(res));
-  };
-
   const { create } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${UPLOAD_PICTURE_API}`
   );
@@ -123,6 +109,40 @@ const Profile = () => {
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
+  const { create: createSkill } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_SKILL_API}`
+  );
+  const { update: updateExperience } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_EXPERIENCE_API}`
+  );
+  const { remove: removeSkill } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${REMOVE_SKILL_API}`
+  );
+  const { remove: remvoePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
+  );
+  const { update: updatePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_UPDATE_API}`
+  );
+  const { create: createExp } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXPERIENCE_API}`
+  );
+  const { create: createPost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
+  );
+  const onOk = async () => {
+    setModalView(false);
+    const formData = new FormData();
+    formData.append("id", JSON.stringify(user.id));
+    formData.append("biography", model.biography);
+    formData.append("title", model.title);
+    formData.append("university", model.university);
+    formData.append("address", model.address);
+
+    const res = await updateInformation(user.id, formData);
+    Notification.openSuccessNotification("Information updated successfully");
+    if (res) dispatch(setUser(res));
+  };
 
   const getData = async () => {
     const formData = new FormData();
@@ -149,27 +169,12 @@ const Profile = () => {
     formData.append("file", file);
     formData.append("filename", file.name);
     const response = await create(formData, true);
-    const res = await update(user.id, {
+    const res = await updateInformation(user.id, {
       id: user.id,
     });
     dispatch(setUser(res));
   };
 
-  const { create: createSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${CREATE_SKILL_API}`
-  );
-  const { update: updateExperience } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_EXPERIENCE_API}`
-  );
-  const { remove: removeSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${REMOVE_SKILL_API}`
-  );
-  const { remove: remvoePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
-  );
-  const { update: updatePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${POST_UPDATE_API}`
-  );
   const submit = async () => {
     const formData = new FormData();
     if (
@@ -222,12 +227,6 @@ const Profile = () => {
     }
   }, [selectedSkillId, selectedPostId]);
 
-  const { create: createExp } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXPERIENCE_API}`
-  );
-  const { create: createPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
-  );
   const submitPost = async () => {
     const formData = new FormData();
     formData.append("title", post.title);
@@ -245,11 +244,12 @@ const Profile = () => {
     getData();
     setPostModalOpen(false);
   };
-
+  const isModalOpen =
+    isModalView || isPostModalOpen || isSkillModalOpen || isExOpen;
   return (
     <div
       className={`overflow-y-auto h-screen ${
-        isModalView ? "opacity-40" : "opacity-100"
+        isModalOpen ? "opacity-40" : "opacity-100"
       }`}
     >
       <div className="mb-10">
@@ -279,7 +279,9 @@ const Profile = () => {
         <div className="flex flex-col mx-20">
           <div className="flex flex-row justify-between mt-4">
             <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
-            <p className="text-xl">{`${user.university} university`}</p>
+            {user.role === INTERN && (
+              <p className="text-xl">{`${user.university} university`}</p>
+            )}
           </div>
           <span className="text-sm mt-1">{user.title}</span>
           <span className="text-xs mt-1">{user.address}</span>
@@ -290,13 +292,27 @@ const Profile = () => {
         </div>
       </div>
       {user.role === COMPANY && (
-        <PostCard
-          postList={postList}
-          setSelectedPostId={setSelectedPostId}
-          setModalView={setPostModalOpen}
-          setDeleteButton={setDeleteButton}
-          setPost={setPost}
-        />
+        <div>
+          <div className="flex w-1/2 shadow-lg m-auto h-20">
+            <div className="flex flex-row justify-center m-auto gap-x-5 ">
+              <p className="mt-1">You can share the post</p>
+              <Button
+                onClick={(): void => setPostModalOpen(true)}
+                className="bg-green-400"
+              >
+                {" "}
+                Share post
+              </Button>
+            </div>
+          </div>
+          <PostCard
+            postList={postList}
+            setSelectedPostId={setSelectedPostId}
+            setModalView={setPostModalOpen}
+            setDeleteButton={setDeleteButton}
+            setPost={setPost}
+          />
+        </div>
       )}
 
       {user.role === COMPANY && (

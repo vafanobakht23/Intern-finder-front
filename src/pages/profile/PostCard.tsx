@@ -98,16 +98,6 @@ const PostCard: React.FC<Props> = ({
           </Card>
         ))}
       </div>
-      <div className="flex flex-row justify-around">
-        <p>You can share the post</p>
-        <Button
-          onClick={(): void => setModalView(true)}
-          className="text-purple-300"
-        >
-          {" "}
-          Share post
-        </Button>
-      </div>
     </>
   );
 };
