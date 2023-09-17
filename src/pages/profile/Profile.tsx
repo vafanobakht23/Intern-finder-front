@@ -18,7 +18,7 @@ import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
 import ExperienceModal from "./ExperienceModal";
-import { COMPANY, INTERN } from "../../constant/Constant";
+import { COMPANY, EMPTY_POST, INTERN } from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
 import PostCard from "./PostCard";
@@ -79,14 +79,7 @@ const Profile = () => {
   const [selectedSkillId, setSelectedSkillId] = useState(-1);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
   const [isDeleteButton, setDeleteButton] = useState(false);
-  const [post, setPost] = useState<Post>({
-    id: 0,
-    title: "",
-    category: "",
-    created_at: "",
-    description: "",
-    user_id: user.id,
-  });
+  const [post, setPost] = useState<Post>(EMPTY_POST);
   const [postList, setPostList] = useState<Post[]>([]);
   const [selectedPostId, setSelectedPostId] = useState(-1);
   const { update: updateInformation } = useCrudApi(
@@ -232,11 +225,18 @@ const Profile = () => {
     formData.append("description", post.description);
     formData.append("user_id", JSON.stringify(user.id));
     if (selectedPostId === -1) {
+      let isEmpty = false;
+      for (const [key, value] of formData.entries()) {
+        if (value === "") isEmpty = true;
+      }
+      if (isEmpty) Notification.openErrorNotification("Please fill all input");
+      else {
+      }
       const resp = await createPost(formData, true);
-      setPost(resp);
+      setPost(EMPTY_POST);
     } else {
       const resp = await updatePost(selectedPostId, formData);
-      setPost(resp);
+      setPost(EMPTY_POST);
       setSelectedPostId(-1);
     }
     getData();

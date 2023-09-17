@@ -80,7 +80,7 @@ const AddTextInput: React.FC = () => {
         <div className="w-full mx-4 mt-7 space-x-2 gap-y-4 flex flex-row-reverse">
           <Button
             className="bg-gray-300-400 hover:text-white mr-10 ml-2"
-            onClick={(): void => navigate(Pages.DASHBOARD)}
+            onClick={(): void => navigate(Pages.PROFILE)}
           >
             Cancel
           </Button>
