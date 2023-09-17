@@ -43,6 +43,7 @@ import {
   UPDATE_SELF_INFORMATION_API,
   UPLOAD_PICTURE_API,
 } from "../../api/url/urls";
+import { validateFormData } from "../../utils/validateFormData";
 import.meta.env.BASE_URL;
 
 const Profile = () => {
@@ -169,16 +170,27 @@ const Profile = () => {
         formData.append("user_id", JSON.stringify(user.id));
         formData.append("title", skill?.title);
         setSkillModalOpen(false);
-        const response = await createSkill(formData, true);
-        Notification.openSuccessNotification("Skill added successfully");
+        const isEmpty = validateFormData(formData);
+        if (isEmpty)
+          Notification.openErrorNotification("Please fill all input");
+        else {
+          const response = await createSkill(formData, true);
+          Notification.openSuccessNotification("Skill added successfully");
+        }
       } else {
         formData.append("user_id", JSON.stringify(user.id));
         formData.append("title", exp?.title);
         formData.append("company", exp?.company);
         formData.append("years", exp?.years);
         setExOpen(false);
-        const response = await createExp(formData, true);
-        Notification.openSuccessNotification("Experience added successfully");
+        const isEmpty = validateFormData(formData);
+        if (isEmpty)
+          Notification.openErrorNotification("Please fill all input");
+        else {
+          const response = await createExp(formData, true);
+          setExp(EMPTY_EXPERIENCE);
+          Notification.openSuccessNotification("Experience added successfully");
+        }
       }
     } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
       formData.append("user_id", JSON.stringify(user.id));
@@ -217,15 +229,12 @@ const Profile = () => {
     formData.append("description", post.description);
     formData.append("user_id", JSON.stringify(user.id));
     if (selectedPostId === -1) {
-      let isEmpty = false;
-      for (const [key, value] of formData.entries()) {
-        if (value === "") isEmpty = true;
-      }
+      const isEmpty = validateFormData(formData);
       if (isEmpty) Notification.openErrorNotification("Please fill all input");
       else {
+        const resp = await createPost(formData, true);
+        setPost(EMPTY_POST);
       }
-      const resp = await createPost(formData, true);
-      setPost(EMPTY_POST);
     } else {
       const resp = await updatePost(selectedPostId, formData);
       setPost(EMPTY_POST);
