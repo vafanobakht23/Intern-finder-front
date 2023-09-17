@@ -13,7 +13,7 @@ import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
 import Notification from "../../components/Notification";
-import { setExperience, setSkill, setUser } from "../../redux/actions";
+import { setExperience, setUser } from "../../redux/actions";
 import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
