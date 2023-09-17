@@ -41,8 +41,6 @@ import.meta.env.BASE_URL;
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  // const experience = useSelector((state: Store) => state.experience);
-  // const skills = useSelector((state: Store) => state.skill);
 
   const dispatch = useDispatch();
   const [model, setModel] = useState<User>({
