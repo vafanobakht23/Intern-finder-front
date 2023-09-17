@@ -18,7 +18,13 @@ import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
 import ExperienceModal from "./ExperienceModal";
-import { COMPANY, EMPTY_POST, INTERN } from "../../constant/Constant";
+import {
+  COMPANY,
+  EMPTY_EXPERIENCE,
+  EMPTY_POST,
+  EMPTY_SKILL,
+  INTERN,
+} from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
 import PostCard from "./PostCard";
@@ -41,7 +47,6 @@ import.meta.env.BASE_URL;
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-
   const dispatch = useDispatch();
   const [model, setModel] = useState<User>({
     id: user.id,
@@ -61,19 +66,8 @@ const Profile = () => {
   const [isExOpen, setExOpen] = useState(false);
   const [experienceList, setExperienceList] = useState<Experience[]>([]);
   const [skillList, setSkillList] = useState<Skill[]>([]);
-
-  const [exp, setExp] = useState<Experience>({
-    id: 0,
-    title: "",
-    company: "",
-    years: "0",
-    user_id: user.id,
-  });
-  const [skill, setSkil] = useState<Skill>({
-    id: 0,
-    title: "",
-    user_id: user.id,
-  });
+  const [exp, setExp] = useState<Experience>(EMPTY_EXPERIENCE);
+  const [skill, setSkill] = useState<Skill>(EMPTY_SKILL);
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
   const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
   const [selectedSkillId, setSelectedSkillId] = useState(-1);
@@ -129,7 +123,6 @@ const Profile = () => {
     formData.append("title", model.title);
     formData.append("university", model.university);
     formData.append("address", model.address);
-
     const res = await updateInformation(user.id, formData);
     Notification.openSuccessNotification("Information updated successfully");
     if (res) dispatch(setUser(res));
@@ -144,7 +137,6 @@ const Profile = () => {
       dispatch(setExperience(experienceResp));
       const skillResp = await loadSkill(formData, true);
       setSkillList(skillResp);
-      dispatch(setSkill(skillResp));
     } else {
       const postResp = await loadPost(formData, true);
       const res = await loadExams();
@@ -415,7 +407,7 @@ const Profile = () => {
             setModalView={setSkillModalOpen}
             onOk={submit}
             skill={skill}
-            setSkill={setSkil}
+            setSkill={setSkill}
             title="Add skill"
           />
           <ExperienceModal

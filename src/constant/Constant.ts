@@ -8,3 +8,15 @@ export const EMPTY_POST = {
   description: "",
   user_id: -1,
 };
+export const EMPTY_EXPERIENCE = {
+  id: -1,
+  title: "",
+  company: "",
+  years: "0",
+  user_id: -1,
+};
+export const EMPTY_SKILL = {
+  id: -1,
+  title: "",
+  user_id: -1,
+};
