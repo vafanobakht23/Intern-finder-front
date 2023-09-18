@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
@@ -7,7 +7,8 @@ import TextArea from "antd/es/input/TextArea";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../settings/Pages";
 import { useCrudApi } from "../../api/useLazyApi";
-import { CREATE_EXAM_API } from "../../api/url/urls";
+import { CREATE_EXAM_API, EXAM_LIST_API } from "../../api/url/urls";
+import { Exam } from "types/Exam";
 
 const AddTextInput: React.FC = () => {
   const [inputList, setInputList] = useState<string[]>([]); // Initialize as an empty array
@@ -17,6 +18,21 @@ const AddTextInput: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
+  const { fetchAll: loadExams } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
+  );
+  const getData = async () => {
+    const resp = await loadExams();
+    const l = JSON.parse(
+      resp.filter((e: Exam) => String(e.post) === id)[0].content
+    );
+    setInputList(l);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  console.log(inputList);
 
   const handleAddInput = () => {
     if (inputList.length < 10 && inputValue.trim() !== "") {
@@ -50,17 +66,18 @@ const AddTextInput: React.FC = () => {
       <Navbar selectedKey="" />
       <div className="m-auto w-1/2 h-screen overflow-scroll shadow-md">
         <p className="my-4 mx-2 font-bold">Add exam</p>
-        {inputList.map((input, index) => (
-          <div
-            key={index}
-            className="mb-2 flex items-center space-x-2 gap-y-4 mt-4 mx-4"
-          >
-            <TextArea value={input} disabled />
-            <Button onClick={() => handleRemoveInput(index)} type="dashed">
-              Remove
-            </Button>
-          </div>
-        ))}
+        {inputList &&
+          inputList.map((input, index) => (
+            <div
+              key={index}
+              className="mb-2 flex items-center space-x-2 gap-y-4 mt-4 mx-4"
+            >
+              <TextArea value={input} disabled />
+              <Button onClick={() => handleRemoveInput(index)} type="dashed">
+                Remove
+              </Button>
+            </div>
+          ))}
         <div className="flex items-center space-x-2 gap-y-4 mt-4 mx-4">
           <TextArea
             rows={2}
