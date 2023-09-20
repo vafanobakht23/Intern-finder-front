@@ -5,7 +5,7 @@ export const useNavigate = () => {
 
   const customNavigate = (
     routePath: string,
-    params: Record<string, string | number> = {}
+    params: Record<string, string | number | boolean> = {}
   ) => {
     let str = routePath;
     for (const key of Object.keys(params))
