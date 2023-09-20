@@ -80,12 +80,10 @@ const AddTextInput: React.FC = () => {
         const resp = await updateExam(examId, formData);
         Notification.openSuccessNotification("Exam updated successfully");
         setInputList(JSON.parse(resp.content));
-        navigate(Pages.PROFILE);
       } else {
         const resp = await createExam(formData, true);
         Notification.openSuccessNotification("Exam created successfully");
       }
-
       navigate(Pages.PROFILE);
     }
   };
