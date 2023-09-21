@@ -60,7 +60,8 @@ const PostCard: React.FC<Props> = ({
             </div>
             <Space className="mt-4">
               {user.role === COMPANY ? (
-                <div>
+                <>
+                  {" "}
                   <Button
                     type="primary"
                     icon={<EditOutlined />}
@@ -101,7 +102,7 @@ const PostCard: React.FC<Props> = ({
                       Show exam
                     </Button>
                   )}
-                </div>
+                </>
               ) : (
                 <div>
                   <Button type="default" className="bg-green-400">
