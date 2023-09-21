@@ -104,7 +104,7 @@ const Profile = () => {
   const { remove: removeSkill } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${REMOVE_SKILL_API}`
   );
-  const { remove: remvoePost } = useCrudApi(
+  const { remove: removePost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
   );
   const { update: updatePost } = useCrudApi(
@@ -207,7 +207,7 @@ const Profile = () => {
       setSelectedSkillId(-1);
       setSelectedExperienceId(-1);
     } else if (selectedPostId !== -1 && isDeleteButton) {
-      const resp = await remvoePost(selectedPostId);
+      const resp = await removePost(selectedPostId);
       Notification.openSuccessNotification("Post deleted successfully");
       setSelectedPostId(-1);
     }

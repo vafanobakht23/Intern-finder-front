@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import {
   ALL_POST_API,
   CREATE_POST_API,
+  POST_DELETE_API,
   POST_LIST_API,
   POST_UPDATE_API,
 } from "../../api/url/urls";
@@ -49,7 +50,43 @@ const Dashboard: React.FC = ({}) => {
   const { update: updatePost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_UPDATE_API}`
   );
+  const { remove: remvoePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
+  );
+  const removePostFunc = async (): Promise<void> => {
+    if (selectedPostId !== -1) {
+      const resp = await remvoePost(selectedPostId);
+      const allPost = await loadAllPosts();
+      setPostList(allPost);
+    }
+  };
+  useEffect(() => {
+    if (selectedPostId !== -1) removePostFunc();
+    setDeleteButton(false);
+    setSelectedPostId(-1);
+  }, [selectedPostId]);
 
+  const submitPost = async () => {
+    const formData = new FormData();
+    formData.append("title", post.title);
+    formData.append("category", post.category);
+    formData.append("description", post.description);
+    formData.append("user_id", JSON.stringify(user.id));
+    if (selectedPostId === -1) {
+      const isEmpty = validateFormData(formData);
+      if (isEmpty) Notification.openErrorNotification("Please fill all input");
+      else {
+        const resp = await createPost(formData, true);
+        setPost(EMPTY_POST);
+      }
+    } else {
+      const resp = await updatePost(selectedPostId, formData);
+      setPost(EMPTY_POST);
+      setSelectedPostId(-1);
+    }
+    getData();
+    setPostModalOpen(false);
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -66,6 +103,16 @@ const Dashboard: React.FC = ({}) => {
             setModalView={setPostModalOpen}
             setDeleteButton={setDeleteButton}
             setPost={setPost}
+          />
+          <PostModal
+            isModalView={isPostModalOpen}
+            post={post}
+            setPost={setPost}
+            title="Add post"
+            setModalView={setPostModalOpen}
+            onOk={submitPost}
+            selectedPostId={selectedPostId}
+            postList={postList}
           />
         </div>
       </div>

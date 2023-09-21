@@ -59,7 +59,7 @@ const PostCard: React.FC<Props> = ({
               <p>{`Created at: ${formatter(p.created_at)}`}</p>
             </div>
             <Space className="mt-4">
-              {user.role === COMPANY && (
+              {user.role === COMPANY ? (
                 <div>
                   <Button
                     type="primary"
@@ -101,6 +101,12 @@ const PostCard: React.FC<Props> = ({
                       Show exam
                     </Button>
                   )}
+                </div>
+              ) : (
+                <div>
+                  <Button type="default" className="bg-green-400">
+                    Apply
+                  </Button>
                 </div>
               )}
             </Space>
