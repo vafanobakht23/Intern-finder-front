@@ -8,6 +8,9 @@ import { useCrudApi } from "../../api/useLazyApi";
 import { EXAM_LIST_API } from "../../api/url/urls";
 import { useEffect, useState } from "react";
 import { Exam } from "types/Exam";
+import { useSelector } from "react-redux";
+import { Store } from "../../types/Store";
+import { COMPANY } from "../../constant/Constant";
 
 type Props = {
   postList: Post[];
@@ -25,6 +28,7 @@ const PostCard: React.FC<Props> = ({
   setPost,
 }: Props) => {
   const { formatter } = useDateFormatter();
+  const user = useSelector((state: Store) => state.user);
   const navigate = useNavigate();
   const [examsList, setExamList] = useState<Exam[]>([]);
   const { fetchAll: loadExams } = useCrudApi(
@@ -55,44 +59,49 @@ const PostCard: React.FC<Props> = ({
               <p>{`Created at: ${formatter(p.created_at)}`}</p>
             </div>
             <Space className="mt-4">
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={() => {
-                  setPost({
-                    id: p.id,
-                    category: p.category,
-                    created_at: p.created_at,
-                    description: p.description,
-                    title: p.title,
-                    user_id: p.user_id,
-                  });
-                  setModalView(true);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                type="default"
-                icon={<DeleteOutlined />}
-                onClick={() => setDeleteButton(true)}
-              >
-                Delete
-              </Button>{" "}
-              {examsList.filter((exam) => exam.post === p.id).length === 0 ? (
-                <Button
-                  type="default"
-                  onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
-                >
-                  Create exam
-                </Button>
-              ) : (
-                <Button
-                  type="default"
-                  onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
-                >
-                  Show exam
-                </Button>
+              {user.role === COMPANY && (
+                <div>
+                  <Button
+                    type="primary"
+                    icon={<EditOutlined />}
+                    onClick={() => {
+                      setPost({
+                        id: p.id,
+                        category: p.category,
+                        created_at: p.created_at,
+                        description: p.description,
+                        title: p.title,
+                        user_id: p.user_id,
+                      });
+                      setModalView(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    type="default"
+                    icon={<DeleteOutlined />}
+                    onClick={() => setDeleteButton(true)}
+                  >
+                    Delete
+                  </Button>{" "}
+                  {examsList.filter((exam) => exam.post === p.id).length ===
+                  0 ? (
+                    <Button
+                      type="default"
+                      onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                    >
+                      Create exam
+                    </Button>
+                  ) : (
+                    <Button
+                      type="default"
+                      onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                    >
+                      Show exam
+                    </Button>
+                  )}
+                </div>
               )}
             </Space>
           </Card>
