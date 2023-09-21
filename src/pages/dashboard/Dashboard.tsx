@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Store } from "../../types/Store";
 import { COMPANY } from "../../constant/Constant";
 import { useEffect, useState } from "react";
-import { POST_LIST_API } from "../../api/url/urls";
+import { ALL_POST_API, POST_LIST_API } from "../../api/url/urls";
 
 const Dashboard: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
@@ -16,12 +16,18 @@ const Dashboard: React.FC = ({}) => {
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
+  const { fetchAll: loadAllPosts } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}`
+  );
   const getData = async () => {
-    const formData = new FormData();
-    formData.append("user_id", JSON.stringify(user.id));
     if (user.role === COMPANY) {
+      const formData = new FormData();
+      formData.append("user_id", JSON.stringify(user.id));
       const postResp = await loadPost(formData, true);
       setPostList(postResp);
+    } else {
+      const resp = await loadAllPosts();
+      setPostList(resp);
     }
   };
   useEffect(() => {

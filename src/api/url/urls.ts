@@ -1,6 +1,7 @@
 // urls
 export const LOGOUT_API = "logout/logout/";
 export const POST_LIST_API = "api/post/post-list/";
+export const ALL_POST_API = "api/post/all-post/";
 export const UPDATE_SELF_INFORMATION_API = "update-biography/update-biography";
 export const UPLOAD_PICTURE_API = "upload/upload/";
 export const SKILL_LIST_API = "skill-list/skill-list/";
