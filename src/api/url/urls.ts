@@ -19,3 +19,4 @@ export const CREATE_EXAM_API = "api/exam/create-exam/";
 export const UPDATE_EXAM_API = "api/exam/exam-update";
 export const EXAM_LIST_API = "api/exam/exam-list/";
 export const EXAM_DELETE_API = "api/exam/exam-delete";
+export const APPLY_POST_API = "api/enrollment/create-enrollment/";

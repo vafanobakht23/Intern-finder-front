@@ -310,6 +310,7 @@ const Profile = () => {
             setModalView={setPostModalOpen}
             setDeleteButton={setDeleteButton}
             setPost={setPost}
+            post={post}
           />
         </div>
       )}

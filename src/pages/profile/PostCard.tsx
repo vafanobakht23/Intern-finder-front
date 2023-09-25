@@ -5,7 +5,7 @@ import { Post } from "types/Post";
 import useDateFormatter from "./hooks/useDateFormatter";
 import { useNavigate } from "../../utils/useNavigation";
 import { useCrudApi } from "../../api/useLazyApi";
-import { EXAM_LIST_API } from "../../api/url/urls";
+import { APPLY_POST_API, EXAM_LIST_API } from "../../api/url/urls";
 import { useEffect, useState } from "react";
 import { Exam } from "types/Exam";
 import { useSelector } from "react-redux";
@@ -18,6 +18,8 @@ type Props = {
   setModalView: (modalView: boolean) => void;
   setDeleteButton: (isDeleteButton: boolean) => void;
   setPost: (post: Post) => void;
+  post: Post;
+  applyHandler?: any;
 };
 
 const PostCard: React.FC<Props> = ({
@@ -26,6 +28,8 @@ const PostCard: React.FC<Props> = ({
   setModalView,
   setDeleteButton,
   setPost,
+  post,
+  applyHandler,
 }: Props) => {
   const { formatter } = useDateFormatter();
   const user = useSelector((state: Store) => state.user);
@@ -41,6 +45,7 @@ const PostCard: React.FC<Props> = ({
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <>
       <div className="flex flex-row m-auto justify-center mt-5 w-1/2 gap-x-4">
@@ -48,7 +53,7 @@ const PostCard: React.FC<Props> = ({
           <Card
             className="w-1/2" // Adjust the width as needed
             hoverable
-            onClick={() => setSelectedPostId(p.id)}
+            // onClick={() => setSelectedPostId(p.id)}
           >
             <div className="text-center">
               <h2 className="text-xl font-semibold">{p.title}</h2>
@@ -66,6 +71,7 @@ const PostCard: React.FC<Props> = ({
                     type="primary"
                     icon={<EditOutlined />}
                     onClick={() => {
+                      setSelectedPostId(p.id);
                       setPost({
                         id: p.id,
                         category: p.category,
@@ -82,7 +88,10 @@ const PostCard: React.FC<Props> = ({
                   <Button
                     type="default"
                     icon={<DeleteOutlined />}
-                    onClick={() => setDeleteButton(true)}
+                    onClick={() => {
+                      setDeleteButton(true);
+                      setSelectedPostId(p.id);
+                    }}
                   >
                     Delete
                   </Button>{" "}
@@ -105,7 +114,11 @@ const PostCard: React.FC<Props> = ({
                 </>
               ) : (
                 <div>
-                  <Button type="default" className="bg-green-400">
+                  <Button
+                    type="default"
+                    className="bg-green-400"
+                    onClick={(): void => applyHandler(p.id)}
+                  >
                     Apply
                   </Button>
                 </div>

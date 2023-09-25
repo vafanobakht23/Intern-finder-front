@@ -11,6 +11,7 @@ import { COMPANY, EMPTY_POST } from "../../constant/Constant";
 import { useEffect, useState } from "react";
 import {
   ALL_POST_API,
+  APPLY_POST_API,
   CREATE_POST_API,
   POST_DELETE_API,
   POST_LIST_API,
@@ -90,6 +91,17 @@ const Dashboard: React.FC = ({}) => {
   useEffect(() => {
     getData();
   }, []);
+  const { create: applyPost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${APPLY_POST_API}`
+  );
+  const applyHandler = async (id: number) => {
+    const formData = new FormData();
+    formData.append("post_id", String(id));
+    formData.append("user_id", String(user.id));
+    formData.append("status", "AP");
+    const resp = await applyPost(formData, true);
+    console.log(resp);
+  };
   const { formatter } = useDateFormatter();
   return (
     <>
@@ -103,6 +115,8 @@ const Dashboard: React.FC = ({}) => {
             setModalView={setPostModalOpen}
             setDeleteButton={setDeleteButton}
             setPost={setPost}
+            post={post}
+            applyHandler={applyHandler}
           />
           <PostModal
             isModalView={isPostModalOpen}
