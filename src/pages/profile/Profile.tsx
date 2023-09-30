@@ -269,7 +269,7 @@ const Profile = () => {
         <div className="flex flex-col">
           <img
             className="rounded-full h-44 w-44 mx-16"
-            src={"http://127.0.0.1:8000" + user.photo}
+            src={"http://127.0.0.1:8000" + model.photo}
           />
           <div className="flex flex-row justify-between mx-16">
             <Upload
