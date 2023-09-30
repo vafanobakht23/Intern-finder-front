@@ -154,11 +154,15 @@ const Dashboard: React.FC = ({}) => {
         {enrollments.length > 0 && (
           <div className="flex flex-col my-3 w-full h-auto shadow-lg">
             <p>Enrollments</p>
-            {enrollments.map((e) => (
-              <>
-                <p>{e.id}</p>
-              </>
-            ))}
+            <PostCard
+              enrollments={enrollments}
+              setSelectedPostId={setSelectedPostId}
+              setModalView={setPostModalOpen}
+              setDeleteButton={setDeleteButton}
+              setPost={setPost}
+              post={post}
+              applyHandler={applyHandler}
+            />
           </div>
         )}
       </div>
