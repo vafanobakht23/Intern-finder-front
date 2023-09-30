@@ -13,6 +13,7 @@ import {
   ALL_POST_API,
   APPLY_POST_API,
   CREATE_POST_API,
+  ENROLLMENTS_USER_API,
   POST_DELETE_API,
   POST_LIST_API,
   POST_UPDATE_API,
@@ -20,6 +21,7 @@ import {
 import PostCard from "../../pages/profile/PostCard";
 import PostModal from "../../pages/profile/PostModal";
 import { validateFormData } from "../../utils/validateFormData";
+import { Enrollment } from "../../types/Enrollment";
 
 const Dashboard: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
@@ -28,6 +30,7 @@ const Dashboard: React.FC = ({}) => {
   const [selectedPostId, setSelectedPostId] = useState(-1);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
   const [postList, setPostList] = useState<Post[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
@@ -88,12 +91,30 @@ const Dashboard: React.FC = ({}) => {
     getData();
     setPostModalOpen(false);
   };
+  // const { fetchAll: enrollmentUser } = useCrudApi(
+  //   `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENT_USER_API}?user_id=${
+  //     user.id
+  //   }`
+  // );
+  const { fetchAll: enrollmentUser } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENTS_USER_API}?user_id=${
+      user.id
+    }`
+  );
+  const loadEnrollment = async (): Promise<any> => {
+    // const formData = new FormData();
+    // formData.append("user_id", String(user.id));
+    const resp = await enrollmentUser();
+    setEnrollments(resp);
+  };
   useEffect(() => {
     getData();
+    loadEnrollment();
   }, []);
   const { create: applyPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${APPLY_POST_API}`
   );
+
   const applyHandler = async (id: number) => {
     const formData = new FormData();
     formData.append("post_id", String(id));
@@ -102,11 +123,12 @@ const Dashboard: React.FC = ({}) => {
     const resp = await applyPost(formData, true);
     console.log(resp);
   };
+
   const { formatter } = useDateFormatter();
   return (
     <>
       <Navbar selectedKey="1" />
-      <div className="flex flex-row mt-5 w-full gap-x-4">
+      <div className="flex flex-col mt-5 w-full gap-x-4">
         <div className="flex flex-col my-3 w-full h-auto shadow-lg">
           <p className="mx-4">Posts:</p>
           <PostCard
@@ -129,6 +151,16 @@ const Dashboard: React.FC = ({}) => {
             postList={postList}
           />
         </div>
+        {enrollments.length > 0 && (
+          <div className="flex flex-col my-3 w-full h-auto shadow-lg">
+            <p>Enrollments</p>
+            {enrollments.map((e) => (
+              <>
+                <p>{e.id}</p>
+              </>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Additional content can go here */}
