@@ -11,6 +11,7 @@ import { Exam } from "types/Exam";
 import { useSelector } from "react-redux";
 import { Store } from "../../types/Store";
 import { COMPANY } from "../../constant/Constant";
+import Notification from "../../components/Notification";
 
 type Props = {
   postList: Post[];
@@ -117,7 +118,12 @@ const PostCard: React.FC<Props> = ({
                   <Button
                     type="default"
                     className="bg-green-400"
-                    onClick={(): void => applyHandler(p.id)}
+                    onClick={(): void => {
+                      applyHandler(p.id);
+                      Notification.openSuccessNotification(
+                        "You applied for this post successfully"
+                      );
+                    }}
                   >
                     Apply
                   </Button>
