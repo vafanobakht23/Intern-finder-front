@@ -22,3 +22,5 @@ export const EXAM_DELETE_API = "api/exam/exam-delete";
 export const APPLY_POST_API = "api/enrollment/create-enrollment/";
 // export const ENROLLMENT_USER_API = "api/enrollment/user-enrollment/";
 export const ENROLLMENTS_USER_API = "api/enrollment/user-enrollment/";
+export const ENROLLMENTS_POST_API = "api/enrollment/post-user-enrollment/";
+export const USER_DETAIL_API = "user-detail/user-detail";

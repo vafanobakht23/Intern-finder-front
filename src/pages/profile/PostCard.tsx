@@ -100,6 +100,16 @@ const PostCard: React.FC<Props> = ({
                     >
                       Delete
                     </Button>{" "}
+                    <Button
+                      type="default"
+                      icon={<DeleteOutlined />}
+                      onClick={() => {
+                        setSelectedPostId(p.id);
+                        navigate(Pages.POST_ENROLLMENT, { id: p.id });
+                      }}
+                    >
+                      Enrollment's list
+                    </Button>{" "}
                     {examsList.filter((exam) => exam.post === p.id).length ===
                     0 ? (
                       <Button
@@ -212,7 +222,7 @@ const PostCard: React.FC<Props> = ({
                         );
                       }}
                     >
-                      Apply
+                      Waiting for exam
                     </Button>
                   </div>
                 )}

@@ -42,13 +42,17 @@ import {
   UPDATE_EXPERIENCE_API,
   UPDATE_SELF_INFORMATION_API,
   UPLOAD_PICTURE_API,
+  USER_DETAIL_API,
 } from "../../api/url/urls";
 import { validateFormData } from "../../utils/validateFormData";
+import { useParams } from "react-router-dom";
 import.meta.env.BASE_URL;
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
   const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [model, setModel] = useState<User>({
     id: user.id,
     firstname: user.firstname,
@@ -82,6 +86,9 @@ const Profile = () => {
   );
   const { fetchAll: loadExams } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
+  );
+  const { fetchAll: loadUser } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${USER_DETAIL_API}?user_id=${id}`
   );
   const { create } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${UPLOAD_PICTURE_API}`
@@ -131,8 +138,8 @@ const Profile = () => {
 
   const getData = async () => {
     const formData = new FormData();
-    formData.append("user_id", JSON.stringify(user.id));
-    if (user.role === INTERN) {
+    formData.append("user_id", JSON.stringify(id ? Number(id) : user.id));
+    if (model.role === INTERN) {
       const experienceResp = await loadExperiences(formData, true);
       setExperienceList(experienceResp);
       dispatch(setExperience(experienceResp));
@@ -142,11 +149,15 @@ const Profile = () => {
       const postResp = await loadPost(formData, true);
       const res = await loadExams();
       setPostList(postResp);
+      if (id) {
+        const res = await loadUser();
+        setModel(res);
+      }
     }
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [model]);
 
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
@@ -277,20 +288,20 @@ const Profile = () => {
         </div>
         <div className="flex flex-col mx-20">
           <div className="flex flex-row justify-between mt-4">
-            <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
-            {user.role === INTERN && (
-              <p className="text-xl">{`${user.university} university`}</p>
+            <p className="text-2xl">{`${model.firstname} ${model.lastname}`}</p>
+            {model.role === INTERN && (
+              <p className="text-xl">{`${model.university} university`}</p>
             )}
           </div>
-          <span className="text-sm mt-1">{user.title}</span>
-          <span className="text-xs mt-1">{user.address}</span>
+          <span className="text-sm mt-1">{model.title}</span>
+          <span className="text-xs mt-1">{model.address}</span>
         </div>
         <div className="mx-20 mt-6 mb-7">
           <h3 className="font-bold">About me</h3>
-          <p className="ml-1.5">{user.biography}</p>
+          <p className="ml-1.5">{model.biography}</p>
         </div>
       </div>
-      {user.role === COMPANY && (
+      {model.role === COMPANY && (
         <div>
           <div className="flex w-1/2 shadow-lg m-auto h-20">
             <div className="flex flex-row justify-center m-auto gap-x-5 ">
@@ -327,7 +338,7 @@ const Profile = () => {
           postList={postList}
         />
       )}
-      {user.role === INTERN && (
+      {model.role === INTERN && (
         <>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">

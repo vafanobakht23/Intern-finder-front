@@ -8,4 +8,5 @@ export type Enrollment = {
   post__created_at: string;
   post__description: string;
   post__title: string;
+  user__username: string;
 };
