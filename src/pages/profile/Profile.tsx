@@ -269,36 +269,44 @@ const Profile = () => {
         <div className="flex flex-col">
           <img
             className="rounded-full h-44 w-44 mx-16"
-            src={"http://127.0.0.1:8000" + model.photo}
+            src={"http://127.0.0.1:8000" + (id ? model.photo : user.photo)}
           />
-          <div className="flex flex-row justify-between mx-16">
-            <Upload
-              className="ml-4 mt-2"
-              name="file"
-              customRequest={({ file }) => handleFileUpload(file)}
-              showUploadList={false}
-            >
-              <Button icon={<UploadOutlined />}>Upload picture</Button>
-            </Upload>
-            <EditOutlined
-              onClick={(): void => setModalView(true)}
-              className="mt-2 ml-4 cursor-pointer text-xl"
-            />
-          </div>
+          {id === undefined && (
+            <div className="flex flex-row justify-between mx-16">
+              <Upload
+                className="ml-4 mt-2"
+                name="file"
+                customRequest={({ file }) => handleFileUpload(file)}
+                showUploadList={false}
+              >
+                <Button icon={<UploadOutlined />}>Upload picture</Button>
+              </Upload>
+              <EditOutlined
+                onClick={(): void => setModalView(true)}
+                className="mt-2 ml-4 cursor-pointer text-xl"
+              />
+            </div>
+          )}
         </div>
         <div className="flex flex-col mx-20">
           <div className="flex flex-row justify-between mt-4">
-            <p className="text-2xl">{`${model.firstname} ${model.lastname}`}</p>
+            <p className="text-2xl">{`${
+              id ? model.firstname : user.firstname
+            } ${id ? model.lastname : user.lastname}`}</p>
             {model.role === INTERN && (
-              <p className="text-xl">{`${model.university} university`}</p>
+              <p className="text-xl">{`${
+                id ? model.university : user.university
+              } university`}</p>
             )}
           </div>
-          <span className="text-sm mt-1">{model.title}</span>
-          <span className="text-xs mt-1">{model.address}</span>
+          <span className="text-sm mt-1">{id ? model.title : user.title}</span>
+          <span className="text-xs mt-1">
+            {id ? model.address : user.address}
+          </span>
         </div>
         <div className="mx-20 mt-6 mb-7">
           <h3 className="font-bold">About me</h3>
-          <p className="ml-1.5">{model.biography}</p>
+          <p className="ml-1.5">{id ? model.biography : user.biography}</p>
         </div>
       </div>
       {model.role === COMPANY && (
@@ -343,10 +351,12 @@ const Profile = () => {
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
               <span className="text-xl font-bold my-2 mx-7">Experiences</span>
-              <PlusOutlined
-                onClick={(): void => setExOpen(true)}
-                className="mx-4 cursor-pointer text-lg"
-              />
+              {id === undefined && (
+                <PlusOutlined
+                  onClick={(): void => setExOpen(true)}
+                  className="mx-4 cursor-pointer text-lg"
+                />
+              )}
             </div>
             <Row gutter={16}>
               {experienceList &&
@@ -356,20 +366,22 @@ const Profile = () => {
                       title={
                         <div className="flex flex-row justify-between">
                           <span>{ex.title}</span>
-                          <EditOutlined
-                            className="text-lg"
-                            onClick={(): void => {
-                              setExOpen(true);
-                              setSelectedExperienceId(ex.id);
-                              setExp({
-                                id: ex.id,
-                                title: ex.title,
-                                company: ex.company,
-                                years: ex.years,
-                                user_id: user.id,
-                              });
-                            }}
-                          />
+                          {id === undefined && (
+                            <EditOutlined
+                              className="text-lg"
+                              onClick={(): void => {
+                                setExOpen(true);
+                                setSelectedExperienceId(ex.id);
+                                setExp({
+                                  id: ex.id,
+                                  title: ex.title,
+                                  company: ex.company,
+                                  years: ex.years,
+                                  user_id: user.id,
+                                });
+                              }}
+                            />
+                          )}
                         </div>
                       }
                       bordered={false}
@@ -390,10 +402,12 @@ const Profile = () => {
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
               <span className="text-xl font-bold my-2 mx-7">Skills</span>
-              <PlusOutlined
-                onClick={(): void => setSkillModalOpen(true)}
-                className="mx-4 cursor-pointer text-lg"
-              />
+              {id === undefined && (
+                <PlusOutlined
+                  onClick={(): void => setSkillModalOpen(true)}
+                  className="mx-4 cursor-pointer text-lg"
+                />
+              )}
             </div>
             <div className="flex flex-wrap">
               {skillList &&
@@ -406,14 +420,16 @@ const Profile = () => {
                       <p className="text-lg mt-1">{`${index + 1}. ${
                         sk.title
                       }`}</p>
-                      <div className="flex flex-row justify-between">
-                        <DeleteOutlined
-                          onClick={(): void => {
-                            setSelectedSkillId(sk.id);
-                          }}
-                          className="ml-4 mt-1 cursor-pointer text-lg"
-                        />
-                      </div>
+                      {id === undefined && (
+                        <div className="flex flex-row justify-between">
+                          <DeleteOutlined
+                            onClick={(): void => {
+                              setSelectedSkillId(sk.id);
+                            }}
+                            className="ml-4 mt-1 cursor-pointer text-lg"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
