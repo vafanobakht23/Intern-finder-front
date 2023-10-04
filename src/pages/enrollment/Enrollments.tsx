@@ -11,7 +11,9 @@ import { useEffect, useState } from "react";
 import { Enrollment } from "../../types/Enrollment";
 import { Pages } from "../../settings/Pages";
 import { useNavigate } from "../../utils/useNavigation";
-import { Button } from "antd";
+import { Button, Table } from "antd";
+import Navbar from "../../components/Navbar";
+import { renderStatusFunc } from "./utills/renderStatus";
 
 const Enrollments: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
@@ -41,39 +43,78 @@ const Enrollments: React.FC = ({}) => {
     formData.append("user_id", String(userId));
     formData.append("post_id", String(Number(id)));
     formData.append("status", isAccepted ? " AC" : "R");
-
     const resp = await updateEnrollment(enrollmentId, formData);
+    setEnrollments((prevEnrollments) => {
+      const updatedRecords = prevEnrollments.map((record) =>
+        record.id === resp.id ? { ...record, status: resp.status } : record
+      );
+      return updatedRecords;
+    });
   };
+  console.log(enrollments);
 
   return (
     <div className="w-full h-auto flex flex-col">
-      {enrollments.map((e) => (
-        <div>
-          <Link
-            className="gap-4"
-            onClick={(): void =>
-              navigate(Pages.VIEW_PROFILE, { id: e.user_id })
-            }
-            to={""}
-          >
-            {e.user__username}
-          </Link>
-          <Button
-            onClick={(): Promise<any> =>
-              handleStatusIntern(e.id, e.user_id, true)
-            }
-          >
-            Accept
-          </Button>
-          <Button
-            onClick={(): Promise<any> =>
-              handleStatusIntern(e.id, e.user_id, false)
-            }
-          >
-            Reject
-          </Button>
-        </div>
-      ))}
+      <Navbar selectedKey="3" />
+      <Table
+        className="w-1/2 m-auto mt-10"
+        dataSource={enrollments}
+        columns={[
+          {
+            title: "Username",
+            key: "username",
+            render: function renderUsername(
+              value: Enrollment
+            ): React.ReactNode {
+              return (
+                <Link
+                  className="gap-4"
+                  onClick={(): void =>
+                    navigate(Pages.VIEW_PROFILE, { id: value.user_id })
+                  }
+                  to={""}
+                >
+                  {value.user__username}
+                </Link>
+              );
+            },
+          },
+          {
+            title: "Status",
+            dataIndex: "status",
+            key: "post",
+            render: function renderStatus(value): React.ReactNode {
+              return renderStatusFunc(value);
+            },
+          },
+          {
+            title: "Action",
+            key: "action",
+            render: (_, record) => (
+              <div>
+                {record.status === "AP" && (
+                  <div className="flex flex-row gap-4">
+                    <Button
+                      onClick={(): Promise<any> =>
+                        handleStatusIntern(record.id, record.user_id, true)
+                      }
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      onClick={(): Promise<any> =>
+                        handleStatusIntern(record.id, record.user_id, false)
+                      }
+                    >
+                      Reject
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 };
