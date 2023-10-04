@@ -134,7 +134,6 @@ const PostCard: React.FC<Props> = ({
                       type="default"
                       className="bg-green-400"
                       onClick={(): void => {
-                        applyHandler(p.id);
                         Notification.openSuccessNotification(
                           "You applied for this post successfully"
                         );
@@ -213,17 +212,15 @@ const PostCard: React.FC<Props> = ({
                   </>
                 ) : (
                   <div>
+                    {p.status === "AC"}
                     <Button
                       type="default"
                       className="bg-green-400"
                       onClick={(): void => {
-                        applyHandler(p.id);
-                        Notification.openSuccessNotification(
-                          "You applied for this post successfully"
-                        );
+                        navigate(Pages.TAKE_EXAM, { id: p.post__id });
                       }}
                     >
-                      Waiting for exam
+                      Enroll exam
                     </Button>
                   </div>
                 )}

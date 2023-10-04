@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import { useSelector } from "react-redux";
 import Exam from "../pages/exam/Exam";
 import Enrollments from "../pages/enrollment/Enrollments";
+import TakeExam from "../pages/exam/TakeExam";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
   {
     path: Pages.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    path: Pages.TAKE_EXAM,
+    element: <TakeExam />,
   },
   {
     path: Pages.MAKE_EXAM,

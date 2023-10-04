@@ -5,6 +5,7 @@ const DASHBOARD = "/dashboard";
 const MAKE_EXAM = "/post/:id/make-exam";
 const POST_ENROLLMENT = "/dashboard/post/:id/enrollments";
 const VIEW_PROFILE = "/view-profile/:id";
+const TAKE_EXAM = "/post/:id/exam";
 
 export const Pages = {
   LOGIN,
@@ -14,4 +15,5 @@ export const Pages = {
   MAKE_EXAM,
   POST_ENROLLMENT,
   VIEW_PROFILE,
+  TAKE_EXAM,
 };
