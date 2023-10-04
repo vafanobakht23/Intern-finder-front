@@ -51,11 +51,10 @@ const Enrollments: React.FC = ({}) => {
       return updatedRecords;
     });
   };
-  console.log(enrollments);
 
   return (
     <div className="w-full h-auto flex flex-col">
-      <Navbar selectedKey="3" />
+      <Navbar selectedKey="1" />
       <Table
         className="w-1/2 m-auto mt-10"
         dataSource={enrollments}
@@ -82,7 +81,7 @@ const Enrollments: React.FC = ({}) => {
           {
             title: "Status",
             dataIndex: "status",
-            key: "post",
+            key: "status",
             render: function renderStatus(value): React.ReactNode {
               return renderStatusFunc(value);
             },
@@ -110,6 +109,7 @@ const Enrollments: React.FC = ({}) => {
                     </Button>
                   </div>
                 )}
+                {record.status === "W" && <Button>Show result</Button>}
               </div>
             ),
           },
