@@ -102,8 +102,6 @@ const Dashboard: React.FC = ({}) => {
     }`
   );
   const loadEnrollment = async (): Promise<any> => {
-    // const formData = new FormData();
-    // formData.append("user_id", String(user.id));
     const resp = await enrollmentUser();
     setEnrollments(resp);
   };

@@ -23,4 +23,5 @@ export const APPLY_POST_API = "api/enrollment/create-enrollment/";
 // export const ENROLLMENT_USER_API = "api/enrollment/user-enrollment/";
 export const ENROLLMENTS_USER_API = "api/enrollment/user-enrollment/";
 export const ENROLLMENTS_POST_API = "api/enrollment/post-user-enrollment/";
+export const ENROLLMENTS_UPDATE_API = "api/enrollment/update-enrollment";
 export const USER_DETAIL_API = "user-detail/user-detail";
