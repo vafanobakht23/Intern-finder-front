@@ -18,6 +18,7 @@ export const REGISTER_API = "register/";
 export const CREATE_EXAM_API = "api/exam/create-exam/";
 export const UPDATE_EXAM_API = "api/exam/exam-update";
 export const EXAM_LIST_API = "api/exam/exam-list/";
+export const EXAM_DETAIL_API = "api/exam/exam-detail/";
 export const EXAM_DELETE_API = "api/exam/exam-delete";
 export const APPLY_POST_API = "api/enrollment/create-enrollment/";
 // export const ENROLLMENT_USER_API = "api/enrollment/user-enrollment/";

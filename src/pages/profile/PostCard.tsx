@@ -212,16 +212,24 @@ const PostCard: React.FC<Props> = ({
                   </>
                 ) : (
                   <div>
-                    {p.status === "AC"}
-                    <Button
-                      type="default"
-                      className="bg-green-400"
-                      onClick={(): void => {
-                        navigate(Pages.TAKE_EXAM, { id: p.post__id });
-                      }}
-                    >
-                      Enroll exam
-                    </Button>
+                    {p.status === "AC" && (
+                      <Button
+                        type="default"
+                        className="bg-green-400"
+                        onClick={(): void => {
+                          navigate(Pages.TAKE_EXAM, {
+                            id: p.post__id,
+                            enrollmentId: p.id,
+                            status: "AC",
+                          });
+                        }}
+                      >
+                        Enroll exam
+                      </Button>
+                    )}
+                    {p.status === "WF" && (
+                      <p className="">Waiting for result</p>
+                    )}
                   </div>
                 )}
               </Space>
