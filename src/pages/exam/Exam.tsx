@@ -24,7 +24,6 @@ const AddTextInput: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
-  console.log(examId);
 
   const [isUpdateMode, setUpdateMode] = useState(false);
   const { fetchAll: loadExams } = useCrudApi(
@@ -42,7 +41,6 @@ const AddTextInput: React.FC = () => {
       setUpdateMode(true);
     } else setUpdateMode(false);
   };
-  console.log(inputList);
 
   useEffect(() => {
     getData();

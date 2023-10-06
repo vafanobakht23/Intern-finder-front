@@ -49,7 +49,6 @@ const PostCard: React.FC<Props> = ({
   useEffect(() => {
     getData();
   }, []);
-  console.log(enrollments);
 
   return (
     <>

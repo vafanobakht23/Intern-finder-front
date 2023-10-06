@@ -119,7 +119,6 @@ const Dashboard: React.FC = ({}) => {
     formData.append("user_id", String(user.id));
     formData.append("status", "AP");
     const resp = await applyPost(formData, true);
-    console.log(resp);
   };
 
   const { formatter } = useDateFormatter();

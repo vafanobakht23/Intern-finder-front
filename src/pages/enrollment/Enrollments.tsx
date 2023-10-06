@@ -33,7 +33,7 @@ const Enrollments: React.FC = ({}) => {
   useEffect(() => {
     loadEnrollment();
   }, []);
-  console.log(enrollments);
+
   const handleStatusIntern = async (
     enrollmentId: number,
     userId: number,

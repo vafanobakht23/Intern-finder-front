@@ -44,30 +44,23 @@ const TakeExam: React.FC = () => {
     };
     getData();
   }, []);
-  console.log(answers);
 
-  // this id for post id
-  const { id, enrollmentId, status } = useParams();
+  const { id, enrollmentId } = useParams();
   const handleStatusIntern = async (
     enrollmentId: number,
     userId: number,
     isAccepted: boolean
   ): Promise<any> => {
     const formData = new FormData();
+    formData.append("user_id", String(userId));
+    formData.append("post_id", String(Number(id)));
     if (user.role === INTERN) {
-      formData.append("user_id", String(userId));
-      formData.append("post_id", String(Number(id)));
       formData.append("answers", JSON.stringify(answers));
       formData.append("status", "WF");
-    } else {
-      formData.append("user_id", String(userId));
-      formData.append("post_id", String(Number(id)));
-      formData.append("status", isAccepted ? "A" : "R");
-      navigate(Pages.DASHBOARD);
-    }
-    const resp = await updateEnrollment(enrollmentId, formData);
+    } else formData.append("status", isAccepted ? "A" : "R");
 
-    console.log(resp);
+    const resp = await updateEnrollment(enrollmentId, formData);
+    navigate(Pages.DASHBOARD);
   };
 
   const handleAnswerChange = (index: number, value: string) => {
