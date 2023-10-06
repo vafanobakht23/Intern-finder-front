@@ -94,9 +94,10 @@ const TakeExam: React.FC = () => {
       {user.role === INTERN ? (
         <Button
           className="w-1/2 m-auto rounded-md mt-5 bg-green-400"
-          onClick={() =>
-            handleStatusIntern(Number(enrollmentId!), user.id, true)
-          }
+          onClick={() => {
+            handleStatusIntern(Number(enrollmentId!), user.id, true);
+            Notification.openSuccessNotification("You submited succefully");
+          }}
         >
           {" "}
           Submit

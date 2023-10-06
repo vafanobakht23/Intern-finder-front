@@ -72,44 +72,45 @@ const PostCard: React.FC<Props> = ({
               <Space className="mt-4">
                 {user.role === COMPANY ? (
                   <>
-                    {" "}
-                    {/* <Button
-                      type="primary"
-                      icon={<EditOutlined />}
-                      onClick={() => {
-                        setSelectedPostId(p.id);
-                        setPost({
-                          id: p.id,
-                          category: p.category,
-                          created_at: p.created_at,
-                          description: p.description,
-                          title: p.title,
-                          user_id: p.user_id,
-                        });
-                        setModalView(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    {
+                      <>
+                        <Button
+                          icon={<EditOutlined />}
+                          onClick={() => {
+                            setSelectedPostId(p.id);
+                            setPost({
+                              id: p.id,
+                              category: p.category,
+                              created_at: p.created_at,
+                              description: p.description,
+                              title: p.title,
+                              user_id: p.user_id,
+                            });
+                            setModalView(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          type="default"
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            setDeleteButton(true);
+                            setSelectedPostId(p.id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    }
                     <Button
                       type="default"
-                      icon={<DeleteOutlined />}
-                      onClick={() => {
-                        setDeleteButton(true);
-                        setSelectedPostId(p.id);
-                      }}
-                    >
-                      Delete
-                    </Button>{" "} */}
-                    <Button
-                      type="default"
-                      icon={<DeleteOutlined />}
                       onClick={() => {
                         setSelectedPostId(p.id);
                         navigate(Pages.POST_ENROLLMENT, { id: p.id });
                       }}
                     >
-                      Enrollment's list
+                      Enrollments
                     </Button>{" "}
                     {examsList.filter((exam) => exam.post === p.id).length ===
                     0 ? (
