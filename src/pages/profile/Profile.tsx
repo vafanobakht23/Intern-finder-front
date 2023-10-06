@@ -344,6 +344,7 @@ const Profile = () => {
           onOk={submitPost}
           selectedPostId={selectedPostId}
           postList={postList}
+          setSelectedId={setSelectedPostId}
         />
       )}
       {model.role === INTERN && (
