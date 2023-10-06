@@ -129,7 +129,7 @@ const Profile = () => {
     formData.append("id", JSON.stringify(user.id));
     formData.append("biography", model.biography);
     formData.append("title", model.title);
-    formData.append("university", model.university);
+    user.role === INTERN && formData.append("university", model.university);
     formData.append("address", model.address);
     const res = await updateInformation(user.id, formData);
     Notification.openSuccessNotification("Information updated successfully");

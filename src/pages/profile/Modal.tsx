@@ -1,6 +1,7 @@
 import { Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { User } from "types/User";
+import { INTERN } from "../../constant/Constant";
+import { User } from "../../types/User";
 
 type Props = {
   isModalView: boolean;
@@ -35,7 +36,6 @@ const Popup: React.FC<Props> = ({
           className="mb-4"
           defaultValue={user.biography}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, biography: e.target.value });
           }}
         />
@@ -44,7 +44,6 @@ const Popup: React.FC<Props> = ({
           className="mb-4"
           defaultValue={user.title}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, title: e.target.value });
           }}
         />
@@ -53,18 +52,20 @@ const Popup: React.FC<Props> = ({
           className="mb-4"
           defaultValue={user.address}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, address: e.target.value });
           }}
         />
-        <h1 className="font-bold">University:</h1>
-        <Input
-          defaultValue={user.university}
-          onChange={(e): void => {
-            // should be changed
-            if (model) setModel({ ...model, university: e.target.value });
-          }}
-        />
+        {user.role === INTERN && (
+          <>
+            <h1 className="font-bold">University:</h1>
+            <Input
+              defaultValue={user.university}
+              onChange={(e): void => {
+                if (model) setModel({ ...model, university: e.target.value });
+              }}
+            />
+          </>
+        )}
       </div>
     </Modal>
   ) : null;
