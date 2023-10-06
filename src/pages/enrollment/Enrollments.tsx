@@ -109,7 +109,18 @@ const Enrollments: React.FC = ({}) => {
                     </Button>
                   </div>
                 )}
-                {record.status === "W" && <Button>Show result</Button>}
+                {record.status === "WF" && (
+                  <Button
+                    onClick={() => {
+                      navigate(Pages.TAKE_EXAM, {
+                        id: id!,
+                        enrollmentId: record.id,
+                      });
+                    }}
+                  >
+                    Show result
+                  </Button>
+                )}
               </div>
             ),
           },

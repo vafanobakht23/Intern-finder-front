@@ -5,7 +5,7 @@ const DASHBOARD = "/dashboard";
 const MAKE_EXAM = "/post/:id/make-exam";
 const POST_ENROLLMENT = "/dashboard/post/:id/enrollments";
 const VIEW_PROFILE = "/view-profile/:id";
-const TAKE_EXAM = "/post/:id/exam/:enrollmentId/status/:status";
+const TAKE_EXAM = "/post/:id/exam/:enrollmentId";
 
 export const Pages = {
   LOGIN,

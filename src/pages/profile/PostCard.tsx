@@ -73,7 +73,7 @@ const PostCard: React.FC<Props> = ({
                 {user.role === COMPANY ? (
                   <>
                     {" "}
-                    <Button
+                    {/* <Button
                       type="primary"
                       icon={<EditOutlined />}
                       onClick={() => {
@@ -100,7 +100,7 @@ const PostCard: React.FC<Props> = ({
                       }}
                     >
                       Delete
-                    </Button>{" "}
+                    </Button>{" "} */}
                     <Button
                       type="default"
                       icon={<DeleteOutlined />}
@@ -134,6 +134,7 @@ const PostCard: React.FC<Props> = ({
                       type="default"
                       className="bg-green-400"
                       onClick={(): void => {
+                        applyHandler(p.id);
                         Notification.openSuccessNotification(
                           "You applied for this post successfully"
                         );
@@ -149,7 +150,7 @@ const PostCard: React.FC<Props> = ({
         {enrollments &&
           enrollments.map((p) => (
             <Card
-              className="w-1/2" // Adjust the width as needed
+              className="w-auto" // Adjust the width as needed
               hoverable
               // onClick={() => setSelectedPostId(p.id)}
             >
