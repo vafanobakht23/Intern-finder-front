@@ -131,7 +131,7 @@ const Dashboard: React.FC = ({}) => {
   };
 
   return (
-    <>
+    <div className="overflow-y-auto h-screen">
       <Navbar selectedKey="1" />
       <div className="flex flex-col mt-5 w-full gap-x-4">
         <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
@@ -177,7 +177,7 @@ const Dashboard: React.FC = ({}) => {
           applyHandler={applyHandler}
         />
       </div>
-    </>
+    </div>
   );
 };
 export default Dashboard;
