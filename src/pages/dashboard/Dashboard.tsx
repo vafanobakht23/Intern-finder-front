@@ -1,4 +1,4 @@
-import { Button, Card, Space } from "antd";
+import { Button, Card, Input, Space } from "antd";
 import useDateFormatter from "../../pages/profile/hooks/useDateFormatter";
 import { Post } from "types/Post";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -17,11 +17,13 @@ import {
   POST_DELETE_API,
   POST_LIST_API,
   POST_UPDATE_API,
+  SEARCH_POST_API,
 } from "../../api/url/urls";
 import PostCard from "../../pages/profile/PostCard";
 import PostModal from "../../pages/profile/PostModal";
 import { validateFormData } from "../../utils/validateFormData";
 import { Enrollment } from "../../types/Enrollment";
+import List from "../../pages/enrollment/List";
 
 const Dashboard: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
@@ -31,6 +33,7 @@ const Dashboard: React.FC = ({}) => {
   const [isPostModalOpen, setPostModalOpen] = useState(false);
   const [postList, setPostList] = useState<Post[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
@@ -91,15 +94,16 @@ const Dashboard: React.FC = ({}) => {
     getData();
     setPostModalOpen(false);
   };
-  // const { fetchAll: enrollmentUser } = useCrudApi(
-  //   `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENT_USER_API}?user_id=${
-  //     user.id
-  //   }`
-  // );
+
   const { fetchAll: enrollmentUser } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENTS_USER_API}?user_id=${
       user.id
     }`
+  );
+  const { fetchAll: search } = useCrudApi(
+    `${
+      import.meta.env.VITE_REACT_APP_API
+    }${SEARCH_POST_API}?search=${searchValue}`
   );
   const loadEnrollment = async (): Promise<any> => {
     const resp = await enrollmentUser();
@@ -121,13 +125,27 @@ const Dashboard: React.FC = ({}) => {
     const resp = await applyPost(formData, true);
   };
 
-  const { formatter } = useDateFormatter();
+  const handleSearch = async () => {
+    const resp = await search();
+    setPostList(resp);
+  };
+
   return (
     <>
       <Navbar selectedKey="1" />
       <div className="flex flex-col mt-5 w-full gap-x-4">
         <div className="flex flex-col my-3 w-full h-auto shadow-lg">
           <p className="mx-4">Posts:</p>
+          <div className="w-1/2 m-auto flex flex-row">
+            <Input
+              className="px-3"
+              placeholder="Search an post"
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <Button className="h-10 mx-2" onClick={handleSearch}>
+              Search
+            </Button>
+          </div>
           <PostCard
             postList={postList}
             setSelectedPostId={setSelectedPostId}
@@ -146,9 +164,19 @@ const Dashboard: React.FC = ({}) => {
             onOk={submitPost}
             selectedPostId={selectedPostId}
             postList={postList}
+            setSelectedId={setSelectedPostId}
           />
         </div>
-        {enrollments.length > 0 && (
+        <List
+          enrollments={enrollments}
+          setSelectedPostId={setSelectedPostId}
+          setModalView={setPostModalOpen}
+          setDeleteButton={setDeleteButton}
+          setPost={setPost}
+          post={post}
+          applyHandler={applyHandler}
+        />
+        {/* {enrollments.length > 0 && (
           <div className="flex flex-col my-3 w-full h-auto shadow-lg">
             <p>Enrollments</p>
             <PostCard
@@ -161,10 +189,8 @@ const Dashboard: React.FC = ({}) => {
               applyHandler={applyHandler}
             />
           </div>
-        )}
+        )} */}
       </div>
-
-      {/* Additional content can go here */}
     </>
   );
 };

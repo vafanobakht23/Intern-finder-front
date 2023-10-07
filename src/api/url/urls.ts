@@ -26,3 +26,4 @@ export const ENROLLMENTS_POST_API = "api/enrollment/post-user-enrollment/";
 export const ENROLLMENTS_UPDATE_API = "api/enrollment/update-enrollment";
 export const ENROLLMENT_DETAIL_API = "api/enrollment/enrollment-detail/";
 export const USER_DETAIL_API = "user-detail/user-detail";
+export const SEARCH_POST_API = "api/post/post-search/";
