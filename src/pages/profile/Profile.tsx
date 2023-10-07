@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Skeleton, Upload } from "antd";
+import { Button, Card, Col, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -367,9 +367,7 @@ const Profile = () => {
                 />
               )}
             </div>
-            {experienceList.length === 0 ? (
-              <Skeleton />
-            ) : experienceList.length > 0 ? (
+            {experienceList.length > 0 ? (
               <Row gutter={16}>
                 {experienceList &&
                   experienceList.map((ex, index) => (
@@ -424,9 +422,7 @@ const Profile = () => {
                 />
               )}
             </div>
-            {skillList.length === 0 ? (
-              <Skeleton />
-            ) : skillList.length > 0 ? (
+            {skillList.length > 0 ? (
               <div className="flex flex-wrap">
                 {skillList &&
                   skillList?.map((sk, index) => (
