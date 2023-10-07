@@ -323,14 +323,16 @@ const Profile = () => {
               </Button>
             </div>
           </div>
-          <PostCard
-            postList={postList}
-            setSelectedPostId={setSelectedPostId}
-            setModalView={setPostModalOpen}
-            setDeleteButton={setDeleteButton}
-            setPost={setPost}
-            post={post}
-          />
+          <div className="m-auto w-1/2">
+            <PostCard
+              postList={postList}
+              setSelectedPostId={setSelectedPostId}
+              setModalView={setPostModalOpen}
+              setDeleteButton={setDeleteButton}
+              setPost={setPost}
+              post={post}
+            />
+          </div>
         </div>
       )}
 

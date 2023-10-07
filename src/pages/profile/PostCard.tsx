@@ -74,7 +74,8 @@ const PostCard: React.FC<Props> = ({
                     {
                       <>
                         <Button
-                          icon={<EditOutlined />}
+                          className="flex"
+                          icon={<EditOutlined className="flex mt-1" />}
                           onClick={() => {
                             setSelectedPostId(p.id);
                             setPost({
@@ -91,8 +92,9 @@ const PostCard: React.FC<Props> = ({
                           Edit
                         </Button>
                         <Button
+                          className="flex"
                           type="default"
-                          icon={<DeleteOutlined />}
+                          icon={<DeleteOutlined className="flex mt-1" />}
                           onClick={() => {
                             setDeleteButton(true);
                             setSelectedPostId(p.id);
