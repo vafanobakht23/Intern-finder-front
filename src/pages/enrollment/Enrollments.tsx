@@ -17,6 +17,7 @@ import { renderStatusFunc } from "./utills/renderStatus";
 
 const Enrollments: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
+  const noPagination = false;
   const { id } = useParams();
   const navigate = useNavigate();
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
@@ -56,6 +57,7 @@ const Enrollments: React.FC = ({}) => {
     <div className="w-full h-auto flex flex-col">
       <Navbar selectedKey="1" />
       <Table
+        pagination={noPagination}
         className="w-1/2 m-auto mt-10"
         dataSource={enrollments}
         columns={[
@@ -67,7 +69,7 @@ const Enrollments: React.FC = ({}) => {
             ): React.ReactNode {
               return (
                 <Link
-                  className="gap-4"
+                  className="gap-4 text-blue-600"
                   onClick={(): void =>
                     navigate(Pages.VIEW_PROFILE, { id: value.user_id })
                   }
@@ -120,6 +122,9 @@ const Enrollments: React.FC = ({}) => {
                   >
                     Show result
                   </Button>
+                )}
+                {record.status !== "WF" && record.status !== "AP" && (
+                  <span>—</span>
                 )}
               </div>
             ),

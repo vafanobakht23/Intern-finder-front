@@ -281,7 +281,7 @@ const Profile = () => {
                 showUploadList={false}
               >
                 <Button
-                  className="flex"
+                  className="flex mt-2"
                   icon={<UploadOutlined className="flex mt-1" />}
                 >
                   Upload picture
@@ -289,7 +289,7 @@ const Profile = () => {
               </Upload>
               <EditOutlined
                 onClick={(): void => setModalView(true)}
-                className="mt-2 ml-4 cursor-pointer text-xl"
+                className="mt-5 ml-4 cursor-pointer text-xl"
               />
             </div>
           )}

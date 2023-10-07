@@ -78,6 +78,7 @@ const TakeExam: React.FC = () => {
             {question.includes("?") ? question : `${question}?`}
           </p>
           <TextArea
+            disabled={user.role === COMPANY}
             className="rounded-xl"
             value={answers[index]}
             onChange={(e) => handleAnswerChange(index, e.target.value)} // Handle input changes

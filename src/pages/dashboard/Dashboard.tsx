@@ -139,7 +139,7 @@ const Dashboard: React.FC = ({}) => {
           <p className="mx-4">Posts:</p>
           <div className="w-1/2 m-auto flex flex-row mb-4">
             <Input
-              className="px-3"
+              className="px-3 rounded-md"
               placeholder="Search an post"
               onChange={(e) => setSearchValue(e.target.value)}
             />
