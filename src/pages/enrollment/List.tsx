@@ -1,3 +1,4 @@
+import NoData from "../../components/Nodata";
 import PostCard from "../../pages/profile/PostCard";
 import { Enrollment } from "../../types/Enrollment";
 import { Post } from "../../types/Post";
@@ -23,7 +24,7 @@ const List: React.FC<Props> = ({
 }: Props) => {
   return (
     <div>
-      {enrollments && enrollments.length > 0 && (
+      {enrollments && enrollments.length > 0 ? (
         <div className="flex flex-col my-3 h-auto shadow-lg w-1/2 m-auto">
           <p className="mx-4">Enrollments: </p>
           <PostCard
@@ -35,6 +36,12 @@ const List: React.FC<Props> = ({
             post={post}
             applyHandler={applyHandler}
           />
+        </div>
+      ) : (
+        <div className="flex flex-col my-3 h-auto shadow-lg w-1/2 m-auto">
+          <p className="mx-4 mt-2">Enrollments: </p>
+
+          <NoData />
         </div>
       )}
     </div>

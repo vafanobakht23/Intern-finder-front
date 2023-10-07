@@ -46,6 +46,7 @@ import {
 } from "../../api/url/urls";
 import { validateFormData } from "../../utils/validateFormData";
 import { useParams } from "react-router-dom";
+import NoData from "../../components/Nodata";
 import.meta.env.BASE_URL;
 
 const Profile = () => {
@@ -279,7 +280,12 @@ const Profile = () => {
                 customRequest={({ file }) => handleFileUpload(file)}
                 showUploadList={false}
               >
-                <Button icon={<UploadOutlined />}>Upload picture</Button>
+                <Button
+                  className="flex"
+                  icon={<UploadOutlined className="flex mt-1" />}
+                >
+                  Upload picture
+                </Button>
               </Upload>
               <EditOutlined
                 onClick={(): void => setModalView(true)}
@@ -361,46 +367,50 @@ const Profile = () => {
                 />
               )}
             </div>
-            <Row gutter={16}>
-              {experienceList &&
-                experienceList.map((ex, index) => (
-                  <Col span={12} key={index}>
-                    <Card
-                      title={
-                        <div className="flex flex-row justify-between">
-                          <span>{ex.title}</span>
-                          {id === undefined && (
-                            <EditOutlined
-                              className="text-lg"
-                              onClick={(): void => {
-                                setExOpen(true);
-                                setSelectedExperienceId(ex.id);
-                                setExp({
-                                  id: ex.id,
-                                  title: ex.title,
-                                  company: ex.company,
-                                  years: ex.years,
-                                  user_id: user.id,
-                                });
-                              }}
-                            />
-                          )}
+            {experienceList.length > 0 ? (
+              <Row gutter={16}>
+                {experienceList &&
+                  experienceList.map((ex, index) => (
+                    <Col span={12} key={index}>
+                      <Card
+                        title={
+                          <div className="flex flex-row justify-between">
+                            <span>{ex.title}</span>
+                            {id === undefined && (
+                              <EditOutlined
+                                className="text-lg"
+                                onClick={(): void => {
+                                  setExOpen(true);
+                                  setSelectedExperienceId(ex.id);
+                                  setExp({
+                                    id: ex.id,
+                                    title: ex.title,
+                                    company: ex.company,
+                                    years: ex.years,
+                                    user_id: user.id,
+                                  });
+                                }}
+                              />
+                            )}
+                          </div>
+                        }
+                        bordered={false}
+                        className="shadow-md mx-7 my-5"
+                        style={{ borderColor: "#d9d9d9" }}
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-base">{ex.company}</span>
+                          <div className="flex flex-row justify-between">
+                            <span className="mt-1 text-xs">{`${ex.years} years`}</span>
+                          </div>
                         </div>
-                      }
-                      bordered={false}
-                      className="shadow-md mx-7 my-2"
-                      style={{ borderColor: "#d9d9d9" }}
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-base">{ex.company}</span>
-                        <div className="flex flex-row justify-between">
-                          <span className="mt-1 text-xs">{`${ex.years} years`}</span>
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                ))}
-            </Row>
+                      </Card>
+                    </Col>
+                  ))}
+              </Row>
+            ) : (
+              <NoData />
+            )}
           </div>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
@@ -412,31 +422,35 @@ const Profile = () => {
                 />
               )}
             </div>
-            <div className="flex flex-wrap">
-              {skillList &&
-                skillList?.map((sk, index) => (
-                  <div
-                    key={sk.id}
-                    className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
-                  >
-                    <div className="flex flex-row justify-between">
-                      <p className="text-lg mt-1">{`${index + 1}. ${
-                        sk.title
-                      }`}</p>
-                      {id === undefined && (
-                        <div className="flex flex-row justify-between">
-                          <DeleteOutlined
-                            onClick={(): void => {
-                              setSelectedSkillId(sk.id);
-                            }}
-                            className="ml-4 mt-1 cursor-pointer text-lg"
-                          />
-                        </div>
-                      )}
+            {skillList.length > 0 ? (
+              <div className="flex flex-wrap">
+                {skillList &&
+                  skillList?.map((sk, index) => (
+                    <div
+                      key={sk.id}
+                      className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
+                    >
+                      <div className="flex flex-row justify-between">
+                        <p className="text-lg mt-1">{`${index + 1}. ${
+                          sk.title
+                        }`}</p>
+                        {id === undefined && (
+                          <div className="flex flex-row justify-between">
+                            <DeleteOutlined
+                              onClick={(): void => {
+                                setSelectedSkillId(sk.id);
+                              }}
+                              className="ml-4 mt-1 cursor-pointer text-lg"
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-            </div>
+                  ))}
+              </div>
+            ) : (
+              <NoData />
+            )}
           </div>
         </>
       )}

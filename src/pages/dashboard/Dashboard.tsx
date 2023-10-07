@@ -7,7 +7,7 @@ import { useCrudApi } from "../../api/useLazyApi";
 import Notification from "../../components/Notification";
 import { useSelector } from "react-redux";
 import { Store } from "../../types/Store";
-import { COMPANY, EMPTY_POST } from "../../constant/Constant";
+import { COMPANY, EMPTY_POST, INTERN } from "../../constant/Constant";
 import { useEffect, useState } from "react";
 import {
   ALL_POST_API,
@@ -24,6 +24,7 @@ import PostModal from "../../pages/profile/PostModal";
 import { validateFormData } from "../../utils/validateFormData";
 import { Enrollment } from "../../types/Enrollment";
 import List from "../../pages/enrollment/List";
+import NoData from "../../components/Nodata";
 
 const Dashboard: React.FC = ({}) => {
   const user = useSelector((state: Store) => state.user);
@@ -136,18 +137,49 @@ const Dashboard: React.FC = ({}) => {
       <div className="flex flex-col mt-5 w-full gap-x-4">
         <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
           <p className="mx-4">Posts:</p>
-          <div className="w-1/2 m-auto flex flex-row">
+          <div className="w-1/2 m-auto flex flex-row mb-4">
             <Input
               className="px-3"
               placeholder="Search an post"
               onChange={(e) => setSearchValue(e.target.value)}
             />
-            <Button className="h-10 mx-2" onClick={handleSearch}>
+            <Button
+              className="h-10 mx-2 bg-blue-600 font-medium"
+              onClick={handleSearch}
+            >
               Search
             </Button>
           </div>
-          <PostCard
-            postList={postList}
+          {postList.length > 0 ? (
+            <>
+              <PostCard
+                postList={postList}
+                setSelectedPostId={setSelectedPostId}
+                setModalView={setPostModalOpen}
+                setDeleteButton={setDeleteButton}
+                setPost={setPost}
+                post={post}
+                applyHandler={applyHandler}
+              />
+              <PostModal
+                isModalView={isPostModalOpen}
+                post={post}
+                setPost={setPost}
+                title="Add post"
+                setModalView={setPostModalOpen}
+                onOk={submitPost}
+                selectedPostId={selectedPostId}
+                postList={postList}
+                setSelectedId={setSelectedPostId}
+              />
+            </>
+          ) : (
+            <NoData />
+          )}
+        </div>
+        {user.role === INTERN && (
+          <List
+            enrollments={enrollments}
             setSelectedPostId={setSelectedPostId}
             setModalView={setPostModalOpen}
             setDeleteButton={setDeleteButton}
@@ -155,27 +187,7 @@ const Dashboard: React.FC = ({}) => {
             post={post}
             applyHandler={applyHandler}
           />
-          <PostModal
-            isModalView={isPostModalOpen}
-            post={post}
-            setPost={setPost}
-            title="Add post"
-            setModalView={setPostModalOpen}
-            onOk={submitPost}
-            selectedPostId={selectedPostId}
-            postList={postList}
-            setSelectedId={setSelectedPostId}
-          />
-        </div>
-        <List
-          enrollments={enrollments}
-          setSelectedPostId={setSelectedPostId}
-          setModalView={setPostModalOpen}
-          setDeleteButton={setDeleteButton}
-          setPost={setPost}
-          post={post}
-          applyHandler={applyHandler}
-        />
+        )}
       </div>
     </div>
   );
