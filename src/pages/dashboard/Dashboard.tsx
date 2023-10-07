@@ -134,7 +134,7 @@ const Dashboard: React.FC = ({}) => {
     <>
       <Navbar selectedKey="1" />
       <div className="flex flex-col mt-5 w-full gap-x-4">
-        <div className="flex flex-col my-3 w-full h-auto shadow-lg">
+        <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
           <p className="mx-4">Posts:</p>
           <div className="w-1/2 m-auto flex flex-row">
             <Input
@@ -176,20 +176,6 @@ const Dashboard: React.FC = ({}) => {
           post={post}
           applyHandler={applyHandler}
         />
-        {/* {enrollments.length > 0 && (
-          <div className="flex flex-col my-3 w-full h-auto shadow-lg">
-            <p>Enrollments</p>
-            <PostCard
-              enrollments={enrollments}
-              setSelectedPostId={setSelectedPostId}
-              setModalView={setPostModalOpen}
-              setDeleteButton={setDeleteButton}
-              setPost={setPost}
-              post={post}
-              applyHandler={applyHandler}
-            />
-          </div>
-        )} */}
       </div>
     </>
   );

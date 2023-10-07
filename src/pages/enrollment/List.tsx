@@ -24,8 +24,8 @@ const List: React.FC<Props> = ({
   return (
     <div>
       {enrollments && enrollments.length > 0 && (
-        <div className="flex flex-col my-3 w-full h-auto shadow-lg">
-          <p>Enrollments</p>
+        <div className="flex flex-col my-3 h-auto shadow-lg w-1/2 m-auto">
+          <p className="mx-4">Enrollments: </p>
           <PostCard
             enrollments={enrollments}
             setSelectedPostId={setSelectedPostId}
