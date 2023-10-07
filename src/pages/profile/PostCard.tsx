@@ -5,7 +5,7 @@ import { Post } from "types/Post";
 import useDateFormatter from "./hooks/useDateFormatter";
 import { useNavigate } from "../../utils/useNavigation";
 import { useCrudApi } from "../../api/useLazyApi";
-import { APPLY_POST_API, EXAM_LIST_API } from "../../api/url/urls";
+import { EXAM_LIST_API } from "../../api/url/urls";
 import { useEffect, useState } from "react";
 import { Exam } from "types/Exam";
 import { useSelector } from "react-redux";

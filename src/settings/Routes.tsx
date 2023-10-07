@@ -4,7 +4,6 @@ import { createBrowserRouter } from "react-router-dom";
 import { Pages } from "./Pages";
 import Profile from "../pages/profile/Profile";
 import Dashboard from "../pages/dashboard/Dashboard";
-import { useSelector } from "react-redux";
 import Exam from "../pages/exam/Exam";
 import Enrollments from "../pages/enrollment/Enrollments";
 import TakeExam from "../pages/exam/TakeExam";

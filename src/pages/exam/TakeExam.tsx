@@ -1,13 +1,13 @@
 import { useCrudApi } from "../../api/useLazyApi";
 import React, { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   ENROLLMENTS_UPDATE_API,
   ENROLLMENT_DETAIL_API,
   EXAM_DETAIL_API,
 } from "../../api/url/urls";
 import Notification from "../../components/Notification";
-import { Button, Input } from "antd";
+import { Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useSelector } from "react-redux";
 import { Store } from "types/Store";

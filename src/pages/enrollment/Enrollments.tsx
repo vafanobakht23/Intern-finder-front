@@ -1,5 +1,4 @@
 import { useCrudApi } from "../../api/useLazyApi";
-import Notification from "../../components/Notification";
 import { useSelector } from "react-redux";
 import { Store } from "../../types/Store";
 import { Link, useParams } from "react-router-dom";
@@ -16,7 +15,6 @@ import Navbar from "../../components/Navbar";
 import { renderStatusFunc } from "./utills/renderStatus";
 
 const Enrollments: React.FC = ({}) => {
-  const user = useSelector((state: Store) => state.user);
   const noPagination = false;
   const { id } = useParams();
   const navigate = useNavigate();

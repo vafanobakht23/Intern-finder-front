@@ -1,7 +1,5 @@
-import { Button, Card, Input, Space } from "antd";
-import useDateFormatter from "../../pages/profile/hooks/useDateFormatter";
+import { Button, Input } from "antd";
 import { Post } from "types/Post";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
 import { useCrudApi } from "../../api/useLazyApi";
 import Notification from "../../components/Notification";
