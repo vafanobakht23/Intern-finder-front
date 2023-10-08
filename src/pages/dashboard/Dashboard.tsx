@@ -122,6 +122,7 @@ const Dashboard: React.FC = ({}) => {
     formData.append("user_id", String(user.id));
     formData.append("status", "AP");
     const resp = await applyPost(formData, true);
+    loadEnrollment();
   };
 
   const handleSearch = async () => {

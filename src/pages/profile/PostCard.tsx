@@ -56,10 +56,10 @@ const PostCard: React.FC<Props> = ({
 
   return (
     <>
-      <div className="flex flex-col gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
+      <div className="flex flex-col w-2/3 gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
         {postList &&
           postList.map((p) => (
-            <Card className="w-full" hoverable>
+            <Card className="" hoverable>
               <div className="text-center">
                 <h2 className="text-xl font-semibold">{p.title}</h2>
                 <p className="text-gray-500">{p.category}</p>
@@ -70,7 +70,7 @@ const PostCard: React.FC<Props> = ({
               </div>
               <Space className="mt-4">
                 {user.role === COMPANY ? (
-                  <>
+                  <div className="m-auto justify-center flex mt-2">
                     {
                       <>
                         <Button
@@ -129,9 +129,9 @@ const PostCard: React.FC<Props> = ({
                         Show exam
                       </Button>
                     )}
-                  </>
+                  </div>
                 ) : (
-                  <div>
+                  <div className="m-auto justify-center flex mt-2">
                     <Button
                       type="default"
                       className="bg-green-400"
@@ -149,7 +149,7 @@ const PostCard: React.FC<Props> = ({
               </Space>
             </Card>
           ))}
-        <div className="flex flex-col gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
+        <div className="flex flex-col w-full gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
           {enrollments &&
             enrollments.map((p) => (
               <Card
