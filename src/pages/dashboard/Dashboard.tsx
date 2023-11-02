@@ -50,6 +50,8 @@ const Dashboard: React.FC = ({}) => {
       setPostList(resp);
     }
   };
+  console.log(selectedPostId);
+
   const { create: createPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
   );
@@ -60,14 +62,14 @@ const Dashboard: React.FC = ({}) => {
     `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
   );
   const removePostFunc = async (): Promise<void> => {
-    if (selectedPostId !== -1) {
+    if (selectedPostId !== -1 && isDeleteButton) {
       const resp = await remvoePost(selectedPostId);
       const allPost = await loadAllPosts();
       setPostList(allPost);
     }
   };
   useEffect(() => {
-    if (selectedPostId !== -1) removePostFunc();
+    if (selectedPostId !== -1 && isDeleteButton) removePostFunc();
     setDeleteButton(false);
     setSelectedPostId(-1);
   }, [selectedPostId]);
@@ -108,6 +110,7 @@ const Dashboard: React.FC = ({}) => {
     const resp = await enrollmentUser();
     setEnrollments(resp);
   };
+
   useEffect(() => {
     getData();
     loadEnrollment();
@@ -123,22 +126,23 @@ const Dashboard: React.FC = ({}) => {
     formData.append("status", "AP");
     const resp = await applyPost(formData, true);
     loadEnrollment();
+    setSelectedPostId(-1);
   };
 
   const handleSearch = async () => {
     const resp = await search();
     setPostList(resp);
+    setSearchValue("");
   };
-
   return (
     <div className="overflow-y-auto h-screen">
       <Navbar selectedKey="1" />
       <div className="flex flex-col mt-5 w-full gap-x-4">
         <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
-          <p className="mx-4">Posts:</p>
+          <p className="mx-4 p-5 text-xl">Posts:</p>
           <div className="w-1/2 m-auto flex flex-row mb-4">
             <Input
-              className="px-3 rounded-md"
+              className="px-3 rounded-lg"
               placeholder="Search an post"
               onChange={(e) => setSearchValue(e.target.value)}
             />

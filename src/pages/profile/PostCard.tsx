@@ -42,6 +42,7 @@ const PostCard: React.FC<Props> = ({
   const { formatter } = useDateFormatter();
   const user = useSelector((state: Store) => state.user);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [examsList, setExamList] = useState<Exam[]>([]);
   const { fetchAll: loadExams } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
@@ -70,7 +71,7 @@ const PostCard: React.FC<Props> = ({
               </div>
               <Space className="mt-4">
                 {user.role === COMPANY ? (
-                  <div className="m-auto justify-center flex mt-2">
+                  <div className="m-auto justify-center flex gap-x-3 mt-2">
                     {
                       <>
                         <Button
@@ -93,11 +94,17 @@ const PostCard: React.FC<Props> = ({
                         </Button>
                         <Button
                           className="flex"
+                          loading={loading}
                           type="default"
                           icon={<DeleteOutlined className="flex mt-1" />}
                           onClick={() => {
+                            setLoading(true);
                             setDeleteButton(true);
                             setSelectedPostId(p.id);
+                            setTimeout(() => {
+                              // After some process completes, reset loading state to false
+                              setLoading(false);
+                            }, 2000); //
                           }}
                         >
                           Delete
@@ -131,20 +138,23 @@ const PostCard: React.FC<Props> = ({
                     )}
                   </div>
                 ) : (
-                  <div className="m-auto justify-center flex mt-2">
-                    <Button
-                      type="default"
-                      className="bg-green-400"
-                      onClick={(): void => {
-                        applyHandler(p.id);
-                        Notification.openSuccessNotification(
-                          "You applied for this post successfully"
-                        );
-                      }}
-                    >
-                      Apply
-                    </Button>
-                  </div>
+                  <Button
+                    className="bg-green-400 w-full"
+                    loading={loading}
+                    onClick={(): void => {
+                      setLoading(true);
+                      applyHandler(p.id);
+                      Notification.openSuccessNotification(
+                        "You applied for this post successfully"
+                      );
+                      setTimeout(() => {
+                        // After some process completes, reset loading state to false
+                        setLoading(false);
+                      }, 2000); //
+                    }}
+                  >
+                    Apply
+                  </Button>
                 )}
               </Space>
             </Card>
