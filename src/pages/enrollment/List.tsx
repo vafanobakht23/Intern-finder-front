@@ -39,7 +39,7 @@ const List: React.FC<Props> = ({
         </div>
       ) : (
         <div className="flex flex-col my-3 h-auto shadow-lg w-1/2 m-auto">
-          <p className="mx-4 mt-2">Enrollments: </p>
+          <p className="mx-4 mt-2 text-xl">Enrollments: </p>
 
           <NoData />
         </div>

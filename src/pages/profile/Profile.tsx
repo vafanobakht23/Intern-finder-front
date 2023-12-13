@@ -272,7 +272,7 @@ const Profile = () => {
       <div className="w-1/2 m-auto shadow-lg flex flex-col">
         <div className="flex flex-col">
           <img
-            className="rounded-full h-44 w-44 mx-16"
+            className="rounded-full h-44 w-44 mx-16 object-cover"
             src={"http://127.0.0.1:8000" + (id ? model.photo : user.photo)}
           />
           {id === undefined && (
