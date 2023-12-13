@@ -129,10 +129,12 @@ const Profile = () => {
     setModalView(false);
     const formData = new FormData();
     formData.append("id", JSON.stringify(user.id));
-    formData.append("biography", model.biography);
-    formData.append("title", model.title);
-    user.role === INTERN && formData.append("university", model.university);
-    formData.append("address", model.address);
+    model.biography && formData.append("biography", model.biography);
+    model.title && formData.append("title", model.title);
+    user.role === INTERN &&
+      model.university &&
+      formData.append("university", model.university);
+    model.address && formData.append("address", model.address);
     const res = await updateInformation(user.id, formData);
     Notification.openSuccessNotification("Information updated successfully");
     if (res) dispatch(setUser(res));
@@ -297,24 +299,36 @@ const Profile = () => {
         </div>
         <div className="flex flex-col mx-20">
           <div className="flex flex-row justify-between mt-4">
-            <p className="text-2xl">{`${
-              id ? model.firstname : user.firstname
-            } ${id ? model.lastname : user.lastname}`}</p>
-            {model.role === INTERN && (
+            <p
+              className={`${
+                !model.biography && !user.biography && "mb-10"
+              } text-2xl`}
+            >{`${id ? model.firstname : user.firstname} ${
+              id ? model.lastname : user.lastname
+            }`}</p>
+            {model.role === INTERN && model.university && user.university && (
               <p className="text-xl">{`${
                 id ? model.university : user.university
               } university`}</p>
             )}
           </div>
-          <span className="text-sm mt-1">{id ? model.title : user.title}</span>
-          <span className="text-xs mt-1">
-            {id ? model.address : user.address}
-          </span>
+          {model.title && user.title && (
+            <span className="text-sm mt-1">
+              {id ? model.title : user.title}
+            </span>
+          )}
+          {model.address && user.address && (
+            <span className="text-xs mt-1">
+              {id ? model.address : user.address}
+            </span>
+          )}
         </div>
-        <div className="mx-20 mt-6 mb-7">
-          <h3 className="font-bold">About me</h3>
-          <p className="ml-1.5">{id ? model.biography : user.biography}</p>
-        </div>
+        {model.biography && user.biography && (
+          <div className="mx-20 mt-6 mb-7">
+            <h3 className="font-bold">About me</h3>
+            <p className="ml-1.5">{id ? model.biography : user.biography}</p>
+          </div>
+        )}
       </div>
       {model.role === COMPANY && (
         <div>
