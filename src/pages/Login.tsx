@@ -61,8 +61,7 @@ const Login = () => {
           </Form.Item>
           <Form.Item className="mt-3" name="password">
             <Button
-              style={{ backgroundColor: "#385FE1" }}
-              className="bg-blue-500 w-full focus:bg-black text-base"
+              className="bg-green-500 w-full focus:bg-black text-base"
               htmlType="submit"
             >
               Login
