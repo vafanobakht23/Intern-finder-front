@@ -29,7 +29,6 @@ const Register = () => {
     form.resetFields();
   };
   const role = useWatch("role", form);
-  const password = useWatch("password", form);
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
