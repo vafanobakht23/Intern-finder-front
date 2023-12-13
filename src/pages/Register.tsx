@@ -29,8 +29,7 @@ const Register = () => {
     form.resetFields();
   };
   const role = useWatch("role", form);
-  console.log(role);
-
+  const password = useWatch("password", form);
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
@@ -77,7 +76,16 @@ const Register = () => {
           <Form.Item
             className="my-2"
             name="password"
-            rules={setRules("Please enter password")}
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password",
+              },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long",
+              },
+            ]}
           >
             <Input
               placeholder="Password"
