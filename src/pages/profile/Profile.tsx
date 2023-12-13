@@ -129,12 +129,10 @@ const Profile = () => {
     setModalView(false);
     const formData = new FormData();
     formData.append("id", JSON.stringify(user.id));
-    model.biography && formData.append("biography", model.biography);
-    model.title && formData.append("title", model.title);
-    user.role === INTERN &&
-      model.university &&
-      formData.append("university", model.university);
-    model.address && formData.append("address", model.address);
+    formData.append("biography", model.biography);
+    formData.append("title", model.title);
+    user.role === INTERN && formData.append("university", model.university);
+    formData.append("address", model.address);
     const res = await updateInformation(user.id, formData);
     Notification.openSuccessNotification("Information updated successfully");
     if (res) dispatch(setUser(res));
