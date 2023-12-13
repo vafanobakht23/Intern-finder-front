@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Upload } from "antd";
+import { Avatar, Button, Card, Col, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -6,6 +6,7 @@ import {
   UploadOutlined,
   EditOutlined,
   DeleteOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
@@ -284,7 +285,7 @@ const Profile = () => {
                   className="flex mt-2"
                   icon={<UploadOutlined className="flex mt-1" />}
                 >
-                  Upload picture
+                  {user.photo ? `Change picture` : `Upload picture`}
                 </Button>
               </Upload>
               <EditOutlined
