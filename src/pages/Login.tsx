@@ -5,11 +5,12 @@ import { setToken, setUser } from "../redux/actions/index";
 import { useDispatch } from "react-redux";
 import { Pages } from "../settings/Pages";
 import { useCrudApi } from "../api/useLazyApi";
+import { LOGIN_API } from "../api/url/urls";
 import.meta.env.BASE_URL;
 
 const Login = () => {
   const { response, create } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}login/login/`
+    `${import.meta.env.VITE_REACT_APP_API}${LOGIN_API}`
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,7 +60,10 @@ const Login = () => {
             />
           </Form.Item>
           <Form.Item className="mt-3" name="password">
-            <Button className="bg-green-400 w-full" htmlType="submit">
+            <Button
+              className="bg-green-500 w-full focus:bg-black text-base"
+              htmlType="submit"
+            >
               Login
             </Button>
           </Form.Item>

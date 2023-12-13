@@ -1,6 +1,7 @@
 import { Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { Post } from "types/Post";
+import { EMPTY_POST } from "../../constant/Constant";
+import { Post } from "../../types/Post";
 
 type Props = {
   isModalView: boolean;
@@ -11,6 +12,7 @@ type Props = {
   title: string;
   selectedPostId: number;
   postList: Post[];
+  setSelectedId: (id: number) => void;
 };
 
 const PostModal: React.FC<Props> = ({
@@ -22,12 +24,17 @@ const PostModal: React.FC<Props> = ({
   title,
   selectedPostId,
   postList,
+  setSelectedId,
 }: Props) => {
   return isModalView ? (
     <Modal
       title={title}
       open={isModalView}
-      onCancel={(): void => setModalView(false)}
+      onCancel={(): void => {
+        setSelectedId(-1);
+        setModalView(false);
+        setPost(EMPTY_POST);
+      }}
       onOk={onOk}
       okText="Save"
     >

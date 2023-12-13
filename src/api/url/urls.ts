@@ -1,1 +1,29 @@
-// test
+// urls
+export const LOGOUT_API = "logout/logout/";
+export const POST_LIST_API = "api/post/post-list/";
+export const ALL_POST_API = "api/post/all-post/";
+export const UPDATE_SELF_INFORMATION_API = "update-biography/update-biography";
+export const UPLOAD_PICTURE_API = "upload/upload/";
+export const SKILL_LIST_API = "skill-list/skill-list/";
+export const EXPERIENCE_LIST_API = "experience-list/experience-list/";
+export const CREATE_SKILL_API = "skill/skill/";
+export const UPDATE_EXPERIENCE_API = "experiences/experiences";
+export const REMOVE_SKILL_API = "skill/skill";
+export const POST_DELETE_API = "api/post/post-delete";
+export const POST_UPDATE_API = "api/post/post-update";
+export const CREATE_EXPERIENCE_API = "experiences/experiences/";
+export const CREATE_POST_API = "api/post/create-post/";
+export const LOGIN_API = "login/login/";
+export const REGISTER_API = "register/";
+export const CREATE_EXAM_API = "api/exam/create-exam/";
+export const UPDATE_EXAM_API = "api/exam/exam-update";
+export const EXAM_LIST_API = "api/exam/exam-list/";
+export const EXAM_DETAIL_API = "api/exam/exam-detail/";
+export const EXAM_DELETE_API = "api/exam/exam-delete";
+export const APPLY_POST_API = "api/enrollment/create-enrollment/";
+export const ENROLLMENTS_USER_API = "api/enrollment/user-enrollment/";
+export const ENROLLMENTS_POST_API = "api/enrollment/post-user-enrollment/";
+export const ENROLLMENTS_UPDATE_API = "api/enrollment/update-enrollment";
+export const ENROLLMENT_DETAIL_API = "api/enrollment/enrollment-detail/";
+export const USER_DETAIL_API = "user-detail/user-detail";
+export const SEARCH_POST_API = "api/post/post-search/";

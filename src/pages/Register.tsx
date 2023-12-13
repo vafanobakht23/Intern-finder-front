@@ -4,6 +4,9 @@ import Notification from "../components/Notification";
 import { Link, useNavigate } from "react-router-dom";
 import { Pages } from "../settings/Pages";
 import setRules from "../utils/setRules";
+import { INTERN } from "../constant/Constant";
+import { REGISTER_API } from "../api/url/urls";
+import { useWatch } from "antd/es/form/Form";
 import.meta.env.BASE_URL;
 
 const Register = () => {
@@ -14,7 +17,7 @@ const Register = () => {
     { value: "Company", label: "Company" },
   ];
   const { load, data, status } = useApi(
-    `${import.meta.env.VITE_REACT_APP_API}register/`,
+    `${import.meta.env.VITE_REACT_APP_API}${REGISTER_API}`,
     "POST"
   );
 
@@ -25,7 +28,7 @@ const Register = () => {
     navigate(Pages.LOGIN);
     form.resetFields();
   };
-
+  const role = useWatch("role", form);
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
@@ -72,34 +75,21 @@ const Register = () => {
           <Form.Item
             className="my-2"
             name="password"
-            rules={setRules("Please enter password")}
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password",
+              },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long",
+              },
+            ]}
           >
             <Input
               placeholder="Password"
               id="password"
               type="password"
-              className="border-green-500 rounded-md"
-            />
-          </Form.Item>
-          <Form.Item
-            className="my-2 w-full"
-            name="university"
-            rules={setRules("Please enter university")}
-          >
-            <Input
-              placeholder="University"
-              id="university"
-              className="border-green-500 rounded-md"
-            />
-          </Form.Item>
-          <Form.Item
-            className="my-2 w-full"
-            name="address"
-            rules={setRules("Please enter address")}
-          >
-            <Input
-              placeholder="Address"
-              id="address"
               className="border-green-500 rounded-md"
             />
           </Form.Item>
@@ -119,6 +109,31 @@ const Register = () => {
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+          {role === INTERN && (
+            <Form.Item
+              className="my-2 w-full"
+              name="university"
+              rules={setRules("Please enter university")}
+            >
+              <Input
+                placeholder="University"
+                id="university"
+                className="border-green-500 rounded-md"
+              />
+            </Form.Item>
+          )}
+
+          <Form.Item
+            className="my-2 w-full"
+            name="address"
+            rules={setRules("Please enter address")}
+          >
+            <Input
+              placeholder="Address"
+              id="address"
+              className="border-green-500 rounded-md"
+            />
           </Form.Item>
           <Form.Item
             className="my-1 flex gap-x-2"

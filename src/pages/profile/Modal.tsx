@@ -1,6 +1,7 @@
 import { Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { User } from "types/User";
+import { INTERN } from "../../constant/Constant";
+import { User } from "../../types/User";
 
 type Props = {
   isModalView: boolean;
@@ -30,41 +31,42 @@ const Popup: React.FC<Props> = ({
       okText="Save"
     >
       <div className="flex flex-col my-3">
-        <h1 className="font-bold">Biography:</h1>
+        <h1 className="font-bold mb-1">Biography</h1>
         <TextArea
-          className="mb-4"
+          className="mb-4 rounded-lg"
           defaultValue={user.biography}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, biography: e.target.value });
           }}
         />
-        <h1 className="font-bold">Role:</h1>
+        <h1 className="font-bold mb-1">Role</h1>
         <Input
-          className="mb-4"
+          className="mb-4 rounded-lg"
           defaultValue={user.title}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, title: e.target.value });
           }}
         />
-        <h1 className="font-bold">Address:</h1>
+        <h1 className="font-bold mb-1">Address</h1>
         <Input
-          className="mb-4"
+          className="mb-4 rounded-lg"
           defaultValue={user.address}
           onChange={(e): void => {
-            // should be changed
             if (model) setModel({ ...model, address: e.target.value });
           }}
         />
-        <h1 className="font-bold">University:</h1>
-        <Input
-          defaultValue={user.university}
-          onChange={(e): void => {
-            // should be changed
-            if (model) setModel({ ...model, university: e.target.value });
-          }}
-        />
+        {user.role === INTERN && (
+          <>
+            <h1 className="font-bold mb-1">University</h1>
+            <Input
+              className="rounded-lg"
+              defaultValue={user.university}
+              onChange={(e): void => {
+                if (model) setModel({ ...model, university: e.target.value });
+              }}
+            />
+          </>
+        )}
       </div>
     </Modal>
   ) : null;

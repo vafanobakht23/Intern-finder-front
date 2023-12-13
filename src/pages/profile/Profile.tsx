@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Upload } from "antd";
+import { Avatar, Button, Card, Col, Row, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -6,6 +6,7 @@ import {
   UploadOutlined,
   EditOutlined,
   DeleteOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,23 +14,47 @@ import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
 import Popup from "./Modal";
 import Notification from "../../components/Notification";
-import { setExperience, setSkill, setUser } from "../../redux/actions";
+import { setExperience, setUser } from "../../redux/actions";
 import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 import SkillModal from "./SkillModal";
 import ExperienceModal from "./ExperienceModal";
-import { COMPANY, INTERN } from "../../constant/Constant";
+import {
+  COMPANY,
+  EMPTY_EXPERIENCE,
+  EMPTY_POST,
+  EMPTY_SKILL,
+  INTERN,
+} from "../../constant/Constant";
 import { Post } from "types/Post";
 import PostModal from "./PostModal";
 import PostCard from "./PostCard";
+import {
+  CREATE_EXPERIENCE_API,
+  CREATE_POST_API,
+  CREATE_SKILL_API,
+  EXAM_LIST_API,
+  EXPERIENCE_LIST_API,
+  POST_DELETE_API,
+  POST_LIST_API,
+  POST_UPDATE_API,
+  REMOVE_SKILL_API,
+  SKILL_LIST_API,
+  UPDATE_EXPERIENCE_API,
+  UPDATE_SELF_INFORMATION_API,
+  UPLOAD_PICTURE_API,
+  USER_DETAIL_API,
+} from "../../api/url/urls";
+import { validateFormData } from "../../utils/validateFormData";
+import { useParams } from "react-router-dom";
+import NoData from "../../components/Nodata";
 import.meta.env.BASE_URL;
 
 const Profile = () => {
   const user = useSelector((state: Store) => state.user);
-  // const experience = useSelector((state: Store) => state.experience);
-  // const skills = useSelector((state: Store) => state.skill);
-
   const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [model, setModel] = useState<User>({
     id: user.id,
     firstname: user.firstname,
@@ -48,36 +73,57 @@ const Profile = () => {
   const [isExOpen, setExOpen] = useState(false);
   const [experienceList, setExperienceList] = useState<Experience[]>([]);
   const [skillList, setSkillList] = useState<Skill[]>([]);
-
-  const [exp, setExp] = useState<Experience>({
-    id: 0,
-    title: "",
-    company: "",
-    years: "0",
-    user_id: user.id,
-  });
-  const [skill, setSkil] = useState<Skill>({
-    id: 0,
-    title: "",
-    user_id: user.id,
-  });
+  const [exp, setExp] = useState<Experience>(EMPTY_EXPERIENCE);
+  const [skill, setSkill] = useState<Skill>(EMPTY_SKILL);
   const [isSkillModalOpen, setSkillModalOpen] = useState(false);
   const [selectedExperienceId, setSelectedExperienceId] = useState(-1);
   const [selectedSkillId, setSelectedSkillId] = useState(-1);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
   const [isDeleteButton, setDeleteButton] = useState(false);
-  const [post, setPost] = useState<Post>({
-    id: 0,
-    title: "",
-    category: "",
-    created_at: "",
-    description: "",
-    user_id: user.id,
-  });
+  const [post, setPost] = useState<Post>(EMPTY_POST);
   const [postList, setPostList] = useState<Post[]>([]);
   const [selectedPostId, setSelectedPostId] = useState(-1);
-  const { update, response } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}update-biography/update-biography`
+  const { update: updateInformation } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_SELF_INFORMATION_API}`
+  );
+  const { fetchAll: loadExams } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${EXAM_LIST_API}`
+  );
+  const { fetchAll: loadUser } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${USER_DETAIL_API}?user_id=${id}`
+  );
+  const { create } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${UPLOAD_PICTURE_API}`
+  );
+  const { create: loadSkill } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${SKILL_LIST_API}`
+  );
+  const { create: loadExperiences } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${EXPERIENCE_LIST_API}`
+  );
+  const { create: loadPost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
+  );
+  const { create: createSkill } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_SKILL_API}`
+  );
+  const { update: updateExperience } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${UPDATE_EXPERIENCE_API}`
+  );
+  const { remove: removeSkill } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${REMOVE_SKILL_API}`
+  );
+  const { remove: removePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_DELETE_API}`
+  );
+  const { update: updatePost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${POST_UPDATE_API}`
+  );
+  const { create: createExp } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_EXPERIENCE_API}`
+  );
+  const { create: createPost } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
   );
   const onOk = async () => {
     setModalView(false);
@@ -85,73 +131,47 @@ const Profile = () => {
     formData.append("id", JSON.stringify(user.id));
     formData.append("biography", model.biography);
     formData.append("title", model.title);
-    formData.append("university", model.university);
+    user.role === INTERN && formData.append("university", model.university);
     formData.append("address", model.address);
-
-    const res = await update(user.id, formData);
+    const res = await updateInformation(user.id, formData);
     Notification.openSuccessNotification("Information updated successfully");
     if (res) dispatch(setUser(res));
   };
 
-  const { create } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}upload/upload/`
-  );
-  const { create: loadSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill-list/skill-list/`
-  );
-  const { create: loadExperiences } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experience-list/experience-list/`
-  );
-  const { create: loadPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-list/`
-  );
-  console.log(selectedPostId);
-
   const getData = async () => {
     const formData = new FormData();
-    formData.append("user_id", JSON.stringify(user.id));
-    if (user.role === INTERN) {
+    formData.append("user_id", JSON.stringify(id ? Number(id) : user.id));
+    if (model.role === INTERN) {
       const experienceResp = await loadExperiences(formData, true);
       setExperienceList(experienceResp);
       dispatch(setExperience(experienceResp));
       const skillResp = await loadSkill(formData, true);
       setSkillList(skillResp);
-      dispatch(setSkill(skillResp));
     } else {
       const postResp = await loadPost(formData, true);
+      const res = await loadExams();
       setPostList(postResp);
+      if (id) {
+        const res = await loadUser();
+        setModel(res);
+      }
     }
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [model]);
 
   const handleFileUpload = async (file: any) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", file.name);
     const response = await create(formData, true);
-    const res = await update(user.id, {
+    const res = await updateInformation(user.id, {
       id: user.id,
     });
     dispatch(setUser(res));
   };
 
-  const { create: createSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill/skill/`
-  );
-  const { update: updateExperience } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences`
-  );
-  const { remove: removeSkill } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}skill/skill`
-  );
-  const { remove: remvoePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-delete`
-  );
-  const { update: updatePost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/post-update`
-  );
   const submit = async () => {
     const formData = new FormData();
     if (
@@ -163,16 +183,27 @@ const Profile = () => {
         formData.append("user_id", JSON.stringify(user.id));
         formData.append("title", skill?.title);
         setSkillModalOpen(false);
-        const response = await createSkill(formData, true);
-        Notification.openSuccessNotification("Skill added successfully");
+        const isEmpty = validateFormData(formData);
+        if (isEmpty)
+          Notification.openErrorNotification("Please fill all input");
+        else {
+          const response = await createSkill(formData, true);
+          Notification.openSuccessNotification("Skill added successfully");
+        }
       } else {
         formData.append("user_id", JSON.stringify(user.id));
         formData.append("title", exp?.title);
         formData.append("company", exp?.company);
         formData.append("years", exp?.years);
         setExOpen(false);
-        const response = await createExp(formData, true);
-        Notification.openSuccessNotification("Experience added successfully");
+        const isEmpty = validateFormData(formData);
+        if (isEmpty)
+          Notification.openErrorNotification("Please fill all input");
+        else {
+          const response = await createExp(formData, true);
+          setExp(EMPTY_EXPERIENCE);
+          Notification.openSuccessNotification("Experience added successfully");
+        }
       }
     } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
       formData.append("user_id", JSON.stringify(user.id));
@@ -182,18 +213,19 @@ const Profile = () => {
       const resp = await updateExperience(selectedExperienceId, formData);
       Notification.openSuccessNotification("Experience updated successfully");
       setExOpen(false);
+      setSelectedExperienceId(-1);
     } else if (selectedSkillId !== -1) {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
       setSelectedSkillId(-1);
+      setSelectedExperienceId(-1);
     } else if (selectedPostId !== -1 && isDeleteButton) {
-      const resp = await remvoePost(selectedPostId);
+      const resp = await removePost(selectedPostId);
       Notification.openSuccessNotification("Post deleted successfully");
       setSelectedPostId(-1);
     }
     getData();
   };
-  console.log(post);
 
   useEffect(() => {
     if (selectedSkillId !== -1) submit();
@@ -203,12 +235,6 @@ const Profile = () => {
     }
   }, [selectedSkillId, selectedPostId]);
 
-  const { create: createExp } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}experiences/experiences/`
-  );
-  const { create: createPost } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}api/post/create-post/`
-  );
   const submitPost = async () => {
     const formData = new FormData();
     formData.append("title", post.title);
@@ -216,21 +242,26 @@ const Profile = () => {
     formData.append("description", post.description);
     formData.append("user_id", JSON.stringify(user.id));
     if (selectedPostId === -1) {
-      const resp = await createPost(formData, true);
-      setPost(resp);
+      const isEmpty = validateFormData(formData);
+      if (isEmpty) Notification.openErrorNotification("Please fill all input");
+      else {
+        const resp = await createPost(formData, true);
+        setPost(EMPTY_POST);
+      }
     } else {
       const resp = await updatePost(selectedPostId, formData);
-      setPost(resp);
+      setPost(EMPTY_POST);
       setSelectedPostId(-1);
     }
     getData();
     setPostModalOpen(false);
   };
-
+  const isModalOpen =
+    isModalView || isPostModalOpen || isSkillModalOpen || isExOpen;
   return (
     <div
       className={`overflow-y-auto h-screen ${
-        isModalView ? "opacity-40" : "opacity-100"
+        isModalOpen ? "opacity-40" : "opacity-100"
       }`}
     >
       <div className="mb-10">
@@ -239,45 +270,89 @@ const Profile = () => {
       <div className="w-1/2 m-auto shadow-lg flex flex-col">
         <div className="flex flex-col">
           <img
-            className="rounded-full h-44 w-44 mx-16"
-            src={"http://127.0.0.1:8000" + user.photo}
+            className="rounded-full h-44 w-44 mx-16 object-cover"
+            src={"http://127.0.0.1:8000" + (id ? model.photo : user.photo)}
           />
-          <div className="flex flex-row justify-between mx-16">
-            <Upload
-              className="ml-4 mt-2"
-              name="file"
-              customRequest={({ file }) => handleFileUpload(file)}
-              showUploadList={false}
-            >
-              <Button icon={<UploadOutlined />}>Upload picture</Button>
-            </Upload>
-            <EditOutlined
-              onClick={(): void => setModalView(true)}
-              className="mt-2 ml-4 cursor-pointer text-xl"
-            />
-          </div>
+          {id === undefined && (
+            <div className="flex flex-row justify-between mx-16">
+              <Upload
+                className="ml-4 mt-2"
+                name="file"
+                customRequest={({ file }) => handleFileUpload(file)}
+                showUploadList={false}
+              >
+                <Button
+                  className="flex mt-2"
+                  icon={<UploadOutlined className="flex mt-1" />}
+                >
+                  {user.photo ? `Change picture` : `Upload picture`}
+                </Button>
+              </Upload>
+              <EditOutlined
+                onClick={(): void => setModalView(true)}
+                className="mt-5 ml-4 cursor-pointer text-xl"
+              />
+            </div>
+          )}
         </div>
         <div className="flex flex-col mx-20">
           <div className="flex flex-row justify-between mt-4">
-            <p className="text-2xl">{`${user.firstname} ${user.lastname}`}</p>
-            <p className="text-xl">{`${user.university} university`}</p>
+            <p
+              className={`${
+                !model.biography && !user.biography && "mb-10"
+              } text-2xl`}
+            >{`${id ? model.firstname : user.firstname} ${
+              id ? model.lastname : user.lastname
+            }`}</p>
+            {model.role === INTERN && model.university && user.university && (
+              <p className="text-xl">{`${
+                id ? model.university : user.university
+              } university`}</p>
+            )}
           </div>
-          <span className="text-sm mt-1">{user.title}</span>
-          <span className="text-xs mt-1">{user.address}</span>
+          {model.title && user.title && (
+            <span className="text-sm mt-1">
+              {id ? model.title : user.title}
+            </span>
+          )}
+          {model.address && user.address && (
+            <span className="text-xs mt-1">
+              {id ? model.address : user.address}
+            </span>
+          )}
         </div>
-        <div className="mx-20 mt-6 mb-7">
-          <h3 className="font-bold">About me</h3>
-          <p className="ml-1.5">{user.biography}</p>
-        </div>
+        {model.biography && user.biography && (
+          <div className="mx-20 mt-6 mb-7">
+            <h3 className="font-bold">About me</h3>
+            <p className="ml-1.5">{id ? model.biography : user.biography}</p>
+          </div>
+        )}
       </div>
-      {user.role === COMPANY && (
-        <PostCard
-          postList={postList}
-          setSelectedPostId={setSelectedPostId}
-          setModalView={setPostModalOpen}
-          setDeleteButton={setDeleteButton}
-          setPost={setPost}
-        />
+      {model.role === COMPANY && (
+        <div>
+          <div className="flex w-1/2 shadow-lg m-auto h-20">
+            <div className="flex flex-row justify-center m-auto gap-x-5 ">
+              <p className="mt-1">You can share the post</p>
+              <Button
+                onClick={(): void => setPostModalOpen(true)}
+                className="bg-green-400"
+              >
+                {" "}
+                Share post
+              </Button>
+            </div>
+          </div>
+          <div className="m-auto w-1/2">
+            <PostCard
+              postList={postList}
+              setSelectedPostId={setSelectedPostId}
+              setModalView={setPostModalOpen}
+              setDeleteButton={setDeleteButton}
+              setPost={setPost}
+              post={post}
+            />
+          </div>
+        </div>
       )}
 
       {user.role === COMPANY && (
@@ -290,88 +365,105 @@ const Profile = () => {
           onOk={submitPost}
           selectedPostId={selectedPostId}
           postList={postList}
+          setSelectedId={setSelectedPostId}
         />
       )}
-      {user.role === INTERN && (
+      {model.role === INTERN && (
         <>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
               <span className="text-xl font-bold my-2 mx-7">Experiences</span>
-              <PlusOutlined
-                onClick={(): void => setExOpen(true)}
-                className="mx-4 cursor-pointer text-lg"
-              />
+              {id === undefined && (
+                <PlusOutlined
+                  onClick={(): void => setExOpen(true)}
+                  className="mx-4 cursor-pointer text-lg"
+                />
+              )}
             </div>
-            <Row gutter={16}>
-              {experienceList &&
-                experienceList.map((ex, index) => (
-                  <Col span={12} key={index}>
-                    <Card
-                      title={
-                        <div className="flex flex-row justify-between">
-                          <span>{ex.title}</span>
-                          <EditOutlined
-                            className="text-lg"
-                            onClick={(): void => {
-                              setExOpen(true);
-                              setSelectedExperienceId(ex.id);
-                              setExp({
-                                id: ex.id,
-                                title: ex.title,
-                                company: ex.company,
-                                years: ex.years,
-                                user_id: user.id,
-                              });
-                            }}
-                          />
+            {experienceList.length > 0 ? (
+              <Row gutter={16}>
+                {experienceList &&
+                  experienceList.map((ex, index) => (
+                    <Col span={12} key={index}>
+                      <Card
+                        title={
+                          <div className="flex flex-row justify-between">
+                            <span>{ex.title}</span>
+                            {id === undefined && (
+                              <EditOutlined
+                                className="text-lg"
+                                onClick={(): void => {
+                                  setExOpen(true);
+                                  setSelectedExperienceId(ex.id);
+                                  setExp({
+                                    id: ex.id,
+                                    title: ex.title,
+                                    company: ex.company,
+                                    years: ex.years,
+                                    user_id: user.id,
+                                  });
+                                }}
+                              />
+                            )}
+                          </div>
+                        }
+                        bordered={false}
+                        className="shadow-md mx-7 my-5"
+                        style={{ borderColor: "#d9d9d9" }}
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-base">{ex.company}</span>
+                          <div className="flex flex-row justify-between">
+                            <span className="mt-1 text-xs">{`${ex.years} years`}</span>
+                          </div>
                         </div>
-                      }
-                      bordered={false}
-                      className="shadow-md mx-7 my-2"
-                      style={{ borderColor: "#d9d9d9" }}
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-base">{ex.company}</span>
-                        <div className="flex flex-row justify-between">
-                          <span className="mt-1 text-xs">{`${ex.years} years`}</span>
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                ))}
-            </Row>
+                      </Card>
+                    </Col>
+                  ))}
+              </Row>
+            ) : (
+              <NoData />
+            )}
           </div>
           <div className="w-1/2 m-auto shadow-lg gap-y-2">
             <div className="flex flex-row justify-between ml-1 mt-6">
               <span className="text-xl font-bold my-2 mx-7">Skills</span>
-              <PlusOutlined
-                onClick={(): void => setSkillModalOpen(true)}
-                className="mx-4 cursor-pointer text-lg"
-              />
+              {id === undefined && (
+                <PlusOutlined
+                  onClick={(): void => setSkillModalOpen(true)}
+                  className="mx-4 cursor-pointer text-lg"
+                />
+              )}
             </div>
-            <div className="flex flex-wrap">
-              {skillList &&
-                skillList?.map((sk, index) => (
-                  <div
-                    key={sk.id}
-                    className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
-                  >
-                    <div className="flex flex-row justify-between">
-                      <p className="text-lg mt-1">{`${index + 1}. ${
-                        sk.title
-                      }`}</p>
+            {skillList.length > 0 ? (
+              <div className="flex flex-wrap">
+                {skillList &&
+                  skillList?.map((sk, index) => (
+                    <div
+                      key={sk.id}
+                      className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
+                    >
                       <div className="flex flex-row justify-between">
-                        <DeleteOutlined
-                          onClick={(): void => {
-                            setSelectedSkillId(sk.id);
-                          }}
-                          className="ml-4 mt-1 cursor-pointer text-lg"
-                        />
+                        <p className="text-lg mt-1">{`${index + 1}. ${
+                          sk.title
+                        }`}</p>
+                        {id === undefined && (
+                          <div className="flex flex-row justify-between">
+                            <DeleteOutlined
+                              onClick={(): void => {
+                                setSelectedSkillId(sk.id);
+                              }}
+                              className="ml-4 mt-1 cursor-pointer text-lg"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                ))}
-            </div>
+                  ))}
+              </div>
+            ) : (
+              <NoData />
+            )}
           </div>
         </>
       )}
@@ -382,7 +474,7 @@ const Profile = () => {
             setModalView={setSkillModalOpen}
             onOk={submit}
             skill={skill}
-            setSkill={setSkil}
+            setSkill={setSkill}
             title="Add skill"
           />
           <ExperienceModal

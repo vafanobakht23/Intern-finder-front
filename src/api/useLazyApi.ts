@@ -17,7 +17,7 @@ interface FetchOptions {
 }
 
 export function useCrudApi<T>(baseUrl: string): {
-  fetchAll: () => Promise<void>;
+  fetchAll: () => Promise<any>;
   fetchOne: (id: number) => Promise<any>;
   create: (data: any, hasToken: boolean) => Promise<any>;
   update: (id: number, data: any) => Promise<any>;
@@ -69,7 +69,7 @@ export function useCrudApi<T>(baseUrl: string): {
   );
 
   const fetchAll = useCallback(async () => {
-    await makeRequest(baseUrl);
+    return await makeRequest(baseUrl);
   }, [baseUrl, makeRequest]);
 
   const fetchOne = useCallback(

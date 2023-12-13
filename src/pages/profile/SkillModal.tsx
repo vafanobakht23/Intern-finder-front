@@ -30,7 +30,6 @@ const SkillModal: React.FC<Props> = ({
         <h1 className="font-bold">Skill:</h1>
         <Input
           className="mb-4"
-          //   defaultValue={user.title}
           onChange={(e): void => {
             setSkill({ ...skill, title: e.target.value });
           }}
