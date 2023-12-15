@@ -134,6 +134,15 @@ const Dashboard: React.FC = ({}) => {
     setPostList(resp);
     setSearchValue("");
   };
+  const handleEnterKeyPress = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      const resp = await search();
+      setPostList(resp);
+      setSearchValue("");
+    }
+  };
   return (
     <div className="overflow-y-auto h-screen">
       {user ? (
@@ -147,6 +156,7 @@ const Dashboard: React.FC = ({}) => {
                   className="px-3 rounded-lg"
                   placeholder="Search an post"
                   onChange={(e) => setSearchValue(e.target.value)}
+                  onKeyDown={handleEnterKeyPress}
                 />
                 <Button
                   className="h-10 mx-2 bg-blue-600 font-medium"
