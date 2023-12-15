@@ -7,11 +7,15 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Exam from "../pages/exam/Exam";
 import Enrollments from "../pages/enrollment/Enrollments";
 import TakeExam from "../pages/exam/TakeExam";
+import { useSelector } from "react-redux";
+import { Store } from "types/Store";
+import NoData from "../components/Nodata";
+const user = useSelector((state: Store) => state.user);
 
 export const router = createBrowserRouter([
   {
     path: Pages.LOGIN,
-    element: <Login />,
+    element: user ? <Login /> : <NoData />,
   },
   {
     path: Pages.REGISTER,

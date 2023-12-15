@@ -9,12 +9,12 @@ import { User } from "../../types/User";
 import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
 
-export const setUser = (user: User): Action => ({
+export const setUser = (user: User | undefined): Action => ({
   type: SET_USER,
   user,
 });
 
-export const setToken = (token: string): Action => ({
+export const setToken = (token: string | undefined): Action => ({
   type: SET_TOKEN,
   token,
 });

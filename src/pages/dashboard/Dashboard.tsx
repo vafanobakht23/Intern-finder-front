@@ -98,7 +98,7 @@ const Dashboard: React.FC = ({}) => {
 
   const { fetchAll: enrollmentUser } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENTS_USER_API}?user_id=${
-      user.id
+      user?.id
     }`
   );
   const { fetchAll: search } = useCrudApi(
@@ -136,27 +136,55 @@ const Dashboard: React.FC = ({}) => {
   };
   return (
     <div className="overflow-y-auto h-screen">
-      <Navbar selectedKey="1" />
-      <div className="flex flex-col mt-5 w-full gap-x-4">
-        <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
-          <p className="mx-4 p-5 text-xl">Posts:</p>
-          <div className="w-1/2 m-auto flex flex-row mb-4">
-            <Input
-              className="px-3 rounded-lg"
-              placeholder="Search an post"
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <Button
-              className="h-10 mx-2 bg-blue-600 font-medium"
-              onClick={handleSearch}
-            >
-              Search
-            </Button>
-          </div>
-          {postList.length > 0 ? (
-            <>
-              <PostCard
-                postList={postList}
+      {user ? (
+        <>
+          <Navbar selectedKey="1" />
+          <div className="flex flex-col mt-5 w-full gap-x-4">
+            <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
+              <p className="mx-4 p-5 text-xl">Posts:</p>
+              <div className="w-1/2 m-auto flex flex-row mb-4">
+                <Input
+                  className="px-3 rounded-lg"
+                  placeholder="Search an post"
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+                <Button
+                  className="h-10 mx-2 bg-blue-600 font-medium"
+                  onClick={handleSearch}
+                >
+                  Search
+                </Button>
+              </div>
+              {postList.length > 0 ? (
+                <>
+                  <PostCard
+                    postList={postList}
+                    setSelectedPostId={setSelectedPostId}
+                    setModalView={setPostModalOpen}
+                    setDeleteButton={setDeleteButton}
+                    setPost={setPost}
+                    post={post}
+                    applyHandler={applyHandler}
+                  />
+                  <PostModal
+                    isModalView={isPostModalOpen}
+                    post={post}
+                    setPost={setPost}
+                    title="Add post"
+                    setModalView={setPostModalOpen}
+                    onOk={submitPost}
+                    selectedPostId={selectedPostId}
+                    postList={postList}
+                    setSelectedId={setSelectedPostId}
+                  />
+                </>
+              ) : (
+                <NoData />
+              )}
+            </div>
+            {user.role === INTERN && (
+              <List
+                enrollments={enrollments}
                 setSelectedPostId={setSelectedPostId}
                 setModalView={setPostModalOpen}
                 setDeleteButton={setDeleteButton}
@@ -164,34 +192,12 @@ const Dashboard: React.FC = ({}) => {
                 post={post}
                 applyHandler={applyHandler}
               />
-              <PostModal
-                isModalView={isPostModalOpen}
-                post={post}
-                setPost={setPost}
-                title="Add post"
-                setModalView={setPostModalOpen}
-                onOk={submitPost}
-                selectedPostId={selectedPostId}
-                postList={postList}
-                setSelectedId={setSelectedPostId}
-              />
-            </>
-          ) : (
-            <NoData />
-          )}
-        </div>
-        {user.role === INTERN && (
-          <List
-            enrollments={enrollments}
-            setSelectedPostId={setSelectedPostId}
-            setModalView={setPostModalOpen}
-            setDeleteButton={setDeleteButton}
-            setPost={setPost}
-            post={post}
-            applyHandler={applyHandler}
-          />
-        )}
-      </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <NoData text="Not found!" size="88" />
+      )}
     </div>
   );
 };
