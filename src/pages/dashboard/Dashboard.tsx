@@ -12,6 +12,7 @@ import {
   APPLY_POST_API,
   CREATE_POST_API,
   ENROLLMENTS_USER_API,
+  MORE_POST_API,
   POST_DELETE_API,
   POST_LIST_API,
   POST_UPDATE_API,
@@ -33,16 +34,24 @@ const Dashboard: React.FC = ({}) => {
   const [postList, setPostList] = useState<Post[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [hideSeeMore, setHideSeeMore] = useState(false);
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
   const { fetchAll: loadAllPosts } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}`
+    `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}?user_id=${String(
+      user.id
+    )}`
+  );
+  const { fetchAll: loadMorePosts } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${MORE_POST_API}?user_id=${String(
+      user.id
+    )}`
   );
   const getData = async () => {
+    const formData = new FormData();
+    formData.append("user_id", JSON.stringify(user.id));
     if (user.role === COMPANY) {
-      const formData = new FormData();
-      formData.append("user_id", JSON.stringify(user.id));
       const postResp = await loadPost(formData, true);
       setPostList(postResp);
     } else {
@@ -50,7 +59,6 @@ const Dashboard: React.FC = ({}) => {
       setPostList(resp);
     }
   };
-  console.log(selectedPostId);
 
   const { create: createPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
@@ -128,6 +136,11 @@ const Dashboard: React.FC = ({}) => {
     loadEnrollment();
     setSelectedPostId(-1);
   };
+  const morePostLists = async () => {
+    const resp = await loadMorePosts();
+    setPostList([...postList, ...resp]);
+    setHideSeeMore(true);
+  };
 
   const handleSearch = async () => {
     const resp = await search();
@@ -176,6 +189,12 @@ const Dashboard: React.FC = ({}) => {
                     post={post}
                     applyHandler={applyHandler}
                   />
+                  {!hideSeeMore && (
+                    <Button className="!bg-green-400" onClick={morePostLists}>
+                      See more
+                    </Button>
+                  )}
+
                   <PostModal
                     isModalView={isPostModalOpen}
                     post={post}
