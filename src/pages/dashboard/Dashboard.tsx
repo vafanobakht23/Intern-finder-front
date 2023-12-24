@@ -136,16 +136,24 @@ const Dashboard: React.FC = ({}) => {
     loadEnrollment();
     setSelectedPostId(-1);
   };
-  const morePostLists = async () => {
-    const resp = await loadMorePosts();
-    setPostList([...postList, ...resp]);
-    setHideSeeMore(true);
+  const showPostList = async (isHide: boolean) => {
+    if (isHide) {
+      const resp = await loadMorePosts();
+      setPostList([...postList, ...resp]);
+      setHideSeeMore(true);
+    } else {
+      const resp = await loadAllPosts();
+      setPostList([...resp]);
+      setHideSeeMore(false);
+    }
   };
 
   const handleSearch = async () => {
-    const resp = await search();
-    setPostList(resp);
-    setSearchValue("");
+    if (searchValue) {
+      const resp = await search();
+      setPostList(resp);
+      setSearchValue("");
+    }
   };
   const handleEnterKeyPress = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -172,7 +180,7 @@ const Dashboard: React.FC = ({}) => {
                   onKeyDown={handleEnterKeyPress}
                 />
                 <Button
-                  className="h-10 mx-2 bg-blue-600 font-medium"
+                  className="h-10 mx-2 bg-blue-500 font-medium"
                   onClick={handleSearch}
                 >
                   Search
@@ -189,12 +197,21 @@ const Dashboard: React.FC = ({}) => {
                     post={post}
                     applyHandler={applyHandler}
                   />
-                  {!hideSeeMore && (
-                    <Button className="!bg-green-400" onClick={morePostLists}>
+                  {!hideSeeMore ? (
+                    <Button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out"
+                      onClick={(): Promise<void> => showPostList(true)}
+                    >
                       See more
                     </Button>
+                  ) : (
+                    <Button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out"
+                      onClick={(): Promise<void> => showPostList(false)}
+                    >
+                      Relavent posts
+                    </Button>
                   )}
-
                   <PostModal
                     isModalView={isPostModalOpen}
                     post={post}
