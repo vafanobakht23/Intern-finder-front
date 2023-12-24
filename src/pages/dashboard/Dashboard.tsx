@@ -179,12 +179,12 @@ const Dashboard: React.FC = ({}) => {
                   onChange={(e) => setSearchValue(e.target.value)}
                   onKeyDown={handleEnterKeyPress}
                 />
-                <Button
-                  className="h-10 mx-2 bg-blue-500 font-medium"
+                <button
+                  className="h-10 mx-2 bg-blue-500 font-medium w-24 rounded-md"
                   onClick={handleSearch}
                 >
                   Search
-                </Button>
+                </button>
               </div>
               {postList.length > 0 ? (
                 <>
@@ -198,19 +198,19 @@ const Dashboard: React.FC = ({}) => {
                     applyHandler={applyHandler}
                   />
                   {!hideSeeMore ? (
-                    <Button
-                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out"
+                    <button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(true)}
                     >
                       See more
-                    </Button>
+                    </button>
                   ) : (
-                    <Button
-                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out"
+                    <button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(false)}
                     >
                       Relavent posts
-                    </Button>
+                    </button>
                   )}
                   <PostModal
                     isModalView={isPostModalOpen}

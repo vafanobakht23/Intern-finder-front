@@ -253,9 +253,6 @@ const PostCard: React.FC<Props> = ({
                           Enroll exam
                         </Button>
                       )}
-                      {p.status === "WF" && (
-                        <p className="">Waiting for result</p>
-                      )}
                     </div>
                   )}
                 </Space>
