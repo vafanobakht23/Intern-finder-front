@@ -1,12 +1,16 @@
-import { Button, Input } from "antd";
+import { Button } from "antd";
 import { ACTIVATE_ACCOUNT } from "../../api/url/urls";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useCrudApi } from "../../api/useLazyApi";
 import { useParams } from "react-router-dom";
 import PinInput from "react-pin-input";
+import Notification from "../../components/Notification";
+import { useNavigate } from "../../utils/useNavigation";
+import { Pages } from "../../settings/Pages";
 
 const Activate = () => {
-  const { response, create } = useCrudApi(
+  const navigate = useNavigate();
+  const { create } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ACTIVATE_ACCOUNT}`
   );
   const [code, setCode] = useState("");
@@ -15,9 +19,19 @@ const Activate = () => {
     const formData = new FormData();
     formData.append("username", username!);
     formData.append("code", code!);
-    await create(formData, false);
+    try {
+      const res = await create(formData, false);
+      //@ts-ignore
+      if (res.msg === "Error") {
+        Notification.openErrorNotification(
+          "The activation code is not correct"
+        );
+      } else {
+        Notification.openSuccessNotification("Your account is active now");
+        navigate(Pages.LOGIN);
+      }
+    } catch (e) {}
   };
-  console.log(code);
 
   return (
     <div
@@ -37,17 +51,13 @@ const Activate = () => {
         </div>
         <PinInput
           length={5}
-          onChange={(value, index) => {
-            setCode(value);
-          }}
+          onChange={(value) => setCode(value)}
           type="numeric"
           inputMode="number"
           style={{ padding: "10px", display: "flex", justifyContent: "center" }}
           inputStyle={{ borderColor: "black" }}
           inputFocusStyle={{ borderColor: "blue" }}
-          onComplete={(value, index) => {
-            setCode(value);
-          }}
+          onComplete={(value) => setCode(value)}
           autoSelect={true}
         />
         <Button
