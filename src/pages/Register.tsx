@@ -1,12 +1,13 @@
 import { Button, Checkbox, Form, Input, Select } from "antd";
 import { useApi } from "../api/useApi";
 import Notification from "../components/Notification";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Pages } from "../settings/Pages";
 import setRules from "../utils/setRules";
 import { INTERN } from "../constant/Constant";
 import { REGISTER_API } from "../api/url/urls";
 import { useWatch } from "antd/es/form/Form";
+import { useNavigate } from "../utils/useNavigation";
 import.meta.env.BASE_URL;
 
 const Register = () => {
@@ -25,7 +26,7 @@ const Register = () => {
     load(formData);
     if (status === 0)
       Notification.openSuccessNotification("User registered successfully");
-    navigate(Pages.LOGIN);
+    navigate(Pages.ACTIVATE_PAGE, { username: formData.username });
     form.resetFields();
   };
   const role = useWatch("role", form);

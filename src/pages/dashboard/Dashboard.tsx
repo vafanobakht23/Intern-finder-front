@@ -12,6 +12,7 @@ import {
   APPLY_POST_API,
   CREATE_POST_API,
   ENROLLMENTS_USER_API,
+  MORE_POST_API,
   POST_DELETE_API,
   POST_LIST_API,
   POST_UPDATE_API,
@@ -33,16 +34,24 @@ const Dashboard: React.FC = ({}) => {
   const [postList, setPostList] = useState<Post[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [hideSeeMore, setHideSeeMore] = useState(false);
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
   const { fetchAll: loadAllPosts } = useCrudApi(
-    `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}`
+    `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}?user_id=${String(
+      user.id
+    )}`
+  );
+  const { fetchAll: loadMorePosts } = useCrudApi(
+    `${import.meta.env.VITE_REACT_APP_API}${MORE_POST_API}?user_id=${String(
+      user.id
+    )}`
   );
   const getData = async () => {
+    const formData = new FormData();
+    formData.append("user_id", JSON.stringify(user.id));
     if (user.role === COMPANY) {
-      const formData = new FormData();
-      formData.append("user_id", JSON.stringify(user.id));
       const postResp = await loadPost(formData, true);
       setPostList(postResp);
     } else {
@@ -50,7 +59,6 @@ const Dashboard: React.FC = ({}) => {
       setPostList(resp);
     }
   };
-  console.log(selectedPostId);
 
   const { create: createPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${CREATE_POST_API}`
@@ -98,7 +106,7 @@ const Dashboard: React.FC = ({}) => {
 
   const { fetchAll: enrollmentUser } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ENROLLMENTS_USER_API}?user_id=${
-      user.id
+      user?.id
     }`
   );
   const { fetchAll: search } = useCrudApi(
@@ -128,35 +136,101 @@ const Dashboard: React.FC = ({}) => {
     loadEnrollment();
     setSelectedPostId(-1);
   };
+  const showPostList = async (isHide: boolean) => {
+    if (isHide) {
+      const resp = await loadMorePosts();
+      setPostList([...postList, ...resp]);
+      setHideSeeMore(true);
+    } else {
+      const resp = await loadAllPosts();
+      setPostList([...resp]);
+      setHideSeeMore(false);
+    }
+  };
 
   const handleSearch = async () => {
-    const resp = await search();
-    setPostList(resp);
-    setSearchValue("");
+    if (searchValue) {
+      const resp = await search();
+      setPostList(resp);
+      setSearchValue("");
+    }
+  };
+  const handleEnterKeyPress = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      const resp = await search();
+      setPostList(resp);
+      setSearchValue("");
+    }
   };
   return (
     <div className="overflow-y-auto h-screen">
-      <Navbar selectedKey="1" />
-      <div className="flex flex-col mt-5 w-full gap-x-4">
-        <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
-          <p className="mx-4 p-5 text-xl">Posts:</p>
-          <div className="w-1/2 m-auto flex flex-row mb-4">
-            <Input
-              className="px-3 rounded-lg"
-              placeholder="Search an post"
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <Button
-              className="h-10 mx-2 bg-blue-600 font-medium"
-              onClick={handleSearch}
-            >
-              Search
-            </Button>
-          </div>
-          {postList.length > 0 ? (
-            <>
-              <PostCard
-                postList={postList}
+      {user ? (
+        <>
+          <Navbar selectedKey="1" />
+          <div className="flex flex-col mt-5 w-full gap-x-4">
+            <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
+              <p className="mx-4 p-5 text-xl">Posts:</p>
+              <div className="w-1/2 m-auto flex flex-row mb-4">
+                <Input
+                  className="px-3 rounded-lg"
+                  placeholder="Search an post"
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  onKeyDown={handleEnterKeyPress}
+                />
+                <button
+                  className="h-10 mx-2 bg-blue-500 font-medium w-24 rounded-md"
+                  onClick={handleSearch}
+                >
+                  Search
+                </button>
+              </div>
+              {postList.length > 0 ? (
+                <>
+                  <PostCard
+                    postList={postList}
+                    setSelectedPostId={setSelectedPostId}
+                    setModalView={setPostModalOpen}
+                    setDeleteButton={setDeleteButton}
+                    setPost={setPost}
+                    post={post}
+                    applyHandler={applyHandler}
+                  />
+                  {!hideSeeMore ? (
+                    <button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      onClick={(): Promise<void> => showPostList(true)}
+                    >
+                      See more
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      onClick={(): Promise<void> => showPostList(false)}
+                    >
+                      Relavent posts
+                    </button>
+                  )}
+                  <PostModal
+                    isModalView={isPostModalOpen}
+                    post={post}
+                    setPost={setPost}
+                    title="Add post"
+                    setModalView={setPostModalOpen}
+                    onOk={submitPost}
+                    selectedPostId={selectedPostId}
+                    postList={postList}
+                    setSelectedId={setSelectedPostId}
+                  />
+                </>
+              ) : (
+                <NoData />
+              )}
+            </div>
+            {user.role === INTERN && (
+              <List
+                enrollments={enrollments}
                 setSelectedPostId={setSelectedPostId}
                 setModalView={setPostModalOpen}
                 setDeleteButton={setDeleteButton}
@@ -164,34 +238,12 @@ const Dashboard: React.FC = ({}) => {
                 post={post}
                 applyHandler={applyHandler}
               />
-              <PostModal
-                isModalView={isPostModalOpen}
-                post={post}
-                setPost={setPost}
-                title="Add post"
-                setModalView={setPostModalOpen}
-                onOk={submitPost}
-                selectedPostId={selectedPostId}
-                postList={postList}
-                setSelectedId={setSelectedPostId}
-              />
-            </>
-          ) : (
-            <NoData />
-          )}
-        </div>
-        {user.role === INTERN && (
-          <List
-            enrollments={enrollments}
-            setSelectedPostId={setSelectedPostId}
-            setModalView={setPostModalOpen}
-            setDeleteButton={setDeleteButton}
-            setPost={setPost}
-            post={post}
-            applyHandler={applyHandler}
-          />
-        )}
-      </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <NoData text="Not found!" size="88" />
+      )}
     </div>
   );
 };
