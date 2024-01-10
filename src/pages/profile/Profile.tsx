@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Col, Row, Upload } from "antd";
+import { Avatar, Button, Card, Col, Row, Tooltip, Upload } from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -271,12 +271,23 @@ const Profile = () => {
           </div>
           <div className="w-1/2 m-auto shadow-lg flex flex-col">
             <div className="flex flex-col">
-              <img
-                className="rounded-full h-44 w-44 mx-16 object-cover"
-                src={
-                  "http://127.0.0.1:8000" + (id ? model?.photo : user?.photo)
-                }
-              />
+              {model.photo ? (
+                <img
+                  className="rounded-full h-44 w-44 mx-16 object-cover"
+                  src={
+                    "http://127.0.0.1:8000" + (id ? model?.photo : user?.photo)
+                  }
+                />
+              ) : (
+                <div className="relative left-16 ml-1 flex items-center">
+                  <Avatar className="!mx-2 !my-4 h-44 w-44 flex items-center justify-center">
+                    <span className="text-2xl">
+                      {model?.firstname?.slice(0, 2).toUpperCase()}
+                    </span>
+                  </Avatar>
+                </div>
+              )}
+
               {id === undefined && (
                 <div className="flex flex-row justify-between mx-16">
                   <Upload
@@ -292,10 +303,12 @@ const Profile = () => {
                       {user?.photo ? `Change picture` : `Upload picture`}
                     </Button>
                   </Upload>
-                  <EditOutlined
-                    onClick={(): void => setModalView(true)}
-                    className="mt-5 ml-4 cursor-pointer text-xl"
-                  />
+                  <Tooltip title="Edit information">
+                    <EditOutlined
+                      onClick={(): void => setModalView(true)}
+                      className="mt-5 ml-4 cursor-pointer text-xl"
+                    />
+                  </Tooltip>
                 </div>
               )}
             </div>
@@ -322,7 +335,11 @@ const Profile = () => {
                 </span>
               )}
               {model?.address && user?.address && (
-                <span className="text-xs mt-1">
+                <span
+                  className={
+                    model?.address && user?.address ? `text-xs mt-1` : "mt-3"
+                  }
+                >
                   {id ? model?.address : user?.address}
                 </span>
               )}

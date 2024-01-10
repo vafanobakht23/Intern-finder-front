@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Exam from "../pages/exam/Exam";
 import Enrollments from "../pages/enrollment/Enrollments";
 import TakeExam from "../pages/exam/TakeExam";
+import Activate from "../pages/actviate/Activate";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
   {
     path: Pages.PROFILE,
     element: <Profile />,
+  },
+  {
+    path: Pages.ACTIVATE_PAGE,
+    element: <Activate />,
   },
   {
     path: Pages.VIEW_PROFILE,
