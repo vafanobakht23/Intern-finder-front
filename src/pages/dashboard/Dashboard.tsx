@@ -41,18 +41,18 @@ const Dashboard: React.FC = ({}) => {
   );
   const { fetchAll: LoadRelevantPosts } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}?user_id=${String(
-      user.id
+      user?.id
     )}`
   );
   const { fetchAll: loadMorePosts } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${MORE_POST_API}?user_id=${String(
-      user.id
+      user?.id
     )}`
   );
   const getData = async () => {
     const formData = new FormData();
-    formData.append("user_id", JSON.stringify(user.id));
-    if (user.role === COMPANY) {
+    formData.append("user_id", JSON.stringify(user?.id));
+    if (user?.role === COMPANY) {
       const postResp = await loadPost(formData, true);
       setPostList(postResp);
     } else {
@@ -97,7 +97,7 @@ const Dashboard: React.FC = ({}) => {
     formData.append("title", post.title);
     formData.append("category", post.category);
     formData.append("description", post.description);
-    formData.append("user_id", JSON.stringify(user.id));
+    formData.append("user_id", JSON.stringify(user?.id));
     if (selectedPostId === -1) {
       const isEmpty = validateFormData(formData);
       if (isEmpty) Notification.openErrorNotification("Please fill all input");
@@ -140,7 +140,7 @@ const Dashboard: React.FC = ({}) => {
   const applyHandler = async (id: number) => {
     const formData = new FormData();
     formData.append("post_id", String(id));
-    formData.append("user_id", String(user.id));
+    formData.append("user_id", String(user?.id));
     formData.append("status", "AP");
     const resp = await applyPost(formData, true);
     loadEnrollment();
@@ -245,7 +245,7 @@ const Dashboard: React.FC = ({}) => {
                 <NoData />
               )}
             </div>
-            {user.role === INTERN && (
+            {user?.role === INTERN && (
               <List
                 enrollments={enrollments}
                 setSelectedPostId={setSelectedPostId}

@@ -14,8 +14,12 @@ import {
   UPDATE_EXAM_API,
 } from "../../api/url/urls";
 import { Exam } from "types/Exam";
+import { useSelector } from "react-redux";
+import { Store } from "types/Store";
+import NoData from "../../components/Nodata";
 
 const AddTextInput: React.FC = () => {
+  const user = useSelector((state: Store) => state.user);
   const [inputList, setInputList] = useState<string[]>([]); // Initialize as an empty array
   const [inputValue, setInputValue] = useState("");
   const [examId, setExamId] = useState(-1);
@@ -95,67 +99,76 @@ const AddTextInput: React.FC = () => {
 
   return (
     <div className="mx-auto">
-      <Navbar selectedKey="" />
-      <div className="m-auto w-1/2 h-screen overflow-scroll shadow-md">
-        <p className="my-4 mx-2 font-bold">Add exam</p>
-        {inputList &&
-          inputList.map((input, index) => (
-            <div
-              key={index}
-              className="mb-2 flex items-center space-x-2 gap-y-4 mt-4 mx-4"
-            >
-              <TextArea value={input} disabled />
-              <Button onClick={() => handleRemoveInput(index)} type="dashed">
-                Remove
-              </Button>
-            </div>
-          ))}
-        <div className="flex items-center space-x-2 gap-y-4 mt-4 mx-4">
-          <TextArea
-            rows={2}
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Enter a question"
-          />
-          <Button
-            icon={<PlusOutlined />}
-            onClick={handleAddInput}
-            type="primary"
-            disabled={inputList.length >= 10 || inputValue.trim() === ""}
-          >
-            Add
-          </Button>
-        </div>
-        <div className="w-full mx-4 mt-7 space-x-2 gap-y-4 flex flex-row-reverse">
-          {examId !== -1 && (
-            <div>
+      {user ? (
+        <>
+          <Navbar selectedKey="" />
+          <div className="m-auto w-1/2 h-screen overflow-scroll shadow-md">
+            <p className="my-4 mx-2 font-bold">Add exam</p>
+            {inputList &&
+              inputList.map((input, index) => (
+                <div
+                  key={index}
+                  className="mb-2 flex items-center space-x-2 gap-y-4 mt-4 mx-4"
+                >
+                  <TextArea value={input} disabled />
+                  <Button
+                    onClick={() => handleRemoveInput(index)}
+                    type="dashed"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            <div className="flex items-center space-x-2 gap-y-4 mt-4 mx-4">
+              <TextArea
+                rows={2}
+                value={inputValue}
+                onChange={handleInputChange}
+                placeholder="Enter a question"
+              />
               <Button
-                className="bg-gray-300-400 hover:text-white mr-10 ml-2"
-                onClick={handleRemoveExam}
+                icon={<PlusOutlined />}
+                onClick={handleAddInput}
+                type="primary"
+                disabled={inputList.length >= 10 || inputValue.trim() === ""}
               >
-                Remove exam
+                Add
               </Button>
             </div>
-          )}
+            <div className="w-full mx-4 mt-7 space-x-2 gap-y-4 flex flex-row-reverse">
+              {examId !== -1 && (
+                <div>
+                  <Button
+                    className="bg-gray-300-400 hover:text-white mr-10 ml-2"
+                    onClick={handleRemoveExam}
+                  >
+                    Remove exam
+                  </Button>
+                </div>
+              )}
 
-          <div>
-            <Button
-              className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32"
-              onClick={(): void => navigate(Pages.PROFILE)}
-            >
-              Cancel
-            </Button>
-            <Button
-              className={`bg-green-400 hover:text-white w-32 ${
-                examId === -1 ? "mr-10" : ""
-              }`}
-              onClick={handleSaveExam}
-            >
-              {isUpdateMode ? "Update" : "Save exam"}
-            </Button>
+              <div>
+                <Button
+                  className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32"
+                  onClick={(): void => navigate(Pages.PROFILE)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={`bg-green-400 hover:text-white w-32 ${
+                    examId === -1 ? "mr-10" : ""
+                  }`}
+                  onClick={handleSaveExam}
+                >
+                  {isUpdateMode ? "Update" : "Save exam"}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : (
+        <NoData text="Not found!" size="88" />
+      )}
     </div>
   );
 };
