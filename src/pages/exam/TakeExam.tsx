@@ -72,64 +72,59 @@ const TakeExam: React.FC = () => {
 
   return (
     <div className="flex flex-col m-auto">
-      {user ? (
-        <>
-          <Navbar selectedKey="1" />
-
-          {questions.length > 0 ? (
-            questions.map((question, index) => (
-              <div className="flex flex-col my-3 w-1/2 m-auto">
-                <p className="mb-2">
-                  {question.includes("?") ? question : `${question}?`}
-                </p>
-                <TextArea
-                  disabled={user.role === COMPANY}
-                  className="rounded-xl"
-                  value={answers[index]}
-                  onChange={(e) => handleAnswerChange(index, e.target.value)} // Handle input changes
-                />
-              </div>
-            ))
-          ) : (
-            <NoData text="No exam is here!" size="h-96" />
-          )}
-          {user.role === INTERN ? (
-            <Button
-              className={`w-1/2 m-auto rounded-md mt-5 bg-green-400 ${
-                questions.length === 0 && "hidden"
-              }`}
-              onClick={() => {
-                handleStatusIntern(Number(enrollmentId!), user.id, true);
-                Notification.openSuccessNotification("You submited succefully");
-              }}
-            >
-              {" "}
-              Submit
-            </Button>
-          ) : (
-            <div className="flex flex-row gap-4 justify-end w-1/2 m-auto mt-3">
-              <Button
-                className="bg-green-400 w-32 text-center"
-                onClick={(): Promise<any> =>
-                  handleStatusIntern(Number(enrollmentId!), userId, true)
-                }
-              >
-                Accept
-              </Button>
-              <Button
-                className="bg-red-300 w-32 text-center"
-                onClick={(): Promise<any> =>
-                  handleStatusIntern(Number(enrollmentId!), userId, false)
-                }
-              >
-                Reject
-              </Button>
+      <>
+        <Navbar selectedKey="1" />
+        {questions.length > 0 ? (
+          questions.map((question, index) => (
+            <div className="flex flex-col my-3 w-1/2 m-auto">
+              <p className="mb-2">
+                {question.includes("?") ? question : `${question}?`}
+              </p>
+              <TextArea
+                disabled={user.role === COMPANY}
+                className="rounded-xl"
+                value={answers[index]}
+                onChange={(e) => handleAnswerChange(index, e.target.value)} // Handle input changes
+              />
             </div>
-          )}
-        </>
-      ) : (
-        <NoData text="Not found!" size="88" />
-      )}
+          ))
+        ) : (
+          <NoData text="No exam is here!" size="h-96" />
+        )}
+        {user.role === INTERN ? (
+          <Button
+            className={`w-1/2 m-auto rounded-md mt-5 bg-green-400 ${
+              questions.length === 0 && "hidden"
+            }`}
+            onClick={() => {
+              handleStatusIntern(Number(enrollmentId!), user.id, true);
+              Notification.openSuccessNotification("You submited succefully");
+            }}
+          >
+            {" "}
+            Submit
+          </Button>
+        ) : (
+          <div className="flex flex-row gap-4 justify-end w-1/2 m-auto mt-3">
+            <Button
+              className="bg-green-400 w-32 text-center"
+              onClick={(): Promise<any> =>
+                handleStatusIntern(Number(enrollmentId!), userId, true)
+              }
+            >
+              Accept
+            </Button>
+            <Button
+              className="bg-red-300 w-32 text-center"
+              onClick={(): Promise<any> =>
+                handleStatusIntern(Number(enrollmentId!), userId, false)
+              }
+            >
+              Reject
+            </Button>
+          </div>
+        )}
+      </>
     </div>
   );
 };

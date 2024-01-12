@@ -143,7 +143,7 @@ const PostCard: React.FC<Props> = ({
                 </div>
               ) : (
                 <Button
-                  className="bg-green-500 w-24 mt-4"
+                  className="bg-green-400 w-24 mt-4"
                   loading={loading}
                   onClick={(): void => {
                     setLoading(true);
@@ -174,7 +174,7 @@ const PostCard: React.FC<Props> = ({
                 <Card className="w-auto" hoverable>
                   <div className="text-center">
                     <h2 className="text-xl font-semibold">{p.post__title}</h2>
-                    <p className="text-gray-500">{p.post__category}</p>
+                    <p className="text-blue-600">{p.post__category}</p>
                   </div>
                   <p className="mt-2 text-gray-800">{p.post__description}</p>
                   <div className="mt-4 text-gray-500">

@@ -4,9 +4,10 @@ import { useNavigate } from "../utils/useNavigation";
 type Props = {
   text?: string;
   size?: string;
+  isBackNeeded?: boolean;
 };
 
-const NoData: React.FC<Props> = ({ text, size }: Props) => {
+const NoData: React.FC<Props> = ({ text, size, isBackNeeded }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center p-8">
@@ -20,12 +21,14 @@ const NoData: React.FC<Props> = ({ text, size }: Props) => {
         {" "}
         {text ?? "No data found!"}
       </div>
-      <button
-        className="bg-blue-500 px-2 py-2 mt-5 rounded-md "
-        onClick={(): void => navigate(Pages.LOGIN)}
-      >
-        Back to Login
-      </button>
+      {isBackNeeded && (
+        <button
+          className="bg-blue-500 px-2 py-2 mt-5 rounded-md "
+          onClick={(): void => navigate(Pages.LOGIN)}
+        >
+          Back to Login
+        </button>
+      )}
     </div>
   );
 };

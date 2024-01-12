@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
   {
     path: Pages.PROFILE,
     element: <Profile />,
-    errorElement: <NoData text="Not found!" size="88" />,
+    errorElement: <NoData text="Not found!" size="88" isBackNeeded />,
   },
   {
     path: Pages.ACTIVATE_PAGE,
@@ -34,12 +34,12 @@ export const router = createBrowserRouter([
   {
     path: Pages.VIEW_PROFILE,
     element: <Profile />,
-    errorElement: <NoData text="Not found!" size="88" />,
+    errorElement: <NoData text="Not found!" size="88" isBackNeeded />,
   },
   {
     path: Pages.DASHBOARD,
     element: <Dashboard />,
-    errorElement: <NoData text="Not found!" size="88" />,
+    errorElement: <NoData text="Not found!" size="88" isBackNeeded />,
   },
   {
     path: Pages.TAKE_EXAM,
@@ -54,6 +54,6 @@ export const router = createBrowserRouter([
   {
     path: Pages.POST_ENROLLMENT,
     element: <Enrollments />,
-    errorElement: <NoData text="Not found!" size="88" />,
+    errorElement: <NoData text="Not found!" size="88" isBackNeeded />,
   },
 ]);
