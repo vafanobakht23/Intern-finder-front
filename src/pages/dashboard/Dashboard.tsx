@@ -203,11 +203,7 @@ const Dashboard: React.FC = ({}) => {
               {postList.length > 0 ? (
                 <>
                   <PostCard
-                    postList={postList.filter((post) => {
-                      return !enrollments.some(
-                        (enrollment) => post.id === enrollment.post__id
-                      );
-                    })}
+                    postList={postList}
                     setSelectedPostId={setSelectedPostId}
                     setModalView={setPostModalOpen}
                     setDeleteButton={setDeleteButton}
@@ -216,12 +212,11 @@ const Dashboard: React.FC = ({}) => {
                     post={post}
                     applyHandler={applyHandler}
                   />
-                  {}
                   {!hideSeeMore ? (
                     <button
                       className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(true)}
-                      hidden={!isNeedToSeeMore}
+                      hidden={!isNeedToSeeMore || !!searchValue}
                     >
                       See more
                     </button>
@@ -229,7 +224,7 @@ const Dashboard: React.FC = ({}) => {
                     <button
                       className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(false)}
-                      hidden={!isNeedToSeeMore}
+                      hidden={!isNeedToSeeMore || !!searchValue}
                     >
                       Relavent posts
                     </button>
