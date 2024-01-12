@@ -357,14 +357,13 @@ const Profile = () => {
             <div>
               <div className="flex w-1/2 shadow-lg m-auto h-20">
                 <div className="flex flex-row justify-center m-auto gap-x-5 ">
-                  <p className="mt-1">You can share the post</p>
-                  <Button
+                  <button
                     onClick={(): void => setPostModalOpen(true)}
-                    className="bg-green-400"
+                    className="bg-blue-500 px-2.5 py-2 rounded-md hover:text-black"
                   >
                     {" "}
                     Share post
-                  </Button>
+                  </button>
                 </div>
               </div>
               <div className="m-auto w-1/2">

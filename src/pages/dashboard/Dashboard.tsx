@@ -194,7 +194,7 @@ const Dashboard: React.FC = ({}) => {
                   onKeyDown={handleEnterKeyPress}
                 />
                 <button
-                  className="h-10 mx-2 bg-blue-500 font-medium w-24 rounded-md"
+                  className="h-10 mx-2 bg-blue-500 font-normal w-24 rounded-md"
                   onClick={handleSearch}
                 >
                   Search
@@ -214,7 +214,7 @@ const Dashboard: React.FC = ({}) => {
                   />
                   {!hideSeeMore ? (
                     <button
-                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      className="bg-blue-500 w-2/3 mx-auto text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(true)}
                       hidden={!isNeedToSeeMore || !!searchValue}
                     >
@@ -222,7 +222,7 @@ const Dashboard: React.FC = ({}) => {
                     </button>
                   ) : (
                     <button
-                      className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      className="bg-blue-500 w-2/3 mx-auto text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(false)}
                       hidden={!isNeedToSeeMore || !!searchValue}
                     >

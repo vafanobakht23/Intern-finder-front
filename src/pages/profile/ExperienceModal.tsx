@@ -28,6 +28,9 @@ const ExperienceModal: React.FC<Props> = ({
     <Modal
       title={title}
       open={isModalView}
+      okButtonProps={{
+        className: "!h-10 !font-semibold bg-blue-500 rounded-sm",
+      }}
       onCancel={(): void => {
         setSelectedExperienceId(-1);
         setModalView(false);

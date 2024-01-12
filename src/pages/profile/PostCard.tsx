@@ -143,7 +143,7 @@ const PostCard: React.FC<Props> = ({
                 </div>
               ) : (
                 <Button
-                  className="bg-green-400 w-full mt-3"
+                  className="bg-green-500 w-24 mt-4"
                   loading={loading}
                   onClick={(): void => {
                     setLoading(true);
@@ -238,7 +238,7 @@ const PostCard: React.FC<Props> = ({
                         {p.status === "AC" && (
                           <Button
                             type="default"
-                            className="bg-green-400"
+                            className="bg-green-400 mt-1"
                             onClick={(): void => {
                               navigate(Pages.TAKE_EXAM, {
                                 id: p.post__id,

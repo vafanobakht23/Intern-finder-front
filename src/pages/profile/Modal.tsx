@@ -27,6 +27,9 @@ const Popup: React.FC<Props> = ({
       title={title}
       open={isModalView}
       onCancel={(): void => setModalView(false)}
+      okButtonProps={{
+        className: "!h-10 !font-semibold bg-blue-500 rounded-sm",
+      }}
       onOk={onOk}
       okText="Save"
     >

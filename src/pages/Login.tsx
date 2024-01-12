@@ -41,13 +41,13 @@ const Login = () => {
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
-          <p className="text-green-800 text-xl mb-1">Sign in</p>
+          <p className="text-blue-700 text-xl mb-1">Sign in</p>
           <Form.Item className="my-2" name="username">
             <Input
               placeholder="Email"
               id="email"
               type="email"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item className="my-2" name="password">
@@ -56,12 +56,12 @@ const Login = () => {
               name="password"
               id="password"
               type="password"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item className="mt-3" name="password">
             <Button
-              className="bg-green-500 w-full focus:bg-black text-base"
+              className="bg-blue-500 w-full focus:bg-black text-base"
               htmlType="submit"
             >
               Login
@@ -71,7 +71,7 @@ const Login = () => {
             <p className="mt-1">Don't have an account?</p>
             <Link
               to="/register"
-              className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600"
+              className="text-blue-600 mt-1 underline cursor-pointer focus:text-green-600"
             >
               Sign up
             </Link>

@@ -38,7 +38,7 @@ const Register = () => {
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
-          <p className="text-green-800 text-xl mb-1">Sign up</p>
+          <p className="text-blue-500 text-xl mb-1">Sign up</p>
           <Form.Item
             className="my-2 w-full"
             name="firstname"
@@ -47,7 +47,7 @@ const Register = () => {
             <Input
               placeholder="Firstname"
               id="firstname"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item
@@ -58,7 +58,7 @@ const Register = () => {
             <Input
               placeholder="Lastname"
               id="lastname"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item
@@ -70,7 +70,7 @@ const Register = () => {
               placeholder="Email"
               id="lastname"
               type="email"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item
@@ -91,16 +91,16 @@ const Register = () => {
               placeholder="Password"
               id="password"
               type="password"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item
-            className="my-2"
+            className="my-2 border border-blue-500 rounded-md"
             name="role"
             rules={setRules("Please select a role")}
           >
             <Select
-              className="border-green-500 rounded-md"
+              className="!border-blue-500 rounded-md"
               placeholder="Select a role"
               allowClear
             >
@@ -120,7 +120,7 @@ const Register = () => {
               <Input
                 placeholder="University"
                 id="university"
-                className="border-green-500 rounded-md"
+                className="border-blue-500 rounded-md"
               />
             </Form.Item>
           )}
@@ -133,7 +133,7 @@ const Register = () => {
             <Input
               placeholder="Address"
               id="address"
-              className="border-green-500 rounded-md"
+              className="border-blue-500 rounded-md"
             />
           </Form.Item>
           <Form.Item
@@ -145,7 +145,7 @@ const Register = () => {
             </Checkbox>
           </Form.Item>
           <Form.Item className="mt-3">
-            <Button htmlType="submit" className="bg-green-400 w-full">
+            <Button htmlType="submit" className="bg-blue-500 w-full">
               Create account
             </Button>
           </Form.Item>
@@ -153,7 +153,7 @@ const Register = () => {
             <p className="mt-1">Already member?</p>
             <Link
               to={"/"}
-              className="text-green-600 mt-1 underline cursor-pointer focus:text-green-600"
+              className="text-blue-600 mt-1 underline cursor-pointer focus:text-blue-600"
             >
               Sign in
             </Link>
