@@ -32,9 +32,7 @@ const Activate = () => {
       }
     } catch (e) {}
   };
-  useEffect(() => {
-    <Alert message="You should check your email" type="info" />;
-  }, []);
+
   return (
     <div
       style={{
