@@ -1,6 +1,6 @@
-import { Button } from "antd";
+import { Alert, Button } from "antd";
 import { ACTIVATE_ACCOUNT } from "../../api/url/urls";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCrudApi } from "../../api/useLazyApi";
 import { useParams } from "react-router-dom";
 import PinInput from "react-pin-input";
@@ -32,7 +32,9 @@ const Activate = () => {
       }
     } catch (e) {}
   };
-
+  useEffect(() => {
+    <Alert message="You should check your email" type="info" />;
+  }, []);
   return (
     <div
       style={{
@@ -42,12 +44,16 @@ const Activate = () => {
         height: "100vh",
       }}
     >
-      <div className="2xl:w-1/4 w-1/3 p-8 shadow-xl rounded-xl border-l-green-700 h-64">
+      <div className="2xl:w-1/4 w-1/3 p-8 shadow-xl rounded-xl border-l-green-700 h-72  ">
         <div className="flex flex-col mb-4">
-          <span className="text-green-800 text-lg mt-2">
+          <span className="text-blue-700 text-lg mt-2">
             Activate your account
           </span>
-          <span className="text-xs">You should check your email</span>
+          <Alert
+            message="You should check your email"
+            type="info"
+            className="mt-2 mb-2"
+          />
         </div>
         <PinInput
           length={5}
@@ -62,7 +68,7 @@ const Activate = () => {
         />
         <Button
           onClick={activateHandler}
-          className="text-black mt-3 underline cursor-pointer w-full bg-green-500"
+          className="text-black mt-6 underline cursor-pointer w-full bg-blue-500"
         >
           Click{" "}
         </Button>

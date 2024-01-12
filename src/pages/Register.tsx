@@ -38,7 +38,10 @@ const Register = () => {
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
-          <p className="text-blue-500 text-xl mb-1">Sign up</p>
+          <h1 className="text-center text-blue-700 text-xl">
+            Welcome to internfinder
+          </h1>
+          <p className="text-black text-xl mb-1 mt-4">Sign up</p>
           <Form.Item
             className="my-2 w-full"
             name="firstname"

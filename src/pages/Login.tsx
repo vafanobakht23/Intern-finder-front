@@ -1,4 +1,4 @@
-import { Button, Input, Form } from "antd";
+import { Button, Input, Form, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Notification from "../components/Notification";
 import { setToken, setUser } from "../redux/actions/index";
@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { Pages } from "../settings/Pages";
 import { useCrudApi } from "../api/useLazyApi";
 import { LOGIN_API } from "../api/url/urls";
+import { useEffect } from "react";
+import React from "react";
 import.meta.env.BASE_URL;
 
 const Login = () => {
@@ -15,7 +17,6 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-
   const onFinish = async (formData: any) => {
     const res = await create(JSON.stringify(formData), false);
     // @ts-ignore
@@ -34,14 +35,16 @@ const Login = () => {
 
   return (
     <div className="">
-      {/* <Navbar /> */}
       <div className="flex flex-col items-center justify-center h-screen border-green-700 rounded-2xl">
         <Form
           form={form}
           onFinish={onFinish}
           className="2xl:w-1/4 w-1/3 mx-auto p-8 shadow-xl rounded-md border-l-green-700"
         >
-          <p className="text-blue-700 text-xl mb-1">Sign in</p>
+          <h1 className="text-center text-blue-700 text-xl">
+            Welcome to internfinder
+          </h1>
+          <p className="text-black text-lg mb-1 mt-4">Sign in</p>
           <Form.Item className="my-2" name="username">
             <Input
               placeholder="Email"
@@ -81,4 +84,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default React.memo(Login);
