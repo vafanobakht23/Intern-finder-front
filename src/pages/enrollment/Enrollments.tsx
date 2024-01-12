@@ -1,6 +1,4 @@
 import { useCrudApi } from "../../api/useLazyApi";
-import { useSelector } from "react-redux";
-import { Store } from "../../types/Store";
 import { Link, useParams } from "react-router-dom";
 import {
   ENROLLMENTS_POST_API,

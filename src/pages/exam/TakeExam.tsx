@@ -16,7 +16,6 @@ import { Pages } from "../../settings/Pages";
 import { useNavigate } from "../../utils/useNavigation";
 import Navbar from "../../components/Navbar";
 import NoData from "../../components/Nodata";
-import Nodata from "../../components/Nodata";
 
 const TakeExam: React.FC = () => {
   const user = useSelector((state: Store) => state.user);

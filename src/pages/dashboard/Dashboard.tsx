@@ -1,4 +1,4 @@
-import { Button, Input } from "antd";
+import { Input } from "antd";
 import { Post } from "types/Post";
 import Navbar from "../../components/Navbar";
 import { useCrudApi } from "../../api/useLazyApi";

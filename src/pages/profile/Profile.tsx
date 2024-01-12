@@ -6,7 +6,6 @@ import {
   UploadOutlined,
   EditOutlined,
   DeleteOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
