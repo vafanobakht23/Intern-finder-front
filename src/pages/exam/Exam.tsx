@@ -51,7 +51,7 @@ const AddTextInput: React.FC = () => {
   }, []);
 
   const handleAddInput = () => {
-    if (inputList.length < 10 && inputValue.trim() !== "") {
+    if (inputList.length < 15 && inputValue.trim() !== "") {
       setInputList([...inputList, inputValue]);
       setInputValue("");
     }
@@ -127,10 +127,11 @@ const AddTextInput: React.FC = () => {
                 placeholder="Enter a question"
               />
               <Button
-                icon={<PlusOutlined />}
+                icon={<PlusOutlined className="mt-1" />}
                 onClick={handleAddInput}
-                type="primary"
-                disabled={inputList.length >= 10 || inputValue.trim() === ""}
+                className="bg-blue-500 rounded-md px-4 py-1 flex flex-row outline"
+                type="dashed"
+                disabled={inputList.length >= 15 || inputValue.trim() === ""}
               >
                 Add
               </Button>
@@ -155,7 +156,7 @@ const AddTextInput: React.FC = () => {
                   Cancel
                 </Button>
                 <Button
-                  className={`bg-green-400 hover:text-white w-32 ${
+                  className={`bg-blue-500 hover:text-white w-32 ${
                     examId === -1 ? "mr-10" : ""
                   }`}
                   onClick={handleSaveExam}

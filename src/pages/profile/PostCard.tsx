@@ -68,7 +68,7 @@ const PostCard: React.FC<Props> = ({
             <Card className="" hoverable>
               <div className="text-center">
                 <h2 className="text-xl font-semibold">{p.title}</h2>
-                <p className="text-gray-500">{p.category}</p>
+                <p className="text-blue-600">{p.category}</p>
               </div>
               <p className="mt-2 text-gray-800">{p.description}</p>
               <div className="mt-4 text-gray-500">
