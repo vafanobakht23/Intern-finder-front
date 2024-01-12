@@ -73,94 +73,92 @@ const PostCard: React.FC<Props> = ({
               <div className="mt-4 text-gray-500">
                 <p>{`Created at: ${formatter(p.created_at)}`}</p>
               </div>
-              <Space className="mt-4">
-                {user.role === COMPANY ? (
-                  <div className="m-auto justify-center flex gap-x-3 mt-2">
-                    {
-                      <>
-                        <Button
-                          className="flex"
-                          icon={<EditOutlined className="flex mt-1" />}
-                          onClick={() => {
-                            setSelectedPostId(p.id);
-                            setPost({
-                              id: p.id,
-                              category: p.category,
-                              created_at: p.created_at,
-                              description: p.description,
-                              title: p.title,
-                              user_id: p.user_id,
-                            });
-                            setModalView(true);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          className="flex"
-                          loading={loading}
-                          type="default"
-                          icon={<DeleteOutlined className="flex mt-1" />}
-                          onClick={() => {
-                            setLoading(true);
-                            setDeleteButton(true);
-                            setSelectedPostId(p.id);
-                            setTimeout(() => {
-                              // After some process completes, reset loading state to false
-                              setLoading(false);
-                            }, 2000); //
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </>
-                    }
-                    <Button
-                      type="default"
-                      onClick={() => {
-                        setSelectedPostId(p.id);
-                        navigate(Pages.POST_ENROLLMENT, { id: p.id });
-                      }}
-                    >
-                      Enrollments
-                    </Button>{" "}
-                    {examsList.filter((exam) => exam.post === p.id).length ===
-                    0 ? (
+              {user.role === COMPANY ? (
+                <div className="m-auto justify-center flex gap-x-3 mt-5">
+                  {
+                    <>
                       <Button
-                        type="default"
-                        onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                        className="flex"
+                        icon={<EditOutlined className="flex mt-1" />}
+                        onClick={() => {
+                          setSelectedPostId(p.id);
+                          setPost({
+                            id: p.id,
+                            category: p.category,
+                            created_at: p.created_at,
+                            description: p.description,
+                            title: p.title,
+                            user_id: p.user_id,
+                          });
+                          setModalView(true);
+                        }}
                       >
-                        Create exam
+                        Edit
                       </Button>
-                    ) : (
                       <Button
+                        className="flex"
+                        loading={loading}
                         type="default"
-                        onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                        icon={<DeleteOutlined className="flex mt-1" />}
+                        onClick={() => {
+                          setLoading(true);
+                          setDeleteButton(true);
+                          setSelectedPostId(p.id);
+                          setTimeout(() => {
+                            // After some process completes, reset loading state to false
+                            setLoading(false);
+                          }, 2000); //
+                        }}
                       >
-                        Show exam
+                        Delete
                       </Button>
-                    )}
-                  </div>
-                ) : (
+                    </>
+                  }
                   <Button
-                    className="bg-green-400 w-full"
-                    loading={loading}
-                    onClick={(): void => {
-                      setLoading(true);
-                      applyHandler(p.id);
-                      Notification.openSuccessNotification(
-                        "You applied for this post successfully"
-                      );
-                      setTimeout(() => {
-                        // After some process completes, reset loading state to false
-                        setLoading(false);
-                      }, 2000); //
+                    type="default"
+                    onClick={() => {
+                      setSelectedPostId(p.id);
+                      navigate(Pages.POST_ENROLLMENT, { id: p.id });
                     }}
                   >
-                    Apply
-                  </Button>
-                )}
-              </Space>
+                    Enrollments
+                  </Button>{" "}
+                  {examsList.filter((exam) => exam.post === p.id).length ===
+                  0 ? (
+                    <Button
+                      type="default"
+                      onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                    >
+                      Create exam
+                    </Button>
+                  ) : (
+                    <Button
+                      type="default"
+                      onClick={() => navigate(Pages.MAKE_EXAM, { id: p.id })}
+                    >
+                      Show exam
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  className="bg-green-400 w-full"
+                  loading={loading}
+                  onClick={(): void => {
+                    setLoading(true);
+                    applyHandler(p.id);
+                    Notification.openSuccessNotification(
+                      "You applied for this post successfully"
+                    );
+                    setTimeout(() => {
+                      // After some process completes, reset loading state to false
+                      setLoading(false);
+                    }, 2000); //
+                  }}
+                >
+                  Apply
+                </Button>
+              )}
             </Card>
           ))}
         <div className="flex flex-col w-full gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
