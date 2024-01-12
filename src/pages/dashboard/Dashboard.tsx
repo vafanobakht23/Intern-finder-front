@@ -35,10 +35,11 @@ const Dashboard: React.FC = ({}) => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [hideSeeMore, setHideSeeMore] = useState(false);
+  const [isNeedToSeeMore, setNeedToSeeMore] = useState(false);
   const { create: loadPost } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${POST_LIST_API}`
   );
-  const { fetchAll: loadAllPosts } = useCrudApi(
+  const { fetchAll: LoadRelevantPosts } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ALL_POST_API}?user_id=${String(
       user.id
     )}`
@@ -55,8 +56,16 @@ const Dashboard: React.FC = ({}) => {
       const postResp = await loadPost(formData, true);
       setPostList(postResp);
     } else {
-      const resp = await loadAllPosts();
-      setPostList(resp);
+      const resp = await LoadRelevantPosts();
+      if (resp.length === 0) {
+        const resp = await loadMorePosts();
+        setPostList(resp);
+        setHideSeeMore(false);
+        setNeedToSeeMore(false);
+      } else {
+        setPostList(resp);
+        setNeedToSeeMore(true);
+      }
     }
   };
 
@@ -72,7 +81,8 @@ const Dashboard: React.FC = ({}) => {
   const removePostFunc = async (): Promise<void> => {
     if (selectedPostId !== -1 && isDeleteButton) {
       const resp = await remvoePost(selectedPostId);
-      const allPost = await loadAllPosts();
+      const allPost = await LoadRelevantPosts();
+      setNeedToSeeMore(true);
       setPostList(allPost);
     }
   };
@@ -139,21 +149,25 @@ const Dashboard: React.FC = ({}) => {
   const showPostList = async (isHide: boolean) => {
     if (isHide) {
       const resp = await loadMorePosts();
+      if (resp.length === 0) {
+        setNeedToSeeMore(false);
+      }
       setPostList([...postList, ...resp]);
       setHideSeeMore(true);
     } else {
-      const resp = await loadAllPosts();
+      const resp = await LoadRelevantPosts();
+      setNeedToSeeMore(true);
       setPostList([...resp]);
       setHideSeeMore(false);
     }
   };
 
   const handleSearch = async () => {
-    if (searchValue) {
-      const resp = await search();
-      setPostList(resp);
-      setSearchValue("");
-    }
+    // if (searchValue) {
+    const resp = await search();
+    setPostList(resp);
+    setSearchValue("");
+    // }
   };
   const handleEnterKeyPress = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -189,18 +203,25 @@ const Dashboard: React.FC = ({}) => {
               {postList.length > 0 ? (
                 <>
                   <PostCard
-                    postList={postList}
+                    postList={postList.filter((post) => {
+                      return !enrollments.some(
+                        (enrollment) => post.id === enrollment.post__id
+                      );
+                    })}
                     setSelectedPostId={setSelectedPostId}
                     setModalView={setPostModalOpen}
                     setDeleteButton={setDeleteButton}
+                    setNeedMorePost={setNeedToSeeMore}
                     setPost={setPost}
                     post={post}
                     applyHandler={applyHandler}
                   />
+                  {}
                   {!hideSeeMore ? (
                     <button
                       className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(true)}
+                      hidden={!isNeedToSeeMore}
                     >
                       See more
                     </button>
@@ -208,6 +229,7 @@ const Dashboard: React.FC = ({}) => {
                     <button
                       className="bg-blue-500 w-2/3 mx-auto bottom-10 text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(false)}
+                      hidden={!isNeedToSeeMore}
                     >
                       Relavent posts
                     </button>

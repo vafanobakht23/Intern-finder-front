@@ -23,6 +23,7 @@ type Props = {
   setSelectedPostId: (selectedPostId: number) => void;
   setModalView: (modalView: boolean) => void;
   setDeleteButton: (isDeleteButton: boolean) => void;
+  setNeedMorePost?: (needMorePost: boolean) => void;
   setPost: (post: Post) => void;
   post: Post;
   applyHandler?: any;
@@ -34,6 +35,7 @@ const PostCard: React.FC<Props> = ({
   setSelectedPostId,
   setModalView,
   setDeleteButton,
+  setNeedMorePost,
   setPost,
   post,
   applyHandler,
@@ -53,12 +55,14 @@ const PostCard: React.FC<Props> = ({
   };
   useEffect(() => {
     getData();
+    if (postList?.length === 0) setNeedMorePost && setNeedMorePost(false);
   }, []);
 
   return (
     <>
       <div className="flex flex-col w-2/3 gap-y-6 m-auto justify-center mt-5 gap-x-4 mb-6">
         {postList &&
+          postList.length > 0 &&
           postList.map((p) => (
             <Card className="" hoverable>
               <div className="text-center">
