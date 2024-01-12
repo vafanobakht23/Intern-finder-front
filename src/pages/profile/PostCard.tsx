@@ -167,7 +167,9 @@ const PostCard: React.FC<Props> = ({
             enrollments.map((p) => (
               <Badge.Ribbon
                 text={renderStatusFunc(p.status)}
-                className={`${renderStatusColor(p.status)} top-36 mt-3 `}
+                className={`${renderStatusColor(p.status)} top-36 ${
+                  p.status === "AC" ? "mt-9" : "mt-3"
+                } `}
               >
                 <Card className="w-auto" hoverable>
                   <div className="text-center">
