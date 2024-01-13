@@ -150,19 +150,19 @@ const AddTextInput: React.FC = () => {
 
               <div>
                 <Button
-                  className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32"
+                  className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32 bg-gray-300"
                   onClick={(): void => navigate(Pages.PROFILE)}
                 >
                   Cancel
                 </Button>
-                <Button
-                  className={`bg-blue-500 hover:text-white w-32 ${
+                <button
+                  className={`bg-blue-500 hover:text-white w-32 py-1.5 rounded-md text-white text-sm hover:bg-blue-600 ${
                     examId === -1 ? "mr-10" : ""
                   }`}
                   onClick={handleSaveExam}
                 >
                   {isUpdateMode ? "Update" : "Save exam"}
-                </Button>
+                </button>
               </div>
             </div>
           </div>

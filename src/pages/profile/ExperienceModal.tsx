@@ -39,7 +39,7 @@ const ExperienceModal: React.FC<Props> = ({
       okText="Save"
     >
       <div className="flex flex-col my-3">
-        <h1 className="font-bold">Title:</h1>
+        <span className="font-bold mt-3">Title</span>
         <Input
           className="mb-4"
           defaultValue={
@@ -49,7 +49,7 @@ const ExperienceModal: React.FC<Props> = ({
             setExp({ ...exp, title: e.target.value });
           }}
         />
-        <h1 className="font-bold">Company:</h1>
+        <span className="font-bold">Company</span>
         <Input
           className="mb-4"
           defaultValue={
@@ -59,7 +59,7 @@ const ExperienceModal: React.FC<Props> = ({
             setExp({ ...exp, company: e.target.value });
           }}
         />
-        <h1 className="font-bold">Years:</h1>
+        <span className="font-bold">Years</span>
         <Input
           defaultValue={
             experienceList.find((e) => e.id === selectedExperienceId)?.years
@@ -67,6 +67,7 @@ const ExperienceModal: React.FC<Props> = ({
           onChange={(e): void => {
             setExp({ ...exp, years: e.target.value });
           }}
+          className="mb-4"
         />
       </div>
     </Modal>

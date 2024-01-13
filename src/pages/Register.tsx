@@ -148,15 +148,15 @@ const Register = () => {
             </Checkbox>
           </Form.Item>
           <Form.Item className="mt-3">
-            <Button htmlType="submit" className="bg-blue-500 w-full">
+            <button className="bg-blue-500 w-full text-white hover:text-white hover:bg-blue-600 h-9 rounded-md">
               Create account
-            </Button>
+            </button>
           </Form.Item>
           <div className="flex gap-x-1">
-            <p className="mt-1">Already member?</p>
+            <p className="">Already member?</p>
             <Link
               to={"/"}
-              className="text-blue-600 mt-1 underline cursor-pointer focus:text-blue-600"
+              className="text-blue-600 underline cursor-pointer focus:text-blue-600"
             >
               Sign in
             </Link>

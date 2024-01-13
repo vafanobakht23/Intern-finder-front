@@ -34,25 +34,19 @@ const Popup: React.FC<Props> = ({
       okText="Save"
     >
       <div className="flex flex-col my-3">
-        <h1 className="font-bold mb-1">Biography</h1>
-        <TextArea
-          className="mb-4 rounded-lg"
-          defaultValue={user.biography}
-          onChange={(e): void => {
-            if (model) setModel({ ...model, biography: e.target.value });
-          }}
-        />
-        <h1 className="font-bold mb-1">Role</h1>
+        <span className="font-bold mb-1 mt-3">Role</span>
         <Input
           className="mb-4 rounded-lg"
+          placeholder="Enter your role"
           defaultValue={user.title}
           onChange={(e): void => {
             if (model) setModel({ ...model, title: e.target.value });
           }}
         />
-        <h1 className="font-bold mb-1">Address</h1>
+        <span className="font-bold mb-1">Address</span>
         <Input
           className="mb-4 rounded-lg"
+          placeholder="Enter your address"
           defaultValue={user.address}
           onChange={(e): void => {
             if (model) setModel({ ...model, address: e.target.value });
@@ -60,9 +54,10 @@ const Popup: React.FC<Props> = ({
         />
         {user.role === INTERN && (
           <>
-            <h1 className="font-bold mb-1">University</h1>
+            <span className="font-bold mb-1">University</span>
             <Input
               className="rounded-lg"
+              placeholder="Enter your university"
               defaultValue={user.university}
               onChange={(e): void => {
                 if (model) setModel({ ...model, university: e.target.value });
@@ -70,6 +65,15 @@ const Popup: React.FC<Props> = ({
             />
           </>
         )}
+        <span className="font-bold mb-1 mt-5">Biography</span>
+        <TextArea
+          className="mb-4 rounded-lg"
+          placeholder="Enter your address"
+          defaultValue={user.biography}
+          onChange={(e): void => {
+            if (model) setModel({ ...model, biography: e.target.value });
+          }}
+        />
       </div>
     </Modal>
   ) : null;

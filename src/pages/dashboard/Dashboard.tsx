@@ -194,7 +194,7 @@ const Dashboard: React.FC = ({}) => {
                   onKeyDown={handleEnterKeyPress}
                 />
                 <button
-                  className="h-10 mx-2 bg-blue-500 font-normal w-24 rounded-md"
+                  className="h-10 mx-2 bg-blue-500 text-sm w-24 rounded-md text-white hover:bg-blue-600"
                   onClick={handleSearch}
                 >
                   Search

@@ -30,9 +30,10 @@ const SkillModal: React.FC<Props> = ({
       okText="Save"
     >
       <div className="flex flex-col my-3">
-        <h1 className="font-bold">Skill:</h1>
+        <span className="font-bold mt-3 mb-1">Skill</span>
         <Input
           className="mb-4"
+          placeholder="Enter your skill"
           onChange={(e): void => {
             setSkill({ ...skill, title: e.target.value });
           }}

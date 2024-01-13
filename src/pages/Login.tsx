@@ -63,12 +63,9 @@ const Login = () => {
             />
           </Form.Item>
           <Form.Item className="mt-3" name="password">
-            <Button
-              className="bg-blue-500 w-full focus:bg-black text-base"
-              htmlType="submit"
-            >
+            <button className="bg-blue-500 w-full focus:bg-black text-base text-white hover:bg-blue-600 h-9 rounded-md">
               Login
-            </Button>
+            </button>
           </Form.Item>
           <div className="flex gap-x-1 mt-2">
             <p className="mt-1">Don't have an account?</p>

@@ -199,9 +199,16 @@ const Profile = () => {
         if (isEmpty)
           Notification.openErrorNotification("Please fill all input");
         else {
-          const response = await createExp(formData, true);
-          setExp(EMPTY_EXPERIENCE);
-          Notification.openSuccessNotification("Experience added successfully");
+          if (typeof Number(formData.get("years")) === "number") {
+            const response = await createExp(formData, true);
+            setExp(EMPTY_EXPERIENCE);
+            Notification.openSuccessNotification(
+              "Experience added successfully"
+            );
+          } else
+            Notification.openErrorNotification(
+              "Experience's years should be number"
+            );
         }
       }
     } else if (selectedExperienceId !== -1 && selectedSkillId === -1) {
@@ -209,10 +216,16 @@ const Profile = () => {
       formData.append("title", exp?.title);
       formData.append("company", exp?.company);
       formData.append("years", exp?.years);
-      const resp = await updateExperience(selectedExperienceId, formData);
-      Notification.openSuccessNotification("Experience updated successfully");
+      if (typeof Number(formData.get("years")) === "number") {
+        const resp = await updateExperience(selectedExperienceId, formData);
+        Notification.openSuccessNotification("Experience updated successfully");
+      } else
+        Notification.openErrorNotification(
+          "Experience's years should be number"
+        );
       setExOpen(false);
       setSelectedExperienceId(-1);
+      setExp(EMPTY_EXPERIENCE);
     } else if (selectedSkillId !== -1) {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
@@ -267,7 +280,7 @@ const Profile = () => {
         <div className="mb-10">
           <Navbar selectedKey="2" />
         </div>
-        <div className="w-1/2 m-auto shadow-lg flex flex-col">
+        <div className="w-1/2 m-auto shadow-lg flex flex-col rounded-lg">
           <div className="flex flex-col">
             {model.photo ? (
               <img
@@ -357,7 +370,7 @@ const Profile = () => {
               <div className="flex flex-row justify-center m-auto gap-x-5 ">
                 <button
                   onClick={(): void => setPostModalOpen(true)}
-                  className="bg-blue-500 px-2.5 py-2 rounded-md hover:text-black"
+                  className="bg-blue-500 w-full text-white hover:text-white hover:bg-blue-600 h-9 rounded-md px-2.5"
                 >
                   {" "}
                   Share post
@@ -463,7 +476,7 @@ const Profile = () => {
                     skillList?.map((sk, index) => (
                       <div
                         key={sk.id}
-                        className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 my-2"
+                        className="w-full sm:w-full md:w-2/5 p-6 border rounded mx-8 mt-2 mb-8"
                       >
                         <div className="flex flex-row justify-between">
                           <p className="text-lg mt-1">{`${index + 1}. ${

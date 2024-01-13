@@ -42,9 +42,10 @@ const PostModal: React.FC<Props> = ({
       okText="Save"
     >
       <div className="flex flex-col my-3">
-        <h1 className="font-bold">Title:</h1>
+        <span className="font-bold mt-3 mb-1">Title</span>
         <Input
           className="mb-4"
+          placeholder="Enter your post's title"
           defaultValue={
             postList.find((post) => post.id === selectedPostId)?.title
           }
@@ -52,9 +53,10 @@ const PostModal: React.FC<Props> = ({
             setPost({ ...post, title: e.target.value });
           }}
         />
-        <h1 className="font-bold">Category:</h1>
+        <span className="font-bold mb-1">Category</span>
         <Input
           className="mb-4"
+          placeholder="Enter post's category"
           defaultValue={
             postList.find((post) => post.id === selectedPostId)?.category
           }
@@ -62,10 +64,11 @@ const PostModal: React.FC<Props> = ({
             setPost({ ...post, category: e.target.value });
           }}
         />
-        <h1 className="font-bold">Description:</h1>
+        <span className="font-bold mb-1">Description</span>
         <TextArea
-          rows={8}
+          rows={7}
           className="mb-4"
+          placeholder="Enter post's description"
           defaultValue={
             postList.find((post) => post.id === selectedPostId)?.description
           }
