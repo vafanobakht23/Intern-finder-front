@@ -216,16 +216,22 @@ const Profile = () => {
       formData.append("title", exp?.title);
       formData.append("company", exp?.company);
       formData.append("years", exp?.years);
-      if (typeof Number(formData.get("years")) === "number") {
-        const resp = await updateExperience(selectedExperienceId, formData);
-        Notification.openSuccessNotification("Experience updated successfully");
-      } else
-        Notification.openErrorNotification(
-          "Experience's years should be number"
-        );
-      setExOpen(false);
-      setSelectedExperienceId(-1);
-      setExp(EMPTY_EXPERIENCE);
+      const isEmpty = validateFormData(formData);
+      if (isEmpty) Notification.openErrorNotification("Please fill all input");
+      else {
+        if (typeof Number(formData.get("years")) === "number") {
+          const resp = await updateExperience(selectedExperienceId, formData);
+          Notification.openSuccessNotification(
+            "Experience updated successfully"
+          );
+        } else
+          Notification.openErrorNotification(
+            "Experience's years should be number"
+          );
+        setExOpen(false);
+        setSelectedExperienceId(-1);
+        setExp(EMPTY_EXPERIENCE);
+      }
     } else if (selectedSkillId !== -1) {
       const resp = await removeSkill(selectedSkillId);
       Notification.openSuccessNotification("Skill deleted successfully");
