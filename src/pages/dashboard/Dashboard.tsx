@@ -163,12 +163,10 @@ const Dashboard: React.FC = ({}) => {
   };
 
   const handleSearch = async () => {
-    // if (searchValue) {
     const resp = await search();
     setPostList(resp);
-    setSearchValue("");
-    // }
   };
+
   const handleEnterKeyPress = async (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
