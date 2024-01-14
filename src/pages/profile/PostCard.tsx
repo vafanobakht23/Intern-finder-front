@@ -143,7 +143,7 @@ const PostCard: React.FC<Props> = ({
                 </div>
               ) : (
                 <Button
-                  className="bg-green-400 w-24 mt-4"
+                  className="bg-green-400 w-24 mt-4 text-white"
                   loading={loading}
                   onClick={(): void => {
                     setLoading(true);

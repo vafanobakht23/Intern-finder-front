@@ -214,15 +214,15 @@ const Dashboard: React.FC = ({}) => {
                   />
                   {!hideSeeMore ? (
                     <button
-                      className="bg-blue-500 w-2/3 mx-auto text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      className="bg-blue-500 w-2/3 mx-auto text-white hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(true)}
                       hidden={!isNeedToSeeMore || !!searchValue}
                     >
-                      See more
+                      Show more
                     </button>
                   ) : (
                     <button
-                      className="bg-blue-500 w-2/3 mx-auto text-black hover:text-white transition duration-300 ease-in-out mb-10 h-8 rounded-md"
+                      className="bg-blue-500 w-2/3 mx-auto text-white hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out mb-10 h-8 rounded-md"
                       onClick={(): Promise<void> => showPostList(false)}
                       hidden={!isNeedToSeeMore || !!searchValue}
                     >

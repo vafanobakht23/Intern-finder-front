@@ -331,13 +331,9 @@ const Profile = () => {
           </div>
           <div className="flex flex-col mx-20">
             <div className="flex flex-row justify-between mt-4">
-              <p
-                className={`${
-                  !model?.biography && !user?.biography && "mb-10"
-                } text-2xl`}
-              >{`${id ? model?.firstname : user?.firstname} ${
-                id ? model?.lastname : user?.lastname
-              }`}</p>
+              <p className={` text-2xl`}>{`${
+                id ? model?.firstname : user?.firstname
+              } ${id ? model?.lastname : user?.lastname}`}</p>
               {model?.role === INTERN &&
                 model?.university &&
                 user?.university && (
@@ -354,7 +350,7 @@ const Profile = () => {
             {model?.address && user?.address && (
               <span
                 className={
-                  model?.address && user?.address ? `text-xs mt-1` : "mt-3"
+                  model?.address && user?.address ? `text-xs mt-1 mb-3` : "mb-4"
                 }
               >
                 {id ? model?.address : user?.address}
@@ -362,27 +358,27 @@ const Profile = () => {
             )}
           </div>
           {model?.biography && user?.biography && (
-            <div className="mx-20 mt-6 mb-7">
-              <h3 className="font-bold">About me</h3>
-              <p className="ml-1.5">
-                {id ? model?.biography : user?.biography}
-              </p>
-            </div>
-          )}
-        </div>
-        {model?.role === COMPANY && (
-          <div>
-            <div className="flex w-1/2 shadow-lg m-auto h-20">
-              <div className="flex flex-row justify-center m-auto gap-x-5 ">
+            <div className="flex flex-row justify-between gap-x-32">
+              <div className="flex flex-col gap-y-2 mt-8 ml-20 mb-6 w-3/4">
+                <h3 className="font-bold">About me</h3>
+                <p className="ml-1.5">
+                  {id ? model?.biography : user?.biography}
+                </p>
+              </div>
+              <div className=" mt-9 mr-10 w-1/4">
                 <button
                   onClick={(): void => setPostModalOpen(true)}
-                  className="bg-blue-500 w-full text-white hover:text-white hover:bg-blue-600 h-9 rounded-md px-2.5"
+                  className="bg-blue-500 text-white hover:text-white hover:bg-blue-600 h-9 rounded-md px-3"
                 >
                   {" "}
                   Share post
                 </button>
               </div>
             </div>
+          )}
+        </div>
+        {model?.role === COMPANY && (
+          <div>
             <div className="m-auto w-1/2">
               <PostCard
                 postList={postList}
