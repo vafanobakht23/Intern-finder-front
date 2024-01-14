@@ -374,15 +374,17 @@ const Profile = () => {
                   {id ? model?.biography : user?.biography}
                 </p>
               </div>
-              <div className=" mt-9 mr-10 w-1/4">
-                <button
-                  onClick={(): void => setPostModalOpen(true)}
-                  className="bg-blue-500 text-white hover:text-white hover:bg-blue-600 h-9 rounded-md px-3"
-                >
-                  {" "}
-                  Share post
-                </button>
-              </div>
+              {user.role === COMPANY && (
+                <div className=" mt-9 mr-10 w-1/4">
+                  <button
+                    onClick={(): void => setPostModalOpen(true)}
+                    className="bg-blue-500 text-white hover:text-white hover:bg-blue-600 h-9 rounded-md px-3"
+                  >
+                    {" "}
+                    Share post
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
