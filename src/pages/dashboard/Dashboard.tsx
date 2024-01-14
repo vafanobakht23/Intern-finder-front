@@ -182,7 +182,7 @@ const Dashboard: React.FC = ({}) => {
         <>
           <Navbar selectedKey="1" />
           <div className="flex flex-col mt-5 w-full gap-x-4">
-            <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg">
+            <div className="flex flex-col my-3 w-1/2 m-auto h-auto shadow-lg rounded-lg">
               <p className="mx-4 p-5 text-xl">Posts:</p>
               <div className="w-1/2 m-auto flex flex-row mb-4">
                 <Input
