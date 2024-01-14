@@ -92,18 +92,26 @@ const TakeExam: React.FC = () => {
           <NoData text="No exam is here!" size="h-96" />
         )}
         {user.role === INTERN ? (
-          <Button
-            className={`w-1/2 m-auto rounded-md mt-5 bg-green-400 ${
-              questions.length === 0 && "hidden"
-            }`}
-            onClick={() => {
-              handleStatusIntern(Number(enrollmentId!), user.id, true);
-              Notification.openSuccessNotification("You submited succefully");
-            }}
-          >
-            {" "}
-            Submit
-          </Button>
+          <div className="flex flex-row gap-x-2 w-1/2 mx-auto justify-end mt-3">
+            <Button
+              className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32 bg-gray-300 h-9"
+              onClick={(): void => navigate(Pages.DASHBOARD)}
+            >
+              Cancel
+            </Button>
+            <button
+              className={`bg-blue-500 hover:text-white w-32 py-1.5 rounded-md text-white text-sm hover:bg-blue-600 h-9 ${
+                questions.length === 0 && "hidden"
+              }`}
+              onClick={() => {
+                handleStatusIntern(Number(enrollmentId!), user.id, true);
+                Notification.openSuccessNotification("You submited succefully");
+              }}
+            >
+              {" "}
+              Submit
+            </button>
+          </div>
         ) : (
           <div className="flex flex-row gap-4 justify-end w-1/2 m-auto mt-3">
             <Button

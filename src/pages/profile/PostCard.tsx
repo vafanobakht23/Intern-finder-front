@@ -238,7 +238,7 @@ const PostCard: React.FC<Props> = ({
                         {p.status === "AC" && (
                           <Button
                             type="default"
-                            className="bg-green-400 mt-1"
+                            className="bg-green-400 mt-2"
                             onClick={(): void => {
                               navigate(Pages.TAKE_EXAM, {
                                 id: p.post__id,

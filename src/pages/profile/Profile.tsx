@@ -378,7 +378,7 @@ const Profile = () => {
           )}
         </div>
         {model?.role === COMPANY && (
-          <div>
+          <div className="mt-2">
             <div className="m-auto w-1/2">
               <PostCard
                 postList={postList}
