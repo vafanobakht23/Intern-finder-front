@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Space } from "antd";
+import { Badge, Button, Card, Popconfirm, Space } from "antd";
 import { Pages } from "../../settings/Pages";
 import { Post } from "types/Post";
 import useDateFormatter from "./hooks/useDateFormatter";
@@ -96,23 +96,30 @@ const PostCard: React.FC<Props> = ({
                       >
                         Edit
                       </Button>
-                      <Button
-                        className="flex"
-                        loading={loading}
-                        type="default"
-                        icon={<DeleteOutlined className="flex mt-1" />}
-                        onClick={() => {
+                      <Popconfirm
+                        title="Delete the post"
+                        description="Are you sure to delete this post?"
+                        placement="top"
+                        onConfirm={() => {
                           setLoading(true);
                           setDeleteButton(true);
                           setSelectedPostId(p.id);
                           setTimeout(() => {
-                            // After some process completes, reset loading state to false
                             setLoading(false);
                           }, 2000); //
                         }}
+                        okText="Yes"
+                        cancelText="No"
                       >
-                        Delete
-                      </Button>
+                        <Button
+                          className="flex"
+                          loading={loading}
+                          type="default"
+                          icon={<DeleteOutlined className="flex mt-1" />}
+                        >
+                          Delete
+                        </Button>
+                      </Popconfirm>
                     </>
                   }
                   <Button

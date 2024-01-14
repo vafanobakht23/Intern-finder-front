@@ -1,4 +1,13 @@
-import { Avatar, Button, Card, Col, Row, Tooltip, Upload } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Popconfirm,
+  Row,
+  Tooltip,
+  Upload,
+} from "antd";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
@@ -486,12 +495,18 @@ const Profile = () => {
                           }`}</p>
                           {id === undefined && (
                             <div className="flex flex-row justify-between">
-                              <DeleteOutlined
-                                onClick={(): void => {
+                              <Popconfirm
+                                title="Delete the skill"
+                                description="Are you sure to delete this skill?"
+                                placement="top"
+                                onConfirm={(): void => {
                                   setSelectedSkillId(sk.id);
                                 }}
-                                className="ml-4 mt-1 cursor-pointer text-lg"
-                              />
+                                okText="Yes"
+                                cancelText="No"
+                              >
+                                <DeleteOutlined className="ml-4 mt-1 cursor-pointer text-lg" />
+                              </Popconfirm>
                             </div>
                           )}
                         </div>

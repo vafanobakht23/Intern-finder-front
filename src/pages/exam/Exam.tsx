@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
 import Notification from "../../components/Notification";
@@ -139,12 +139,18 @@ const AddTextInput: React.FC = () => {
             <div className="w-full mx-4 mt-7 space-x-2 gap-y-4 flex flex-row-reverse">
               {examId !== -1 && (
                 <div>
-                  <Button
-                    className="bg-gray-300-400 hover:text-white mr-10 ml-2"
-                    onClick={handleRemoveExam}
+                  <Popconfirm
+                    title="Delete the exam"
+                    description="Are you sure to delete this exam?"
+                    placement="top"
+                    onConfirm={handleRemoveExam}
+                    okText="Yes"
+                    cancelText="No"
                   >
-                    Remove exam
-                  </Button>
+                    <Button className="bg-gray-300-400 hover:text-white mr-10 ml-2">
+                      Remove exam
+                    </Button>
+                  </Popconfirm>
                 </div>
               )}
 
