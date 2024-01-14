@@ -418,7 +418,7 @@ const Profile = () => {
         )}
         {model?.role === INTERN && (
           <>
-            <div className="w-1/2 m-auto shadow-lg gap-y-2">
+            <div className="w-1/2 m-auto shadow-lg gap-y-2 rounded-lg mb-2">
               <div className="flex flex-row justify-between ml-1 mt-6">
                 <span className="text-xl font-bold my-2 mx-7">Experiences</span>
                 {id === undefined && (
@@ -473,7 +473,7 @@ const Profile = () => {
                 <NoData />
               )}
             </div>
-            <div className="w-1/2 m-auto shadow-lg gap-y-2">
+            <div className="w-1/2 m-auto shadow-lg gap-y-2 rounded-lg">
               <div className="flex flex-row justify-between ml-1 mt-6">
                 <span className="text-xl font-bold my-2 mx-7">Skills</span>
                 {id === undefined && (
@@ -484,7 +484,7 @@ const Profile = () => {
                 )}
               </div>
               {skillList.length > 0 ? (
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap mb-4">
                   {skillList &&
                     skillList?.map((sk, index) => (
                       <div

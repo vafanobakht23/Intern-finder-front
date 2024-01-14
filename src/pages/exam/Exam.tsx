@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Popconfirm } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import Navbar from "../../components/Navbar";
 import Notification from "../../components/Notification";
 import TextArea from "antd/es/input/TextArea";
@@ -113,7 +113,9 @@ const AddTextInput: React.FC = () => {
                   <TextArea value={input} disabled />
                   <Button
                     onClick={() => handleRemoveInput(index)}
+                    icon={<DeleteOutlined className="mt-1" />}
                     type="dashed"
+                    className="flex flex-row"
                   >
                     Remove
                   </Button>
@@ -129,7 +131,7 @@ const AddTextInput: React.FC = () => {
               <Button
                 icon={<PlusOutlined className="mt-1" />}
                 onClick={handleAddInput}
-                className="bg-blue-500 rounded-md px-4 py-1 flex flex-row outline"
+                className="bg-blue-500 rounded-md px-7 py-1 flex flex-row outline text-white"
                 type="dashed"
                 disabled={inputList.length >= 15 || inputValue.trim() === ""}
               >
