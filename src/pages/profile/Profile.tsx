@@ -541,7 +541,11 @@ const Profile = () => {
               selectedExperienceId={selectedExperienceId}
               experienceList={experienceList}
               setSelectedExperienceId={setSelectedExperienceId}
-              title="Add Experience"
+              title={
+                experienceList.find((e) => e.id === selectedExperienceId)?.title
+                  ? "Edit Experience"
+                  : "Add Experience"
+              }
             />
           </>
         )}

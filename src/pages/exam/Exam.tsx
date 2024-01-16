@@ -98,7 +98,7 @@ const AddTextInput: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto h-screen overflow-y-auto">
       {user ? (
         <>
           <Navbar selectedKey="" />
