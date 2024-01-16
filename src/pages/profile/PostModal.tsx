@@ -28,7 +28,11 @@ const PostModal: React.FC<Props> = ({
 }: Props) => {
   return isModalView ? (
     <Modal
-      title={title}
+      title={
+        postList.find((post) => post.id === selectedPostId)?.title
+          ? "Edit post"
+          : title
+      }
       open={isModalView}
       okButtonProps={{
         className: "!h-10 !font-semibold bg-blue-500 rounded-sm",
