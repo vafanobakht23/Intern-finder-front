@@ -1,6 +1,6 @@
 import { Alert, Button } from "antd";
 import { ACTIVATE_ACCOUNT } from "../../api/url/urls";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCrudApi } from "../../api/useLazyApi";
 import { useParams } from "react-router-dom";
 import PinInput from "react-pin-input";
@@ -10,6 +10,7 @@ import { Pages } from "../../settings/Pages";
 
 const Activate = () => {
   const navigate = useNavigate();
+  let ref = useRef<PinInput>(null);
   const { create } = useCrudApi(
     `${import.meta.env.VITE_REACT_APP_API}${ACTIVATE_ACCOUNT}`
   );
@@ -30,7 +31,11 @@ const Activate = () => {
         Notification.openSuccessNotification("Your account is active now");
         navigate(Pages.LOGIN);
       }
-    } catch (e) {}
+      setCode("");
+      ref.current?.clear();
+    } catch (e) {
+      setCode("");
+    }
   };
 
   return (
@@ -54,6 +59,7 @@ const Activate = () => {
           />
         </div>
         <PinInput
+          ref={ref}
           length={5}
           onChange={(value) => setCode(value)}
           type="numeric"
@@ -64,12 +70,12 @@ const Activate = () => {
           onComplete={(value) => setCode(value)}
           autoSelect={true}
         />
-        <Button
+        <button
           onClick={activateHandler}
-          className="text-black mt-6 underline cursor-pointer w-full bg-blue-500"
+          className="mt-6 cursor-pointer w-full rounded-md bg-blue-500 text-white hover:bg-blue-600 h-9"
         >
-          Click{" "}
-        </Button>
+          Activate
+        </button>
       </div>
     </div>
   );
