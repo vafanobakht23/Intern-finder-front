@@ -44,7 +44,7 @@ const Login = () => {
           <h1 className="text-center text-blue-700 text-xl">
             Welcome to internfinder
           </h1>
-          <p className="text-black text-lg mb-1 mt-4">Sign in</p>
+          <p className="text-black text-xl mb-1 mt-4">Sign in</p>
           <Form.Item className="my-2" name="username">
             <Input
               placeholder="Email"
