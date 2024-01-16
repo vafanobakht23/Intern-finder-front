@@ -71,7 +71,7 @@ const TakeExam: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col m-auto">
+    <div className="flex flex-col m-auto overflow-y-auto h-screen pb-8 pt-2">
       <>
         <Navbar selectedKey="1" />
         {questions.length > 0 ? (
@@ -92,7 +92,7 @@ const TakeExam: React.FC = () => {
           <NoData text="No exam is here!" size="h-96" />
         )}
         {user.role === INTERN ? (
-          <div className="flex flex-row gap-x-2 w-1/2 mx-auto justify-end mt-3">
+          <div className="flex flex-row gap-x-2 w-1/2 mx-auto justify-end mt-4">
             <Button
               className="bg-gray-300-400 hover:text-white mr-3 ml-2 w-32 bg-gray-300 h-9"
               onClick={(): void => navigate(Pages.DASHBOARD)}
