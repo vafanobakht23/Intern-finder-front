@@ -297,7 +297,7 @@ const Profile = () => {
         </div>
         <div className="w-1/2 m-auto shadow-lg flex flex-col rounded-lg">
           <div className="flex flex-col">
-            {model.photo ? (
+            {model.photo || user.photo ? (
               <img
                 className="rounded-full h-44 w-44 mx-16 object-cover"
                 src={
