@@ -5,9 +5,9 @@ import {
   SET_TOKEN,
   SET_USER,
 } from "../types/index";
-import { User } from "../../types/User";
 import { Experience } from "types/Experience";
 import { Skill } from "types/Skill";
+import { User } from "types/User";
 
 export const setUser = (user: User | undefined): Action => ({
   type: SET_USER,

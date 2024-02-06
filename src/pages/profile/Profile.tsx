@@ -16,7 +16,6 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { User } from "../../types/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "types/Store";
 import { useCrudApi } from "../../api/useLazyApi";
@@ -56,6 +55,7 @@ import {
 import { validateFormData } from "../../utils/validateFormData";
 import { useParams } from "react-router-dom";
 import NoData from "../../components/Nodata";
+import { User } from "types/User";
 import.meta.env.BASE_URL;
 
 const Profile = () => {

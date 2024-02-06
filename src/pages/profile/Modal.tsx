@@ -1,7 +1,7 @@
 import { Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { User } from "types/User";
 import { INTERN } from "../../constant/Constant";
-import { User } from "../../types/User";
 
 type Props = {
   isModalView: boolean;
